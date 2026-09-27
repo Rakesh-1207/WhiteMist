@@ -515,7 +515,7 @@ button, input, select, textarea {
     max-height: 260px !important;
   }
 
-  /* HIDE top banner box in All Products page ONLY on mobile interface */
+  /* Hide top purple banner box on mobile view for All Products page */
   .catalog-top-banner {
     display: none !important;
   }
@@ -525,8 +525,7 @@ button, input, select, textarea {
   display: block;
 }
 
-/* FUTURISTIC MOBILE CATEGORY PILL FILTER BAR (NO POPUPS!) */
-.mobile-futuristic-filter-bar {
+.mobile-category-dropdown-bar {
   display: none;
 }
 
@@ -535,118 +534,9 @@ button, input, select, textarea {
     display: none !important;
   }
 
-  .mobile-futuristic-filter-bar {
+  .mobile-category-dropdown-bar {
     display: flex !important;
-    flex-direction: column !important;
-    gap: 0.65rem !important;
-    margin-bottom: 1.25rem !important;
   }
-
-  .futuristic-chips-scroll {
-    display: flex !important;
-    gap: 0.45rem !important;
-    overflow-x: auto !important;
-    padding-bottom: 0.3rem !important;
-    -webkit-overflow-scrolling: touch !important;
-    scrollbar-width: none !important;
-  }
-
-  .futuristic-chips-scroll::-webkit-scrollbar {
-    display: none !important;
-  }
-
-  .futuristic-chip {
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.4rem !important;
-    padding: 0.45rem 0.85rem !important;
-    border-radius: var(--radius-full) !important;
-    border: 1px solid #CBD5E1 !important;
-    background: white !important;
-    color: var(--text-main) !important;
-    font-weight: 700 !important;
-    font-size: 0.78rem !important;
-    white-space: nowrap !important;
-    flex-shrink: 0 !important;
-    cursor: pointer !important;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.04) !important;
-    transition: all 0.25s ease !important;
-  }
-
-  .futuristic-chip.active {
-    background: linear-gradient(135deg, #3F1B85 0%, #6A3BC8 100%) !important;
-    color: white !important;
-    border-color: transparent !important;
-    box-shadow: 0 4px 14px rgba(63, 27, 133, 0.3) !important;
-  }
-
-  .fragrance-pills-row {
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.4rem !important;
-    overflow-x: auto !important;
-    padding-bottom: 0.2rem !important;
-    scrollbar-width: none !important;
-  }
-
-  .fragrance-label {
-    font-size: 0.68rem !important;
-    font-weight: 800 !important;
-    color: var(--text-muted) !important;
-    letter-spacing: 0.05em !important;
-    flex-shrink: 0 !important;
-    margin-right: 0.15rem !important;
-  }
-
-  .fragrance-pill {
-    padding: 0.35rem 0.65rem !important;
-    border-radius: var(--radius-full) !important;
-    border: 1px solid #CBD5E1 !important;
-    background: white !important;
-    color: #64748B !important;
-    font-weight: 700 !important;
-    font-size: 0.725rem !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 0.3rem !important;
-    flex-shrink: 0 !important;
-    cursor: pointer !important;
-    transition: all 0.25s ease !important;
-  }
-
-  .fragrance-pill.active {
-    border-color: var(--color-purple-primary) !important;
-    background: #F3EBFD !important;
-    color: var(--color-purple-dark) !important;
-  }
-
-  .fragrance-pill.blue.active {
-    border-color: #0084FF !important;
-    background: #E6F3FF !important;
-    color: #0084FF !important;
-  }
-
-  .fragrance-pill.pink.active {
-    border-color: #F01262 !important;
-    background: #FFEBF2 !important;
-    color: #F01262 !important;
-  }
-
-  .fragrance-pill.yellow.active {
-    border-color: #D97706 !important;
-    background: #FFFDE6 !important;
-    color: #D97706 !important;
-  }
-
-  .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  .blue-dot { background: #0084FF; }
-  .pink-dot { background: #F01262; }
-  .yellow-dot { background: #FFB800; }
 }
 
 @media (max-width: 640px) {
