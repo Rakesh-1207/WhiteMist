@@ -201,7 +201,7 @@ export default function ProductDetailPage({ product, selectedFormat, onBack, onA
               <label style={{ fontSize: '0.825rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'block', marginBottom: '0.6rem' }}>
                 Select Format & Pack Size:
               </label>
-              <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }} className="format-btn-group">
                 {product.formats.map((fmt, idx) => (
                   <button
                     key={fmt.id}
@@ -225,7 +225,7 @@ export default function ProductDetailPage({ product, selectedFormat, onBack, onA
             </div>
 
             {/* Quantity Selector & CTAs */}
-            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.75rem', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.75rem', alignItems: 'center' }} className="pdp-action-row">
               {/* Counter */}
               <div style={{
                 display: 'flex',
