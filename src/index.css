@@ -304,6 +304,8 @@ button, input, select, textarea {
   transition: var(--transition);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .product-card:hover {
@@ -727,5 +729,5 @@ button, input, select, textarea {
 }
 
 .mobile-only-card {
-  display: none;
+  display: none !important;
 }

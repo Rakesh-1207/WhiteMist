@@ -95,7 +95,7 @@ export default function ProductsShowcase({ onAddToCart, onOpenModal, searchQuery
             const currentFormat = product.formats[formatIdx];
 
             return (
-              <div key={product.id} className={`product-card ${idx === 3 ? 'mobile-only-card' : ''}`} style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
+              <div key={product.id} className={`product-card ${idx === 3 ? 'mobile-only-card' : ''}`} style={{ padding: '1.5rem', flexDirection: 'column' }}>
                 
                 {/* Top Badges */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', gap: '0.5rem' }}>
