@@ -236,7 +236,7 @@ export default function ProductsPage({ onAddToCart, onOpenModal, wishlistItems, 
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
                 gap: '1.75rem'
-              }}>
+              }} className="catalog-products-grid">
                 {filteredProducts.map(product => {
                   const formatIdx = selectedFormatMap[product.id] || 0;
                   const currentFormat = product.formats[formatIdx];

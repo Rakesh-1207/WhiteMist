@@ -561,4 +561,96 @@ button, input, select, textarea {
     width: 100% !important;
     max-width: 100% !important;
   }
+
+  /* Single-Row 3 Variant Buttons Switcher on Mobile */
+  .hero-variant-switcher {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.35rem !important;
+    width: 100% !important;
+  }
+
+  .hero-variant-switcher .full-text {
+    display: none !important;
+  }
+
+  .hero-variant-switcher .short-text {
+    display: inline !important;
+    font-size: 0.72rem !important;
+    white-space: nowrap !important;
+  }
+
+  .hero-variant-switcher button {
+    padding: 0.45rem 0.2rem !important;
+    justify-content: center !important;
+    border-radius: var(--radius-full) !important;
+    width: 100% !important;
+  }
+
+  /* 2 Products Per Row Mobile Grid (For Featured, Catalogue, Wishlist) */
+  .catalog-products-grid,
+  .featured-three-grid,
+  .wishlist-products-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.6rem !important;
+  }
+
+  .product-card {
+    padding: 0.75rem 0.6rem !important;
+    border-radius: var(--radius-md) !important;
+  }
+
+  /* Product Card Image Container on Mobile */
+  .product-card div[style*="height: 260px"],
+  .product-card div[style*="height: 240px"],
+  .product-card div[style*="height: 250px"] {
+    height: 140px !important;
+    margin-bottom: 0.65rem !important;
+  }
+
+  .product-card .product-img {
+    max-height: 115px !important;
+  }
+
+  /* Badges on Mobile */
+  .product-card .badge-primary {
+    font-size: 0.65rem !important;
+    padding: 2px 6px !important;
+  }
+
+  /* Product Card Title on Mobile */
+  .product-card h3 {
+    font-size: 0.85rem !important;
+    line-height: 1.25 !important;
+    height: 2.3em !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    margin-bottom: 0.35rem !important;
+  }
+
+  /* Prices on Mobile */
+  .product-card span[style*="font-size: 1.5rem"],
+  .product-card span[style*="font-size: 1.4rem"],
+  .product-card span[style*="font-size: 1.6rem"] {
+    font-size: 1.15rem !important;
+  }
+
+  .product-card .btn-primary {
+    padding: 0.45rem 0.65rem !important;
+    font-size: 0.75rem !important;
+    border-radius: var(--radius-full) !important;
+  }
+
+  /* Compact Hero Paragraph on Mobile */
+  .hero-description-text {
+    font-size: 0.9rem !important;
+    line-height: 1.45 !important;
+    margin-bottom: 1.15rem !important;
+  }
+}
+
+.hero-variant-switcher .short-text {
+  display: none;
 }

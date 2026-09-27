@@ -86,7 +86,7 @@ export default function WishlistPage({ wishlistItems, onToggleWishlist, onAddToC
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
             gap: '2rem'
-          }}>
+          }} className="wishlist-products-grid">
             {wishlistItems.map((product) => {
               const defaultFormat = product.formats[0];
 
