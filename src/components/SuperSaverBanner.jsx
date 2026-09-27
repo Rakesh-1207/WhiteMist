@@ -18,15 +18,15 @@ export default function SuperSaverBanner({ onAddBundleToCart }) {
   }, []);
 
   return (
-    <section style={{ padding: '4rem 0', background: '#FAFCFF' }}>
-      <div className="container">
+    <section style={{ padding: '2.5rem 0', background: '#FAFCFF' }}>
+      <div className="container" style={{ maxWidth: '1060px' }}>
         
         <div style={{
           background: 'linear-gradient(135deg, #FFFDE6 0%, #FFF5F8 50%, #E6F3FF 100%)',
           borderRadius: 'var(--radius-lg)',
-          padding: '3rem 2.5rem',
-          border: '2px solid #FFB800',
-          boxShadow: 'var(--shadow-lg)',
+          padding: '1.75rem 2rem',
+          border: '1.5px solid #FFB800',
+          boxShadow: 'var(--shadow-md)',
           position: 'relative',
           overflow: 'hidden'
         }}>
@@ -34,15 +34,15 @@ export default function SuperSaverBanner({ onAddBundleToCart }) {
           {/* Top Ribbons */}
           <div style={{
             position: 'absolute',
-            top: '20px',
-            right: '-35px',
+            top: '16px',
+            right: '-38px',
             background: '#DC2626',
             color: 'white',
             fontWeight: '800',
-            fontSize: '0.8rem',
-            padding: '6px 40px',
+            fontSize: '0.75rem',
+            padding: '5px 38px',
             transform: 'rotate(45deg)',
-            boxShadow: '0 4px 10px rgba(0,0,0,0.15)',
+            boxShadow: '0 4px 10px rgba(0,0,0,0.12)',
             textTransform: 'uppercase',
             letterSpacing: '0.05em'
           }}>
@@ -51,58 +51,58 @@ export default function SuperSaverBanner({ onAddBundleToCart }) {
 
           <div style={{
             display: 'grid',
-            gridTemplateColumns: '1.2fr 0.8fr',
-            gap: '2.5rem',
+            gridTemplateColumns: '1.25fr 0.75fr',
+            gap: '1.75rem',
             alignItems: 'center'
           }} className="saver-grid">
 
             {/* Left Content */}
             <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-                <span className="badge-primary" style={{ background: '#DC2626' }}>LIMITED TIME DEAL</span>
-                <span style={{ fontSize: '0.875rem', fontWeight: '700', color: '#D97706', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                  <Tag size={16} /> Save ₹350 (39% OFF)
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                <span className="badge-primary" style={{ background: '#DC2626', fontSize: '0.7rem' }}>LIMITED TIME DEAL</span>
+                <span style={{ fontSize: '0.8rem', fontWeight: '700', color: '#D97706', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                  <Tag size={14} /> Save ₹350 (39% OFF)
                 </span>
               </div>
 
-              <h2 style={{ fontSize: '2.25rem', fontWeight: '800', color: 'var(--color-purple-dark)', marginBottom: '0.5rem' }}>
+              <h2 style={{ fontSize: '1.7rem', fontWeight: '800', color: 'var(--color-purple-dark)', marginBottom: '0.35rem', lineHeight: 1.2 }}>
                 {SUPER_SAVER_BUNDLE.title}
               </h2>
 
-              <p style={{ fontSize: '1.05rem', color: 'var(--text-muted)', marginBottom: '1.5rem', lineHeight: 1.5 }}>
+              <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', marginBottom: '1rem', lineHeight: 1.4 }}>
                 {SUPER_SAVER_BUNDLE.subtitle}
               </p>
 
               {/* Countdown Timer */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.75rem' }}>
-                <span style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <Clock size={18} style={{ color: '#DC2626' }} /> Offer Ends In:
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.25rem' }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+                  <Clock size={16} style={{ color: '#DC2626' }} /> Offer Ends In:
                 </span>
-                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                  <div style={{ background: '#1E1B4B', color: 'white', padding: '0.4rem 0.75rem', borderRadius: 'var(--radius-sm)', fontWeight: '800', fontSize: '1.1rem' }}>
+                <div style={{ display: 'flex', gap: '0.4rem' }}>
+                  <div style={{ background: '#1E1B4B', color: 'white', padding: '0.3rem 0.6rem', borderRadius: 'var(--radius-sm)', fontWeight: '800', fontSize: '0.95rem' }}>
                     {String(timeLeft.hours).padStart(2, '0')}h
                   </div>
-                  <div style={{ background: '#1E1B4B', color: 'white', padding: '0.4rem 0.75rem', borderRadius: 'var(--radius-sm)', fontWeight: '800', fontSize: '1.1rem' }}>
+                  <div style={{ background: '#1E1B4B', color: 'white', padding: '0.3rem 0.6rem', borderRadius: 'var(--radius-sm)', fontWeight: '800', fontSize: '0.95rem' }}>
                     {String(timeLeft.minutes).padStart(2, '0')}m
                   </div>
-                  <div style={{ background: '#1E1B4B', color: 'white', padding: '0.4rem 0.75rem', borderRadius: 'var(--radius-sm)', fontWeight: '800', fontSize: '1.1rem' }}>
+                  <div style={{ background: '#1E1B4B', color: 'white', padding: '0.3rem 0.6rem', borderRadius: 'var(--radius-sm)', fontWeight: '800', fontSize: '0.95rem' }}>
                     {String(timeLeft.seconds).padStart(2, '0')}s
                   </div>
                 </div>
               </div>
 
               {/* Pricing & CTA */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
-                    <span style={{ fontSize: '2.25rem', fontWeight: '800', color: 'var(--color-purple-dark)' }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.4rem' }}>
+                    <span style={{ fontSize: '1.85rem', fontWeight: '800', color: 'var(--color-purple-dark)' }}>
                       ₹{SUPER_SAVER_BUNDLE.price}
                     </span>
-                    <span style={{ fontSize: '1.1rem', color: 'var(--text-light)', textDecoration: 'line-through' }}>
+                    <span style={{ fontSize: '0.95rem', color: 'var(--text-light)', textDecoration: 'line-through' }}>
                       ₹{SUPER_SAVER_BUNDLE.mrp}
                     </span>
                   </div>
-                  <div style={{ fontSize: '0.8rem', color: '#166534', fontWeight: '700' }}>
+                  <div style={{ fontSize: '0.75rem', color: '#166534', fontWeight: '700' }}>
                     Includes FREE Measuring Cap + Delivery
                   </div>
                 </div>
@@ -111,13 +111,13 @@ export default function SuperSaverBanner({ onAddBundleToCart }) {
                   onClick={(e) => onAddBundleToCart(SUPER_SAVER_BUNDLE, e)}
                   className="btn-primary"
                   style={{
-                    padding: '0.85rem 2rem',
-                    fontSize: '1rem',
+                    padding: '0.65rem 1.4rem',
+                    fontSize: '0.9rem',
                     background: 'linear-gradient(135deg, #0084FF 0%, #00C6FF 100%)',
-                    boxShadow: '0 8px 20px rgba(0, 132, 255, 0.35)'
+                    boxShadow: '0 6px 16px rgba(0, 132, 255, 0.3)'
                   }}
                 >
-                  <ShoppingBag size={20} />
+                  <ShoppingBag size={18} />
                   <span>Grab Super Saver Bundle</span>
                 </button>
               </div>
@@ -130,9 +130,9 @@ export default function SuperSaverBanner({ onAddBundleToCart }) {
                 src={SUPER_SAVER_BUNDLE.image} 
                 alt="Super Saver Pack Pair"
                 style={{
-                  maxHeight: '280px',
+                  maxHeight: '210px',
                   width: 'auto',
-                  filter: 'drop-shadow(0 15px 25px rgba(39, 13, 91, 0.2))'
+                  filter: 'drop-shadow(0 12px 20px rgba(39, 13, 91, 0.18))'
                 }}
               />
             </div>
