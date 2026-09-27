@@ -112,28 +112,7 @@ export default function LoadingScreen({ onFinishLoading }) {
           Pure Cleanliness, Infinite Freshness
         </div>
 
-        {/* Blue Progress Fill Bar (As requested) */}
-        <div style={{
-          width: '240px',
-          height: '6px',
-          background: '#E2E8F0',
-          borderRadius: '999px',
-          overflow: 'hidden',
-          position: 'relative',
-          zIndex: 2,
-          boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.1)',
-          marginTop: '0.5rem'
-        }}>
-          <div style={{
-            width: '100%',
-            height: '100%',
-            background: 'linear-gradient(90deg, #1E1B4B 0%, #2563EB 50%, #0084FF 100%)',
-            borderRadius: '999px',
-            animation: 'loadingProgress 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards'
-          }} />
-        </div>
-
-        {/* Three Dots Loading Animation Below Bar */}
+        {/* Three Dots Loading Animation Below Tagline */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
