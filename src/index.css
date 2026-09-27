@@ -233,11 +233,11 @@ button, input, select, textarea {
 }
 
 .main-navbar.scrolled {
-  padding: 0.75rem 0 !important;
-  background: rgba(255, 255, 255, 0.78) !important;
-  backdrop-filter: blur(18px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.8) !important;
+  padding: 0.65rem 0 !important;
+  background: rgba(255, 255, 255, 0.45) !important;
+  -webkit-backdrop-filter: blur(30px) saturate(180%) !important;
+  backdrop-filter: blur(30px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6) !important;
   box-shadow: 0 10px 30px rgba(39, 13, 91, 0.08) !important;
 }
 
