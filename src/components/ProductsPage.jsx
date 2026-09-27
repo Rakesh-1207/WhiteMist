@@ -180,68 +180,52 @@ export default function ProductsPage({ onAddToCart, onOpenModal, wishlistItems, 
           {/* Right Column: Products Grid & Sort Header */}
           <div>
 
-            {/* Mobile Category & Fragrance Dropdown Bar (Clean Mobile Interface) */}
-            <div className="mobile-category-dropdown-bar" style={{
-              background: 'white',
-              borderRadius: 'var(--radius-md)',
-              padding: '0.75rem 0.85rem',
-              border: '1px solid #E2E8F0',
-              marginBottom: '1rem',
-              gap: '0.5rem',
-              flexDirection: 'column'
-            }}>
-              <div style={{ fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
-                Filter Catalogue:
+            {/* Futuristic Mobile Category & Fragrance Pill Selector Bar (No Popups!) */}
+            <div className="mobile-futuristic-filter-bar">
+              {/* Row 1: Horizontal Scrollable Category Chips */}
+              <div className="futuristic-chips-scroll">
+                {CATEGORIES.map(cat => {
+                  const isSelected = selectedCategory === cat.id;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => setSelectedCategory(cat.id)}
+                      className={`futuristic-chip ${isSelected ? 'active' : ''}`}
+                    >
+                      <span className="chip-icon">{getCategoryIcon(cat.icon)}</span>
+                      <span>{cat.name}</span>
+                    </button>
+                  );
+                })}
               </div>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                {/* Category Dropdown */}
-                <div style={{ flex: 1 }}>
-                  <select
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '0.5rem 0.6rem',
-                      borderRadius: 'var(--radius-sm)',
-                      border: '1.5px solid var(--color-purple-primary)',
-                      background: '#F3EBFD',
-                      fontWeight: '700',
-                      fontSize: '0.8rem',
-                      color: 'var(--color-purple-dark)',
-                      outline: 'none',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    {CATEGORIES.map(cat => (
-                      <option key={cat.id} value={cat.id}>Category: {cat.name}</option>
-                    ))}
-                  </select>
-                </div>
 
-                {/* Fragrance Dropdown */}
-                <div style={{ flex: 1 }}>
-                  <select
-                    value={selectedColor}
-                    onChange={(e) => setSelectedColor(e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '0.5rem 0.6rem',
-                      borderRadius: 'var(--radius-sm)',
-                      border: '1px solid #CBD5E1',
-                      background: 'white',
-                      fontWeight: '700',
-                      fontSize: '0.8rem',
-                      color: 'var(--text-main)',
-                      outline: 'none',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <option value="all">Fragrance: All</option>
-                    <option value="blue">Ocean Fresh (Blue)</option>
-                    <option value="pink">Floral Bloom (Pink)</option>
-                    <option value="yellow">Citrus Sunshine (Yellow)</option>
-                  </select>
-                </div>
+              {/* Row 2: Fragrance Family Quick Selector Pills */}
+              <div className="fragrance-pills-row">
+                <span className="fragrance-label">FRAGRANCE:</span>
+                <button
+                  onClick={() => setSelectedColor('all')}
+                  className={`fragrance-pill ${selectedColor === 'all' ? 'active' : ''}`}
+                >
+                  All
+                </button>
+                <button
+                  onClick={() => setSelectedColor('blue')}
+                  className={`fragrance-pill blue ${selectedColor === 'blue' ? 'active' : ''}`}
+                >
+                  <span className="dot blue-dot"></span> Ocean
+                </button>
+                <button
+                  onClick={() => setSelectedColor('pink')}
+                  className={`fragrance-pill pink ${selectedColor === 'pink' ? 'active' : ''}`}
+                >
+                  <span className="dot pink-dot"></span> Floral
+                </button>
+                <button
+                  onClick={() => setSelectedColor('yellow')}
+                  className={`fragrance-pill yellow ${selectedColor === 'yellow' ? 'active' : ''}`}
+                >
+                  <span className="dot yellow-dot"></span> Citrus
+                </button>
               </div>
             </div>
             
