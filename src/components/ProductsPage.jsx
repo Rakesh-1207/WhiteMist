@@ -92,7 +92,7 @@ export default function ProductsPage({ onAddToCart, onOpenModal, wishlistItems, 
           alignItems: 'start'
         }} className="catalog-sidebar-grid">
 
-          {/* Left Column: STICKY Category Buttons Sidebar */}
+          {/* Left Column: STICKY Category Buttons Sidebar (Desktop Only) */}
           <div style={{
             position: 'sticky',
             top: '100px',
@@ -101,7 +101,7 @@ export default function ProductsPage({ onAddToCart, onOpenModal, wishlistItems, 
             padding: '1.5rem',
             border: '1px solid #E2E8F0',
             boxShadow: 'var(--shadow-sm)'
-          }}>
+          }} className="desktop-catalog-sidebar">
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-purple-dark)', fontWeight: '800', fontSize: '1.1rem', marginBottom: '1.25rem', paddingBottom: '0.75rem', borderBottom: '1px solid #E2E8F0' }}>
               <Layers size={20} />
               <span>Product Categories</span>
@@ -179,6 +179,71 @@ export default function ProductsPage({ onAddToCart, onOpenModal, wishlistItems, 
 
           {/* Right Column: Products Grid & Sort Header */}
           <div>
+
+            {/* Mobile Category & Fragrance Dropdown Bar (Clean Mobile Interface) */}
+            <div className="mobile-category-dropdown-bar" style={{
+              background: 'white',
+              borderRadius: 'var(--radius-md)',
+              padding: '0.75rem 0.85rem',
+              border: '1px solid #E2E8F0',
+              marginBottom: '1rem',
+              gap: '0.5rem',
+              flexDirection: 'column'
+            }}>
+              <div style={{ fontSize: '0.75rem', fontWeight: '800', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+                Filter Catalogue:
+              </div>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                {/* Category Dropdown */}
+                <div style={{ flex: 1 }}>
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '0.5rem 0.6rem',
+                      borderRadius: 'var(--radius-sm)',
+                      border: '1.5px solid var(--color-purple-primary)',
+                      background: '#F3EBFD',
+                      fontWeight: '700',
+                      fontSize: '0.8rem',
+                      color: 'var(--color-purple-dark)',
+                      outline: 'none',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {CATEGORIES.map(cat => (
+                      <option key={cat.id} value={cat.id}>Category: {cat.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Fragrance Dropdown */}
+                <div style={{ flex: 1 }}>
+                  <select
+                    value={selectedColor}
+                    onChange={(e) => setSelectedColor(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '0.5rem 0.6rem',
+                      borderRadius: 'var(--radius-sm)',
+                      border: '1px solid #CBD5E1',
+                      background: 'white',
+                      fontWeight: '700',
+                      fontSize: '0.8rem',
+                      color: 'var(--text-main)',
+                      outline: 'none',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <option value="all">Fragrance: All</option>
+                    <option value="blue">Ocean Fresh (Blue)</option>
+                    <option value="pink">Floral Bloom (Pink)</option>
+                    <option value="yellow">Citrus Sunshine (Yellow)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
             
             {/* Top Sort Header Bar */}
             <div style={{
