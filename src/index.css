@@ -689,8 +689,43 @@ button, input, select, textarea {
     line-height: 1.45 !important;
     margin-bottom: 1.15rem !important;
   }
+
+  /* Single-Row 4 Filter Tabs in Featured Showcase on Mobile */
+  .showcase-filter-tabs {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 0.3rem !important;
+    width: 100% !important;
+  }
+
+  .showcase-filter-tabs .full-tab-label {
+    display: none !important;
+  }
+
+  .showcase-filter-tabs .short-tab-label {
+    display: inline !important;
+    font-size: 0.75rem !important;
+    white-space: nowrap !important;
+  }
+
+  .showcase-filter-tabs button {
+    padding: 0.45rem 0.15rem !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
+    border-radius: var(--radius-full) !important;
+  }
+
+  .mobile-only-card {
+    display: flex !important;
+  }
 }
 
-.hero-variant-switcher .short-text {
+.hero-variant-switcher .short-text,
+.showcase-filter-tabs .short-tab-label {
+  display: none;
+}
+
+.mobile-only-card {
   display: none;
 }

@@ -14,10 +14,10 @@ export default function ProductsShowcase({ onAddToCart, onOpenModal, searchQuery
     setSelectedFormatMap(prev => ({ ...prev, [productId]: formatIdx }));
   };
 
-  // Get ONLY the 3 flagship featured liquid detergent products for Home Showcase
-  const featuredThree = PRODUCTS.filter(p => ['wm-blue-ocean', 'wm-pink-floral', 'wm-yellow-citrus'].includes(p.id));
+  // Get flagship featured products for Home Showcase (3 on desktop, 4 on mobile)
+  const featuredFour = PRODUCTS.filter(p => ['wm-blue-ocean', 'wm-pink-floral', 'wm-yellow-citrus', 'wm-pouch-yellow-eco'].includes(p.id));
 
-  const filteredProducts = featuredThree.filter(prod => {
+  const filteredProducts = featuredFour.filter(prod => {
     if (activeFilter === 'blue' && prod.color !== 'blue') return false;
     if (activeFilter === 'pink' && prod.color !== 'pink') return false;
     if (activeFilter === 'yellow' && prod.color !== 'yellow') return false;
@@ -29,7 +29,7 @@ export default function ProductsShowcase({ onAddToCart, onOpenModal, searchQuery
              prod.tagline.toLowerCase().includes(q);
     }
     return true;
-  }).slice(0, 3); // STRICT CAP AT EXACTLY 3 PRODUCTS
+  }).slice(0, 4);
 
   return (
     <section id="products" style={{ padding: '5rem 0', background: '#FAFCFF' }}>
@@ -53,13 +53,13 @@ export default function ProductsShowcase({ onAddToCart, onOpenModal, searchQuery
             </h2>
           </div>
 
-          {/* Filter Tabs */}
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          {/* Filter Tabs (Single Row on Mobile) */}
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }} className="showcase-filter-tabs">
             {[
-              { id: 'all', label: 'All 3 Variants' },
-              { id: 'blue', label: 'Ocean Fresh (Blue)' },
-              { id: 'pink', label: 'Floral Bloom (Pink)' },
-              { id: 'yellow', label: 'Citrus Sunshine (Yellow)' }
+              { id: 'all', full: 'All 4 Variants', short: 'All' },
+              { id: 'blue', full: 'Ocean Fresh (Blue)', short: 'Blue' },
+              { id: 'pink', full: 'Floral Bloom (Pink)', short: 'Pink' },
+              { id: 'yellow', full: 'Citrus Sunshine (Yellow)', short: 'Yellow' }
             ].map(tab => (
               <button
                 key={tab.id}
@@ -77,24 +77,25 @@ export default function ProductsShowcase({ onAddToCart, onOpenModal, searchQuery
                   boxShadow: activeFilter === tab.id ? '0 4px 14px rgba(63, 27, 133, 0.25)' : 'none'
                 }}
               >
-                {tab.label}
+                <span className="full-tab-label">{tab.full}</span>
+                <span className="short-tab-label">{tab.short}</span>
               </button>
             ))}
           </div>
         </div>
 
-        {/* EXACT 3 Product Cards Grid */}
+        {/* Product Cards Grid (3 on Desktop, 4 on Mobile) */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
           gap: '2rem'
         }} className="featured-three-grid">
-          {filteredProducts.map(product => {
+          {filteredProducts.map((product, idx) => {
             const formatIdx = selectedFormatMap[product.id] || 0;
             const currentFormat = product.formats[formatIdx];
 
             return (
-              <div key={product.id} className="product-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
+              <div key={product.id} className={`product-card ${idx === 3 ? 'mobile-only-card' : ''}`} style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column' }}>
                 
                 {/* Top Badges */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', gap: '0.5rem' }}>
