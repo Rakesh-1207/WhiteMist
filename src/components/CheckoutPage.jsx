@@ -61,7 +61,7 @@ export default function CheckoutPage({ cartSummary, onBackToCart, onOrderSuccess
   };
 
   return (
-    <div style={{ padding: '3rem 0 5rem 0', background: '#FAFCFF', minHeight: '80vh' }}>
+    <div style={{ padding: '7.5rem 0 5rem 0', background: '#FAFCFF', minHeight: '80vh' }}>
       <div className="container">
         
         {/* Back Button & Header */}

@@ -49,7 +49,7 @@ export default function ProductsPage({ onAddToCart, onOpenModal, wishlistItems, 
   });
 
   return (
-    <div style={{ padding: '3rem 0 5rem 0', background: '#FAFCFF', minHeight: '85vh' }}>
+    <div style={{ padding: '7.5rem 0 5rem 0', background: '#FAFCFF', minHeight: '85vh' }}>
       <div className="container">
         
         {/* Page Banner & Header */}

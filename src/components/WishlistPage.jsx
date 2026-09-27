@@ -3,7 +3,7 @@ import { Heart, ShoppingBag, Trash2, ArrowRight, Star, Sparkles } from 'lucide-r
 
 export default function WishlistPage({ wishlistItems, onToggleWishlist, onAddToCart, onNavigateToProducts }) {
   return (
-    <div style={{ padding: '3rem 0 5rem 0', background: '#FAFCFF', minHeight: '80vh' }}>
+    <div style={{ padding: '7.5rem 0 5rem 0', background: '#FAFCFF', minHeight: '80vh' }}>
       <div className="container">
         
         {/* Header Banner */}

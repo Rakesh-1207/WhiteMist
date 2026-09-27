@@ -35,7 +35,7 @@ export default function ProductDetailPage({ product, selectedFormat, onBack, onA
   };
 
   return (
-    <div style={{ padding: '2.5rem 0 5rem 0', background: '#FAFCFF', minHeight: '90vh' }}>
+    <div style={{ padding: '7.5rem 0 5rem 0', background: '#FAFCFF', minHeight: '90vh' }}>
       <div className="container">
         
         {/* Navigation Breadcrumb & Back */}
