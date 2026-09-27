@@ -655,10 +655,26 @@ button, input, select, textarea {
     font-size: 1.15rem !important;
   }
 
-  .product-card .btn-primary {
-    padding: 0.45rem 0.65rem !important;
-    font-size: 0.75rem !important;
-    border-radius: var(--radius-full) !important;
+  /* HIDE format selector pills inside product cards ONLY in mobile view */
+  .product-card .card-format-selector {
+    display: none !important;
+  }
+
+  /* Display ONLY the icon for Add to Cart button inside product cards in mobile view */
+  .product-card .card-add-btn .btn-text {
+    display: none !important;
+  }
+
+  .product-card .card-add-btn {
+    padding: 0.5rem !important;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    min-width: 36px !important;
   }
 
   /* Compact Hero Paragraph on Mobile */

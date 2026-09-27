@@ -172,11 +172,11 @@ export default function WishlistPage({ wishlistItems, onToggleWishlist, onAddToC
 
                     <button
                       onClick={(e) => onAddToCart(product, defaultFormat, e)}
-                      className="btn-primary"
+                      className="btn-primary card-add-btn"
                       style={{ padding: '0.6rem 1.1rem', fontSize: '0.85rem' }}
                     >
                       <ShoppingBag size={15} />
-                      <span>Move to Cart</span>
+                      <span className="btn-text">Move to Cart</span>
                     </button>
                   </div>
 

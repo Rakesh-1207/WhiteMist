@@ -176,7 +176,7 @@ export default function ProductsShowcase({ onAddToCart, onOpenModal, searchQuery
                 </p>
 
                 {/* Format Selector Pills */}
-                <div style={{ marginBottom: '1.25rem' }}>
+                <div style={{ marginBottom: '1.25rem' }} className="card-format-selector">
                   <span style={{ fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'block', marginBottom: '0.4rem' }}>
                     Select Pack / Size:
                   </span>
@@ -226,14 +226,14 @@ export default function ProductsShowcase({ onAddToCart, onOpenModal, searchQuery
                   {/* Add to Cart Button */}
                   <button
                     onClick={(e) => onAddToCart(product, currentFormat, e)}
-                    className="btn-primary"
+                    className="btn-primary card-add-btn"
                     style={{
                       padding: '0.65rem 1.25rem',
                       fontSize: '0.875rem'
                     }}
                   >
                     <ShoppingBag size={16} />
-                    <span>Add to Cart</span>
+                    <span className="btn-text">Add to Cart</span>
                   </button>
                 </div>
 

@@ -411,7 +411,7 @@ export default function ProductsPage({ onAddToCart, onOpenModal, wishlistItems, 
                       </p>
 
                       {/* Format Selector Pills */}
-                      <div style={{ marginBottom: '1rem' }}>
+                      <div style={{ marginBottom: '1rem' }} className="card-format-selector">
                         <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
                           {product.formats.map((fmt, idx) => (
                             <button
@@ -456,14 +456,14 @@ export default function ProductsPage({ onAddToCart, onOpenModal, wishlistItems, 
 
                         <button
                           onClick={(e) => onAddToCart(product, currentFormat, e)}
-                          className="btn-primary"
+                          className="btn-primary card-add-btn"
                           style={{
                             padding: '0.55rem 1rem',
                             fontSize: '0.825rem'
                           }}
                         >
                           <ShoppingBag size={14} />
-                          <span>Add to Cart</span>
+                          <span className="btn-text">Add to Cart</span>
                         </button>
                       </div>
 
