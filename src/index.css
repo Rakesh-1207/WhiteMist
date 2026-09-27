@@ -530,7 +530,8 @@ button, input, select, textarea {
 }
 
 @media (max-width: 1024px) {
-  .desktop-catalog-sidebar {
+  .desktop-catalog-sidebar,
+  .catalog-top-banner {
     display: none !important;
   }
 

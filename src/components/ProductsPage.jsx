@@ -53,7 +53,7 @@ export default function ProductsPage({ onAddToCart, onOpenModal, wishlistItems, 
       <div className="container">
         
         {/* Page Banner & Header */}
-        <div style={{
+        <div className="catalog-top-banner" style={{
           background: 'linear-gradient(135deg, #3F1B85 0%, #270D5B 50%, #0084FF 100%)',
           borderRadius: 'var(--radius-lg)',
           padding: '2.5rem',
