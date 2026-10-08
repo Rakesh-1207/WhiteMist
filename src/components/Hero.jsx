@@ -67,12 +67,12 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
   return (
     <section className="full-screen-hero" style={{
       position: 'relative',
-      overflow: 'hidden',
+      backgroundImage: `url('/assets/images/fabric_bg.jpg')`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
       transition: 'all 0.6s ease'
     }}>
-
-      {/* Smooth Animated Fabric Weave Layer */}
-      <div className="animated-fabric-layer" />
 
       {/* Pure CSS 3D Glossy Soap Bubbles Stream */}
       {bubbleList.map(b => (
