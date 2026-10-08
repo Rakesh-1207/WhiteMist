@@ -68,7 +68,7 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
     <section className="full-screen-hero" style={{
       position: 'relative',
       backgroundImage: `linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(240, 248, 255, 0.82) 50%, rgba(255, 255, 255, 0.92) 100%), url('/assets/images/fabric_bg.jpg')`,
-      backgroundSize: 'cover',
+      backgroundSize: '100% 100%',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       transition: 'all 0.6s ease'
