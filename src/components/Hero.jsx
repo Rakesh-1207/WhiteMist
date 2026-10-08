@@ -104,16 +104,8 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
           alignItems: 'center'
         }} className="hero-grid">
 
-          {/* Left Text & CTA Content in Glass Panel */}
-          <div style={{
-            background: 'rgba(255, 255, 255, 0.88)',
-            backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)',
-            padding: '2.25rem',
-            borderRadius: '24px',
-            border: '1px solid rgba(255, 255, 255, 0.7)',
-            boxShadow: '0 20px 50px rgba(15, 23, 42, 0.1)'
-          }}>
+          {/* Left Text & CTA Content */}
+          <div>
             
             <h1 style={{
               fontSize: '3.75rem',
