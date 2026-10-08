@@ -67,8 +67,8 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
   return (
     <section className="full-screen-hero" style={{
       position: 'relative',
-      backgroundImage: `linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(240, 248, 255, 0.82) 50%, rgba(255, 255, 255, 0.92) 100%), url('/assets/images/fabric_bg.jpg')`,
-      backgroundSize: '100% 100%',
+      backgroundImage: `url('/assets/images/fabric_bg.jpg')`,
+      backgroundSize: 'cover',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       transition: 'all 0.6s ease'
@@ -104,8 +104,16 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
           alignItems: 'center'
         }} className="hero-grid">
 
-          {/* Left Text & CTA Content */}
-          <div>
+          {/* Left Text & CTA Content in Glass Panel */}
+          <div style={{
+            background: 'rgba(255, 255, 255, 0.88)',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            padding: '2.25rem',
+            borderRadius: '24px',
+            border: '1px solid rgba(255, 255, 255, 0.7)',
+            boxShadow: '0 20px 50px rgba(15, 23, 42, 0.1)'
+          }}>
             
             <h1 style={{
               fontSize: '3.75rem',
