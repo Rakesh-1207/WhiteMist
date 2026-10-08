@@ -731,3 +731,31 @@ button, input, select, textarea {
 .mobile-only-card {
   display: none !important;
 }
+
+/* Animated Fabric Weave Background Animation */
+@keyframes animatedFabricBg {
+  0% {
+    transform: scale(1.02) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.08) translate(-12px, -8px);
+  }
+  100% {
+    transform: scale(1.02) translate(0, 0);
+  }
+}
+
+.animated-fabric-layer {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  bottom: -20px;
+  background-image: url('/assets/images/fabric_bg_anim.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: animatedFabricBg 20s ease-in-out infinite;
+  z-index: 1;
+  pointer-events: none;
+}
