@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { X, Trash2, ShoppingBag, ArrowRight, Tag, CheckCircle2, ShieldCheck, Truck } from 'lucide-react';
 import { PROMO_CODES } from '../data/products';
 
-export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem, onProceedToCheckout }) {
+export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem, onProceedToCheckout, onViewFullCart }) {
   if (!isOpen) return null;
 
   const [promoInput, setPromoInput] = useState('');
@@ -315,19 +315,44 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
               </div>
             </div>
 
-            <button
-              onClick={() => onProceedToCheckout({ cartItems, subtotal, promoDiscount, shippingCost, finalTotal, appliedPromo })}
-              className="btn-primary"
-              style={{
-                width: '100%',
-                padding: '0.9rem',
-                fontSize: '1rem',
-                borderRadius: 'var(--radius-full)'
-              }}
-            >
-              <span>Proceed to Checkout</span>
-              <ArrowRight size={18} />
-            </button>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+              <button
+                onClick={() => onProceedToCheckout({ cartItems, subtotal, promoDiscount, shippingCost, finalTotal, appliedPromo })}
+                className="btn-primary"
+                style={{
+                  width: '100%',
+                  padding: '0.9rem',
+                  fontSize: '1rem',
+                  borderRadius: 'var(--radius-full)'
+                }}
+              >
+                <span>Proceed to Checkout</span>
+                <ArrowRight size={18} />
+              </button>
+
+              {onViewFullCart && (
+                <button
+                  onClick={() => {
+                    onClose();
+                    onViewFullCart();
+                  }}
+                  style={{
+                    width: '100%',
+                    padding: '0.7rem',
+                    fontSize: '0.9rem',
+                    fontWeight: '700',
+                    color: 'var(--color-purple-dark)',
+                    background: '#F3EBFD',
+                    border: '1px solid #E9D8FD',
+                    borderRadius: 'var(--radius-full)',
+                    cursor: 'pointer',
+                    transition: 'var(--transition)'
+                  }}
+                >
+                  🛒 View Detailed Cart Page
+                </button>
+              )}
+            </div>
           </div>
         )}
 

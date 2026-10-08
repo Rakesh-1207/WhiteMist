@@ -14,6 +14,8 @@ import ProductsPage from './components/ProductsPage';
 import WishlistPage from './components/WishlistPage';
 import ProductDetailPage from './components/ProductDetailPage';
 import LoadingScreen from './components/LoadingScreen';
+import ServiceQuoteModal from './components/ServiceQuoteModal';
+import CartPage from './components/CartPage';
 import { PRODUCTS } from './data/products';
 
 export default function App() {
@@ -42,6 +44,8 @@ export default function App() {
   ]);
 
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isServiceModalOpen, setIsServiceModalOpen] = useState(false);
+  const [serviceModalTab, setServiceModalTab] = useState('quote');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedFormat, setSelectedFormat] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -51,6 +55,11 @@ export default function App() {
   const [flyingItem, setFlyingItem] = useState(null);
 
   const cartBadgeRef = useRef(null);
+
+  const handleOpenServiceModal = (tab = 'quote') => {
+    setServiceModalTab(tab);
+    setIsServiceModalOpen(true);
+  };
 
   // Total counts
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
@@ -206,7 +215,11 @@ export default function App() {
       <Navbar 
         cartCount={cartCount}
         wishlistCount={wishlistCount}
-        onOpenCart={() => setIsCartOpen(true)}
+        onOpenCart={() => {
+          setActiveView('cart');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        onOpenServiceModal={handleOpenServiceModal}
         activeView={activeView}
         setActiveView={(view) => {
           setActiveView(view);
@@ -276,12 +289,25 @@ export default function App() {
           />
         )}
 
+        {activeView === 'cart' && (
+          <CartPage 
+            cartItems={cartItems}
+            onUpdateQuantity={handleUpdateQuantity}
+            onRemoveItem={handleRemoveItem}
+            onProceedToCheckout={handleProceedToCheckout}
+            onNavigateToProducts={() => {
+              setActiveView('products');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          />
+        )}
+
         {activeView === 'checkout' && (
           <CheckoutPage 
             cartSummary={cartSummary}
             onBackToCart={() => {
-              setActiveView('home');
-              setIsCartOpen(true);
+              setActiveView('cart');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             onOrderSuccess={handleOrderSuccess}
           />
@@ -299,6 +325,17 @@ export default function App() {
         onUpdateQuantity={handleUpdateQuantity}
         onRemoveItem={handleRemoveItem}
         onProceedToCheckout={handleProceedToCheckout}
+        onViewFullCart={() => {
+          setActiveView('cart');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+      />
+
+      {/* Service, Quote & Warranty Modal */}
+      <ServiceQuoteModal 
+        isOpen={isServiceModalOpen}
+        onClose={() => setIsServiceModalOpen(false)}
+        activeTab={serviceModalTab}
       />
 
       {/* Order Success Celebration Modal */}

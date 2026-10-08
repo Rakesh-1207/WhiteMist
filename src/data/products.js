@@ -1,264 +1,288 @@
 export const CATEGORIES = [
-  { id: 'all', name: 'All Products', icon: 'Sparkles' },
-  { id: 'detergents', name: 'Liquid Detergents', icon: 'Droplets' },
-  { id: 'pouches', name: 'Eco Refill Pouches', icon: 'Leaf' },
-  { id: 'softeners', name: 'Fabric Conditioners', icon: 'HeartHandshake' },
-  { id: 'boosters', name: 'Stain Boosters', icon: 'Zap' },
-  { id: 'combos', name: 'Value Saver Combos', icon: 'Package' }
+  { id: 'all', name: 'All Products & Refills', icon: 'Sparkles' },
+  { id: 'bottles', name: 'Ergonomic Bottles (2L)', icon: 'Droplets' },
+  { id: 'pouches', name: 'Eco Spout Refill Pouches', icon: 'Package' },
+  { id: 'funwash', name: 'Fun Wash™ Value Packs', icon: 'Zap' },
+  { id: 'combos', name: 'Super Saver Combos', icon: 'Layers' }
 ];
 
 export const PRODUCTS = [
   {
     id: "wm-blue-ocean",
+    sku: "WM-LD-2L-BLU",
+    modelNumber: "WM-OF2000",
     name: "White Mist Ocean Fresh Liquid Detergent",
-    category: "detergents",
-    categoryName: "Liquid Detergent",
-    tagline: "Deep Clean & Crisp Ocean Breeze",
+    category: "bottles",
+    categoryName: "Ergonomic Bottles (2L)",
+    tagline: "Deep Bio-Clean & 48-Hour Sea Breeze Scent Lock",
     color: "blue",
     accentColor: "#0084FF",
     bgGradient: "linear-gradient(135deg, #E6F3FF 0%, #FFFFFF 100%)",
     badge: "Bestseller",
     rating: 4.9,
     reviewsCount: 1420,
-    description: "Formulated with advanced bio-enzymes that penetrate deep into fabric fibers to remove 10x tough stains. Leaves clothes with a refreshing 48-hour ocean breeze fragrance.",
+    price: 349,
+    mrp: 499,
+    capacity: "2L / 2kg",
+    energyRating: "Front & Top Load",
+    waterConsumption: "Low Foam Tech",
+    noiseLevel: "Color Safe",
+    washPrograms: 40,
+    warrantyYears: 2,
+    description: "Premium bio-enzyme liquid laundry detergent engineered for both Front Load and Top Load washing machines. Removes 10x tough mud, oil, and sweat stains while locking in a fresh sea-breeze fragrance for 48 hours.",
     formats: [
-      { id: "bot-2l", name: "2L Ergonomic Bottle", price: 349, mrp: 499, discount: "30% OFF", image: "/assets/images/bottle_blue.png", doses: 50 },
-      { id: "pouch-2kg", name: "2kg Eco Refill Pouch", price: 289, mrp: 420, discount: "31% OFF", image: "/assets/images/pouch_blue.png", doses: 50 },
-      { id: "bot-1l", name: "1L Starter Pack", price: 189, mrp: 260, discount: "27% OFF", image: "/assets/images/bottle_blue.png", doses: 25 }
+      { id: "bot-2l", name: "2L Ergonomic Handle Bottle", price: 349, mrp: 499, discount: "30% OFF", image: "/assets/images/bottle_blue.png", doses: 40 },
+      { id: "pouch-2l", name: "2kg Eco Spout Refill Pouch", price: 289, mrp: 399, discount: "27% OFF", image: "/assets/images/pouch_blue.png", doses: 40 }
     ],
     features: [
-      "10x Bio-Enzyme Deep Clean Action",
-      "Front & Top Load Washing Machine Approved",
-      "Micro-Capsule 48-Hour Ocean Freshness",
-      "Fabric Softening & Fiber Protection"
+      "10x Bio-Enzyme Stain Dissolving Action",
+      "Front Load & Top Load Washing Machine Safe",
+      "48-Hour Micro-Capsule Fragrance Lock",
+      "Color Guard Technology Prevents Fading"
     ],
-    fragranceNotes: ["Top: Fresh Citrus & Sea Spray", "Heart: White Jasmine & Water Lily", "Base: Clean Musk & Cedarwood"],
-    ingredients: "Aqua, Non-ionic Surfactants (15-30%), Anionic Surfactants (5-15%), Bio-Enzyme Complex (Protease, Amylase, Lipase), Optical Brighteners, Fragrance Micro-capsules.",
-    howToUse: {
-      regular: "1 Cap (40ml) for standard load (5-6 kg)",
-      heavy: "1.5 Caps (60ml) for heavily soiled / large load (8 kg+)",
-      handwash: "0.5 Cap (20ml) dissolved in 10L bucket water"
-    }
+    specs: [
+      { name: "Net Quantity", value: "2 Litres / 2 Kg" },
+      { name: "Machine Compatibility", value: "Front & Top Loading Machines" },
+      { name: "Fragrance Profile", value: "Ocean Breeze Freshness" },
+      { name: "Doses Per Pack", value: "40 Full Load Washes" }
+    ]
   },
   {
     id: "wm-pink-floral",
+    sku: "WM-LD-2L-PNK",
+    modelNumber: "WM-FB2000",
     name: "White Mist Floral Bloom Liquid Detergent",
-    category: "detergents",
-    categoryName: "Liquid Detergent",
-    tagline: "Rose Elegance & Delicate Fabric Care",
+    category: "bottles",
+    categoryName: "Ergonomic Bottles (2L)",
+    tagline: "Rose Elegance Scent & Luxurious Fabric Touch",
     color: "pink",
     accentColor: "#F01262",
     bgGradient: "linear-gradient(135deg, #FFEBF2 0%, #FFFFFF 100%)",
-    badge: "Most Fragrant",
-    rating: 4.85,
+    badge: "Top Rated",
+    rating: 4.95,
     reviewsCount: 980,
-    description: "Infused with french rose and lavender essential oil micro-beads. Specially crafted for delicates, silks, cottons, and baby clothes, delivering silkiness with every wash.",
+    price: 349,
+    mrp: 499,
+    capacity: "2L / 2kg",
+    energyRating: "Front & Top Load",
+    waterConsumption: "Fabric Softener",
+    noiseLevel: "Gentle Care",
+    washPrograms: 40,
+    warrantyYears: 2,
+    description: "Enriched with natural floral essential oils and fabric conditioners. Keeps whites glowing white and colors vivid while leaving your clothes velvet-soft with a captivating rose bouquet fragrance.",
     formats: [
-      { id: "bot-2l", name: "2L Ergonomic Bottle", price: 359, mrp: 510, discount: "30% OFF", image: "/assets/images/bottle_pink.png", doses: 50 },
-      { id: "pouch-2kg", name: "2kg Eco Refill Pouch", price: 299, mrp: 430, discount: "30% OFF", image: "/assets/images/pouch_pink.png", doses: 50 },
-      { id: "bot-1l", name: "1L Starter Pack", price: 195, mrp: 270, discount: "28% OFF", image: "/assets/images/bottle_pink.png", doses: 25 }
+      { id: "bot-2l", name: "2L Ergonomic Handle Bottle", price: 349, mrp: 499, discount: "30% OFF", image: "/assets/images/bottle_pink.png", doses: 40 },
+      { id: "pouch-2l", name: "2kg Eco Spout Refill Pouch", price: 289, mrp: 399, discount: "27% OFF", image: "/assets/images/pouch_pink.png", doses: 40 }
     ],
     features: [
-      "Dermatologically Safe & Paraben-Free",
-      "Ultra Fabric Conditioner Blend Included",
-      "Zero Fabric Color Fading Guarantee",
-      "Low-Foam Formula for Front Loading Savings"
+      "Infused with Rose & Floral Botanical Extracts",
+      "Built-in Fabric Softening & Fabric Guard",
+      "Phosphate-Free Gentle on Sensitive Skin",
+      "Dissolves 100% in Cold & Hot Water"
     ],
-    fragranceNotes: ["Top: Rose Petals & Pink Apple", "Heart: Lavender & Peony", "Base: Soft Vanilla & Creamy Sandalwood"],
-    ingredients: "Purified Water, Plant-Derived Bio-Surfactants, French Essential Oils, Silk Amino Acid Extract, Anti-Color Transfer Agents.",
-    howToUse: {
-      regular: "1 Cap (40ml) for normal laundry",
-      heavy: "1.5 Caps (60ml) for fluffy towels & bedsheets",
-      handwash: "0.5 Cap (20ml) for delicate hand wash"
-    }
+    specs: [
+      { name: "Net Quantity", value: "2 Litres / 2 Kg" },
+      { name: "Machine Compatibility", value: "Front & Top Loading Machines" },
+      { name: "Fragrance Profile", value: "Pink Floral Bouquet" },
+      { name: "Doses Per Pack", value: "40 Full Load Washes" }
+    ]
   },
   {
     id: "wm-yellow-citrus",
+    sku: "WM-LD-2L-YLW",
+    modelNumber: "WM-CS2000",
     name: "White Mist Citrus Sunshine Liquid Detergent",
-    category: "detergents",
-    categoryName: "Liquid Detergent",
-    tagline: "Tough Stain Destroyer & Sunshine Zing",
+    category: "bottles",
+    categoryName: "Ergonomic Bottles (2L)",
+    tagline: "10x Tough Oil & Grease Destroyer with Lemon Zest",
     color: "yellow",
     accentColor: "#D97706",
     bgGradient: "linear-gradient(135deg, #FFFDE6 0%, #FFFFFF 100%)",
-    badge: "Super Value 2kg",
-    rating: 4.92,
-    reviewsCount: 1850,
-    description: "High-power lemon and zesty citrus formula engineered to eliminate grease, oil, food stains, curry, and sweat odor. Ideal for activewear, school uniforms, and heavy-duty laundry.",
+    badge: "Tough Stain Pick",
+    rating: 4.88,
+    reviewsCount: 1250,
+    price: 349,
+    mrp: 499,
+    capacity: "2L / 2kg",
+    energyRating: "Front & Top Load",
+    waterConsumption: "Degreasing Formula",
+    noiseLevel: "Antibacterial",
+    washPrograms: 40,
+    warrantyYears: 2,
+    description: "Formulated with active citrus degreasers to eliminate oily collar grease, food splatters, and stubborn odor-causing bacteria instantly without pre-soaking.",
     formats: [
-      { id: "bot-2l", name: "2kg Heavy Duty Bottle", price: 349, mrp: 499, discount: "30% OFF", image: "/assets/images/bottle_yellow.png", doses: 50 },
-      { id: "pouch-2kg", name: "2kg Super Value Pouch", price: 279, mrp: 399, discount: "30% OFF", image: "/assets/images/pouch_yellow.png", doses: 50 },
-      { id: "pouch-prem", name: "2kg Lifestyle Pack", price: 319, mrp: 450, discount: "29% OFF", image: "/assets/images/pouch_yellow_lifestyle.jpg", doses: 50 }
+      { id: "bot-2l", name: "2L Ergonomic Handle Bottle", price: 349, mrp: 499, discount: "30% OFF", image: "/assets/images/bottle_yellow.png", doses: 40 },
+      { id: "pouch-2l", name: "2kg Eco Spout Refill Pouch", price: 289, mrp: 399, discount: "27% OFF", image: "/assets/images/pouch_yellow.png", doses: 40 }
     ],
     features: [
-      "Citrus Active Oil Dissolver Tech",
-      "Stain Target Bio-Protease Action",
-      "Anti-Graying Fabric Brightening",
-      "100% Biodegradable & Environment Friendly"
+      "Citrus Degreasing Enzymes for Collar & Cuff Grease",
+      "99.9% Odor-Causing Bacteria Elimination",
+      "High Effiency Low Suicing Liquid Technology",
+      "Eco Spout Pouch & Ergonomic Bottle Formats"
     ],
-    fragranceNotes: ["Top: Zesty Lemon & Sweet Orange", "Heart: Bergamot & Mint Leaf", "Base: Warm Amber & White Musk"],
-    ingredients: "Bio-Based Surfactants, Natural Citrus Extracts (Limonene), Quad-Enzyme Complex, Water Softening Builders.",
-    howToUse: {
-      regular: "1 Cap (40ml) for daily active wear",
-      heavy: "1.5 Caps (60ml) for muddy sports gear & heavy jeans",
-      handwash: "0.5 Cap (20ml) in warm bucket water"
-    }
+    specs: [
+      { name: "Net Quantity", value: "2 Litres / 2 Kg" },
+      { name: "Machine Compatibility", value: "Front & Top Loading Machines" },
+      { name: "Fragrance Profile", value: "Citrus Lemon Sunshine" },
+      { name: "Doses Per Pack", value: "40 Full Load Washes" }
+    ]
   },
   {
-    id: "wm-pouch-yellow-eco",
-    name: "White Mist 2kg Citrus Sunshine Refill Pouch",
-    category: "pouches",
-    categoryName: "Eco Refill Pouch",
-    tagline: "70% Less Plastic Waste • Maximum Savings",
+    id: "funwash-liquid-2kg",
+    sku: "FW-LD-2KG-SPOUT",
+    modelNumber: "FW-SP2000",
+    name: "Fun Wash™ Liquid Detergent 2kg Spout Pouch",
+    category: "funwash",
+    categoryName: "Fun Wash™ Value Packs",
+    tagline: "High Quality Laundry Detergent • Special ₹99 Offer Pack",
     color: "yellow",
-    accentColor: "#FFB800",
-    bgGradient: "linear-gradient(135deg, #FFFDE6 0%, #FFFFFF 100%)",
-    badge: "Eco Pick",
-    rating: 4.88,
-    reviewsCount: 740,
-    description: "Eco-friendly spout refill pouch designed to quickly pour into your original Meridian White Mist bottle. Reduces plastic footprint by 70%.",
+    accentColor: "#EAB308",
+    bgGradient: "linear-gradient(135deg, #FEF08A 0%, #FFFFFF 100%)",
+    badge: "₹99 Special Offer",
+    rating: 4.92,
+    reviewsCount: 3100,
+    price: 99,
+    mrp: 199,
+    capacity: "2kg Pouch",
+    energyRating: "Front & Top Load",
+    waterConsumption: "High Efficiency",
+    noiseLevel: "Value King",
+    washPrograms: 40,
+    warrantyYears: 1,
+    description: "Mega Value 2kg Spout Refill Pouch by Fun Wash™. Designed for daily laundry, removing tough dirt effortlessly while staying ultra-gentle on your pocket at just ₹99!",
     formats: [
-      { id: "pouch-2kg", name: "2kg Spout Refill Pouch", price: 279, mrp: 399, discount: "30% OFF", image: "/assets/images/pouch_yellow.png", doses: 50 },
-      { id: "pouch-twin", name: "Twin Pack (2kg x 2)", price: 519, mrp: 798, discount: "35% OFF", image: "/assets/images/pouch_yellow.png", doses: 100 }
+      { id: "pouch-2kg", name: "2kg Eco Spout Refill Pouch", price: 99, mrp: 199, discount: "50% OFF", image: "/assets/images/pouch_yellow_lifestyle.jpg", doses: 40 }
     ],
-    features: ["Leak-Proof Spout Cap", "100% Recyclable Foil Film", "Compact Storage"],
-    fragranceNotes: ["Fresh Lemon Zest & Bergamot"],
-    ingredients: "Bio-Based Surfactants, Limonene, Quad-Enzyme Complex.",
-    howToUse: { regular: "Pour directly into bottle using spout nozzle." }
+    features: [
+      "Super Saver Offer Pack at ₹99 Only!",
+      "Easy Pour Spout with Screw Cap Leak Protection",
+      "Works in All Front Load & Top Load Washing Machines",
+      "Softens Fabric and Leaves Fresh Long-Lasting Fragrance"
+    ],
+    specs: [
+      { name: "Net Quantity", value: "2 Kg Spout Pouch" },
+      { name: "Price Offer", value: "₹99 Special Launch Price" },
+      { name: "Compatibility", value: "Front & Top Load Washing Machines" }
+    ]
   },
   {
-    id: "wm-pouch-pink-eco",
-    name: "White Mist 2kg Floral Bloom Refill Pouch",
-    category: "pouches",
-    categoryName: "Eco Refill Pouch",
-    tagline: "French Rose Essence • Soft Touch",
+    id: "wm-combo-twin-bottles",
+    sku: "WM-COMBO-TWIN-BOT",
+    modelNumber: "WM-CB4000",
+    name: "White Mist Twin Bottle Super Saver Pack (4L)",
+    category: "combos",
+    categoryName: "Super Saver Combos",
+    tagline: "2x 2L Bottles (Ocean Blue + Floral Pink Combo)",
+    color: "blue",
+    accentColor: "#3F1B85",
+    bgGradient: "linear-gradient(135deg, #E0E7FF 0%, #FFFFFF 100%)",
+    badge: "Mega Combo",
+    rating: 4.97,
+    reviewsCount: 850,
+    price: 649,
+    mrp: 998,
+    capacity: "4L Total",
+    energyRating: "Front & Top Load",
+    waterConsumption: "Best Value",
+    noiseLevel: "Free Shipping",
+    washPrograms: 80,
+    warrantyYears: 2,
+    description: "Get 4 Litres of premium laundry care! Includes 1x 2L Ocean Fresh Bottle + 1x 2L Floral Bloom Bottle. Complete 80-wash solution with maximum savings.",
+    formats: [
+      { id: "twin-bot-4l", name: "2x 2L Bottle Twin Pack", price: 649, mrp: 998, discount: "35% OFF", image: "/assets/images/bottle_blue.png", doses: 80 }
+    ],
+    features: [
+      "Includes 2 Full Size 2L Ergonomic Bottles",
+      "Dual Fragrance Experience (Ocean Fresh & Floral Bloom)",
+      "Free Nationwide Delivery Unlocked",
+      "Saves ₹349 Compared to MRP"
+    ],
+    specs: [
+      { name: "Combo Contents", value: "2L Ocean Blue + 2L Floral Pink" },
+      { name: "Total Washes", value: "80 Full Load Washes" }
+    ]
+  },
+  {
+    id: "wm-combo-pouch-duo",
+    sku: "WM-COMBO-POUCH-DUO",
+    modelNumber: "WM-CP4000",
+    name: "White Mist Eco Spout Refill Pouch Duo (4kg)",
+    category: "combos",
+    categoryName: "Super Saver Combos",
+    tagline: "2x 2kg Eco Spout Refill Pouches (Yellow + Pink)",
     color: "pink",
     accentColor: "#F01262",
-    bgGradient: "linear-gradient(135deg, #FFEBF2 0%, #FFFFFF 100%)",
+    bgGradient: "linear-gradient(135deg, #FCE7F3 0%, #FFFFFF 100%)",
     badge: "Eco Saver",
-    rating: 4.86,
-    reviewsCount: 520,
-    description: "Refill pouch infused with silk conditioner and french rose micro-beads. Easy spout pouring.",
+    rating: 4.93,
+    reviewsCount: 620,
+    price: 539,
+    mrp: 798,
+    capacity: "4kg Total",
+    energyRating: "Front & Top Load",
+    waterConsumption: "Eco Friendly",
+    noiseLevel: "Zero Plastic Waste",
+    washPrograms: 80,
+    warrantyYears: 2,
+    description: "80% Less Plastic Packaging! Contains 2x 2kg Spout Refill Pouches (Citrus Sunshine + Floral Bloom). Easy to pour directly into your reusable White Mist bottles.",
     formats: [
-      { id: "pouch-2kg", name: "2kg Spout Refill Pouch", price: 299, mrp: 430, discount: "30% OFF", image: "/assets/images/pouch_pink.png", doses: 50 }
+      { id: "pouch-duo-4kg", name: "2x 2kg Eco Spout Pouch Duo", price: 539, mrp: 798, discount: "32% OFF", image: "/assets/images/pouch_pink.png", doses: 80 }
     ],
-    features: ["70% Plastic Reduction", "Silk Conditioner Added", "Easy Pour Spout"],
-    fragranceNotes: ["Rose Petals & Soft Vanilla"],
-    ingredients: "Plant-Derived Surfactants, Silk Amino Extract, Rose Oil.",
-    howToUse: { regular: "Refill your bottle or measure directly." }
-  },
-  {
-    id: "wm-softener-rose",
-    name: "White Mist Ultra Fabric Conditioner (Pink Rose)",
-    category: "softeners",
-    categoryName: "Fabric Conditioner",
-    tagline: "Silk Softness & static-Free Bounce",
-    color: "pink",
-    accentColor: "#E91E63",
-    bgGradient: "linear-gradient(135deg, #FFF0F5 0%, #FFFFFF 100%)",
-    badge: "New Launch",
-    rating: 4.94,
-    reviewsCount: 310,
-    description: "Post-wash rinse conditioner that softens clothing fibers, prevents wrinkles, and shields garments from static cling. Delivers luxurious fluffy softness to towels and bed linen.",
-    formats: [
-      { id: "bot-1.5l", name: "1.5L Conditioner Bottle", price: 249, mrp: 350, discount: "29% OFF", image: "/assets/images/bottle_pink.png", doses: 40 }
+    features: [
+      "Includes 2x 2kg Eco Spout Refill Pouches",
+      "Smart Spout Design with Spill-Proof Cap",
+      "Reduces Household Plastic Footprint by 80%",
+      "Maximum Value for Daily Household Laundry"
     ],
-    features: ["Wrinkle Ease Technology", "Static Free Guarantee", "Long-lasting Softness"],
-    fragranceNotes: ["Sweet Blossom & Musky Rose"],
-    ingredients: "Cationic Surfactants (5-15%), Essential Rose Perfume, Anti-Static Conditioners.",
-    howToUse: { regular: "Add 1 cap to final rinse compartment of washing machine." }
-  },
-  {
-    id: "wm-stain-booster-citrus",
-    name: "White Mist Oxy-Stain Booster Powder",
-    category: "boosters",
-    categoryName: "Stain Booster",
-    tagline: "Oxygen Active Stain Dissolver",
-    color: "yellow",
-    accentColor: "#D97706",
-    bgGradient: "linear-gradient(135deg, #FFFDE6 0%, #FFFFFF 100%)",
-    badge: "High Power",
-    rating: 4.91,
-    reviewsCount: 410,
-    description: "Active oxygen booster additive that works alongside liquid detergent to remove stubborn collar grime, blood stains, wine, and ancient tea spots without color bleaching.",
-    formats: [
-      { id: "tub-1kg", name: "1kg Oxy Power Tub", price: 229, mrp: 320, discount: "28% OFF", image: "/assets/images/pouch_yellow_lifestyle.jpg", doses: 40 }
-    ],
-    features: ["Color-Safe Oxygen Bleach", "Removes Collar & Cuff Stain", "Odor Neutralizer"],
-    fragranceNotes: ["Sparkling Citrus Clean"],
-    ingredients: "Sodium Percarbonate (>30%), TAED Activator, Bio-Protease Enzymes.",
-    howToUse: { regular: "Add 1 scoop into washing machine drum along with White Mist liquid." }
-  },
-  {
-    id: "wm-combo-family-pack",
-    name: "White Mist Ultimate Saver Combo (4kg Total)",
-    category: "combos",
-    categoryName: "Value Saver Combo",
-    tagline: "2L Bottle + 2kg Pouch + Free Dosing Cup",
-    color: "blue",
-    accentColor: "#0084FF",
-    bgGradient: "linear-gradient(135deg, #E6F3FF 0%, #FFFDE6 100%)",
-    badge: "Mega Saver",
-    rating: 4.95,
-    reviewsCount: 2150,
-    description: "The ultimate household laundry bundle. Includes 1x 2L Blue Ocean Bottle + 1x 2kg Yellow Citrus Pouch + Free measuring cap with 39% total price discount.",
-    formats: [
-      { id: "bundle-4kg", name: "4kg Complete Family Bundle", price: 549, mrp: 899, discount: "39% OFF", image: "/assets/images/bottles_pair.png", doses: 100 }
-    ],
-    features: ["Includes Bottle + Refill Pouch", "Free Measuring Cap", "Maximum Savings"],
-    fragranceNotes: ["Ocean Breeze & Citrus Sparkle"],
-    ingredients: "Complete Bio-Enzyme Quad Surfactant System.",
-    howToUse: { regular: "Use bottle for daily laundry, refill using 2kg pouch." }
+    specs: [
+      { name: "Combo Contents", value: "2kg Citrus Yellow + 2kg Floral Pink" },
+      { name: "Total Washes", value: "80 Full Load Washes" }
+    ]
   }
 ];
 
 export const SUPER_SAVER_BUNDLE = {
-  id: "wm-combo-saver",
-  title: "White Mist Ultimate Saver Combo (4kg Total)",
-  subtitle: "1x 2L Blue Ocean Bottle + 1x 2kg Yellow Citrus Pouch + Free Dosing Cup",
-  price: 549,
-  mrp: 899,
-  discount: "39% OFF",
-  savings: "Save ₹350 Today",
-  image: "/assets/images/bottles_pair.png",
-  endsInHours: 6
-};
-
-export const PROMO_CODES = {
-  "MISTFRESH": { discountPercent: 15, minSpend: 300, description: "15% Instant Discount on All Items" },
-  "SUPER30": { discountAmount: 100, minSpend: 600, description: "Flat ₹100 Off on Orders above ₹600" },
-  "ECOSAVER": { discountPercent: 20, minSpend: 400, description: "20% Off Eco Refill Pouches" }
+  id: "wm-super-bundle-laundry",
+  title: "White Mist 4kg Mega Saver Laundry Bundle",
+  subtitle: "2L Bottle + 2kg Refill Pouch + Free Measuring Cap",
+  price: 599,
+  mrp: 898,
+  savings: "Save ₹299 (33% OFF)",
+  image: "/assets/images/bottle_blue.png"
 };
 
 export const REVIEWS = [
   {
     id: 1,
-    name: "Priya Sharma",
-    city: "Bangalore",
+    author: "Sunita Deshmukh",
+    role: "Verified Buyer",
+    city: "Mumbai",
     rating: 5,
-    date: "3 days ago",
-    comment: "The Ocean Fresh fragrance is unbelievable! Clothes smell clean even after 3 days in the wardrobe. Removed turmeric stain from my toddler's white shirt in a single wash!",
-    variant: "White Mist Ocean Fresh (2L)",
-    verified: true
+    comment: "White Mist Ocean Fresh liquid detergent is fantastic for our front load machine! Dirty cuffs and grease stains wash out easily without scrubbing.",
+    date: "2 days ago"
   },
   {
     id: 2,
-    name: "Anand R. Verma",
-    city: "Mumbai",
+    author: "Priya Sharma",
+    role: "Verified Buyer",
+    city: "Delhi NCR",
     rating: 5,
-    date: "1 week ago",
-    comment: "Using it in my LG Front Load washer. Very low foam, saves so much water, and no sticky residue left in the machine drawer. The refill pouch is great value.",
-    variant: "Citrus Sunshine 2kg Pouch",
-    verified: true
+    comment: "The Fun Wash ₹99 2kg pouch offer is unbeatable! Amazing lather, fresh smell, and so economical for daily family laundry.",
+    date: "1 week ago"
   },
   {
     id: 3,
-    name: "Sneha Kapadia",
-    city: "Delhi NCR",
+    author: "Ananya Iyer",
+    role: "Verified Buyer",
+    city: "Bangalore",
     rating: 5,
-    date: "2 weeks ago",
-    comment: "Floral Bloom is so soft on silk sarees and cotton dupattas. Doesn't dull colors like powders used to. Switching permanently to White Mist!",
-    variant: "Floral Bloom 2L Bottle",
-    verified: true
+    comment: "Love the Pink Floral Bloom bottle. Leaves clothes so soft and smelling like fresh roses even 2 days after washing.",
+    date: "2 weeks ago"
   }
 ];
+
+export const PROMO_CODES = {
+  "MISTWELCOME10": { discount: 10, type: "percent", desc: "10% Welcome Discount" },
+  "WHITEMIST2026": { discount: 100, type: "flat", desc: "₹100 Flat Savings" },
+  "FUNWASH99": { discount: 50, type: "flat", desc: "₹50 Extra Off on Fun Wash" }
+};

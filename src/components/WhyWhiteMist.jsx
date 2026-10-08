@@ -1,31 +1,31 @@
 import React from 'react';
-import { Sparkles, Waves, Cpu, Leaf, ShieldCheck, HeartHandshake } from 'lucide-react';
+import { Sparkles, ShieldCheck, Zap, Thermometer, Volume2, Droplets } from 'lucide-react';
 
 export default function WhyWhiteMist() {
   const features = [
     {
-      icon: <Sparkles size={32} style={{ color: '#0084FF' }} />,
+      icon: <Thermometer size={32} style={{ color: '#0084FF' }} />,
       bg: '#E6F3FF',
-      title: "10x Bio-Enzyme Stain Action",
-      desc: "Targeted quad-enzymes penetrate deep into cotton & synthetic fibers to breakdown oil, tea, grease, ink, and sweat without scrubbing or fabric damage."
+      title: "70°C Hot Sterilization",
+      desc: "Eliminates 99.99% of bacteria, viruses, and stubborn grease from Indian kadhais, oily pans, and baby bottles."
     },
     {
-      icon: <Waves size={32} style={{ color: '#3F1B85' }} />,
-      bg: '#F3EBFD',
-      title: "Front & Top Load Formulated",
-      desc: "Engineered with anti-foaming polymers to protect front-load sensors while providing deep agitation power for top-load washing machines."
-    },
-    {
-      icon: <HeartHandshake size={32} style={{ color: '#F01262' }} />,
+      icon: <Volume2 size={32} style={{ color: '#F01262' }} />,
       bg: '#FFEBF2',
-      title: "48-Hour Micro-Capsule Scent",
-      desc: "Encapsulated fragrance beads bind to threads and release fresh bursts of ocean, rose, or citrus scents with every touch and body movement."
+      title: "40dB Whisper Quiet",
+      desc: "Acoustic insulation panels and BLDC EcoSilent motors ensure disturbance-free washing, perfect for night cycles."
     },
     {
-      icon: <Leaf size={32} style={{ color: '#16A34A' }} />,
+      icon: <Droplets size={32} style={{ color: '#D97706' }} />,
+      bg: '#FFFDE6',
+      title: "70% Water Saving",
+      desc: "Uses only 9.5 liters of water per eco cycle compared to 40+ liters required during traditional manual tap handwashing."
+    },
+    {
+      icon: <ShieldCheck size={32} style={{ color: '#16A34A' }} />,
       bg: '#DCFCE7',
-      title: "Eco Spout Pouch Refills",
-      desc: "Our flexible 2kg refill pouches cut plastic footprint by 70% compared to standard bottles. Reuse your ergonomic bottle endlessly!"
+      title: "2-Year Direct Warranty",
+      desc: "Comprehensive door-step coverage, free installation by certified technicians, and 10-year motor guarantee."
     }
   ];
 
@@ -42,13 +42,13 @@ export default function WhyWhiteMist() {
             letterSpacing: '0.1em', 
             textTransform: 'uppercase' 
           }}>
-            THE WHITE MIST ADVANTAGE
+            THE WHITE MIST APPLIANCE ADVANTAGE
           </span>
           <h2 style={{ fontSize: '2.5rem', fontWeight: '800', margin: '0.5rem 0 1rem 0', color: 'var(--color-purple-dark)' }}>
-            Why Families & Caregivers Trust White Mist
+            Why Commercial & Home Kitchens Trust White Mist
           </h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', lineHeight: 1.6 }}>
-            Crafted by Meridian FMCG labs to deliver premium wash quality, vibrant fabric color lock, and long-lasting freshness in every single capful.
+            Engineered with high-pressure bio-enzyme water jets, surgical grade stainless steel, and intelligent sensors for superior cleanliness.
           </p>
         </div>
 

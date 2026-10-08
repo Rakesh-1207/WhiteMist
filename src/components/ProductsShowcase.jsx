@@ -14,8 +14,8 @@ export default function ProductsShowcase({ onAddToCart, onOpenModal, searchQuery
     setSelectedFormatMap(prev => ({ ...prev, [productId]: formatIdx }));
   };
 
-  // Get flagship featured products for Home Showcase (3 on desktop, 4 on mobile)
-  const featuredFour = PRODUCTS.filter(p => ['wm-blue-ocean', 'wm-pink-floral', 'wm-yellow-citrus', 'wm-pouch-yellow-eco'].includes(p.id));
+  // Get flagship featured products for Home Showcase
+  const featuredFour = PRODUCTS.filter(p => ['wm-blue-ocean', 'wm-pink-floral', 'wm-yellow-citrus', 'funwash-liquid-2kg'].includes(p.id));
 
   const filteredProducts = featuredFour.filter(prod => {
     if (activeFilter === 'blue' && prod.color !== 'blue') return false;

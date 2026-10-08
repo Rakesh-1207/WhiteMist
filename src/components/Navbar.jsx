@@ -85,7 +85,35 @@ export default function Navbar({ cartCount, wishlistCount, onOpenCart, activeVie
                 gap: '0.3rem'
               }}
             >
-              <Layers size={16} /> All Products
+              <Layers size={16} /> Liquid Detergents
+            </button>
+
+            <button 
+              onClick={() => onOpenServiceModal && onOpenServiceModal('quote')}
+              style={{
+                background: 'none',
+                border: 'none',
+                fontSize: '0.95rem',
+                fontWeight: '600',
+                color: 'var(--text-main)',
+                cursor: 'pointer'
+              }}
+            >
+              Bulk Order Quote
+            </button>
+
+            <button 
+              onClick={() => onOpenServiceModal && onOpenServiceModal('service')}
+              style={{
+                background: 'none',
+                border: 'none',
+                fontSize: '0.95rem',
+                fontWeight: '600',
+                color: 'var(--text-main)',
+                cursor: 'pointer'
+              }}
+            >
+              Request Free Sample
             </button>
 
             <button 
@@ -99,35 +127,7 @@ export default function Navbar({ cartCount, wishlistCount, onOpenCart, activeVie
                 cursor: 'pointer'
               }}
             >
-              Dose Calculator
-            </button>
-
-            <button 
-              onClick={() => handleNavClick('home', 'why-white-mist')}
-              style={{
-                background: 'none',
-                border: 'none',
-                fontSize: '0.95rem',
-                fontWeight: '600',
-                color: 'var(--text-main)',
-                cursor: 'pointer'
-              }}
-            >
-              Why White Mist
-            </button>
-
-            <button 
-              onClick={() => handleNavClick('home', 'reviews')}
-              style={{
-                background: 'none',
-                border: 'none',
-                fontSize: '0.95rem',
-                fontWeight: '600',
-                color: 'var(--text-main)',
-                cursor: 'pointer'
-              }}
-            >
-              Reviews
+              Dose Guide
             </button>
           </nav>
 
