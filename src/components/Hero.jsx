@@ -93,8 +93,32 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
       <div style={{
         position: 'absolute',
         top: 0, left: 0, right: 0, bottom: 0,
-        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(240, 248, 255, 0.15) 100%)',
+        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(240, 248, 255, 0.1) 100%)',
         zIndex: 1,
+        pointerEvents: 'none'
+      }} />
+
+      {/* Smooth Bottom Fade-to-White Shading (Disappears bottom edge seamlessly) */}
+      <div style={{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: '160px',
+        background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 40%, rgba(255, 255, 255, 0.85) 75%, #FFFFFF 100%)',
+        zIndex: 3,
+        pointerEvents: 'none'
+      }} />
+
+      {/* Smooth Top Glass Fade Shading */}
+      <div style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: '100px',
+        background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 100%)',
+        zIndex: 3,
         pointerEvents: 'none'
       }} />
 
