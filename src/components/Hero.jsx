@@ -125,7 +125,8 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
               color: 'var(--text-muted)',
               marginBottom: '1.75rem',
               lineHeight: 1.6,
-              maxWidth: '540px'
+              maxWidth: '540px',
+              fontStyle: 'italic'
             }} className="hero-description-text">
               Meridian <strong>White Mist Liquid Detergent</strong> dissolves 10x tough stains instantly while infusing garments with 48-hour micro-capsule fragrance. Perfect for both <strong>Front Load & Top Load</strong> machines.
             </p>
