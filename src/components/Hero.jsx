@@ -66,8 +66,12 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
 
   return (
     <section className="full-screen-hero" style={{
-      background: current.bgGradient,
-      transition: 'background 0.6s ease'
+      position: 'relative',
+      backgroundImage: `linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(240, 248, 255, 0.82) 50%, rgba(255, 255, 255, 0.92) 100%), url('/assets/images/fabric_bg.jpg')`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      transition: 'all 0.6s ease'
     }}>
 
       {/* Pure CSS 3D Glossy Soap Bubbles Stream */}
