@@ -67,12 +67,36 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
   return (
     <section className="full-screen-hero" style={{
       position: 'relative',
-      backgroundImage: `url('/assets/images/fabric_bg.jpg')`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      transition: 'all 0.6s ease'
+      overflow: 'hidden'
     }}>
+      {/* Background Continuous Wave Video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          zIndex: 0,
+          pointerEvents: 'none'
+        }}
+      >
+        <source src="/assets/video/visible_gentle_continuous_wave_10s.mp4" type="video/mp4" />
+      </video>
+
+      {/* Subtle Overlay to ensure high contrast */}
+      <div style={{
+        position: 'absolute',
+        top: 0, left: 0, right: 0, bottom: 0,
+        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(240, 248, 255, 0.15) 100%)',
+        zIndex: 1,
+        pointerEvents: 'none'
+      }} />
 
       {/* Pure CSS 3D Glossy Soap Bubbles Stream */}
       {bubbleList.map(b => (
