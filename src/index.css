@@ -731,3 +731,31 @@ button, input, select, textarea {
 .mobile-only-card {
   display: none !important;
 }
+
+/* Detergent Interactive Animation Keyframes */
+@keyframes pingPulse {
+  0% { transform: scale(0.6); opacity: 0.9; }
+  50% { transform: scale(1.3); opacity: 0.5; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+@keyframes burstOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.spin-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .bio-enzyme-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+

@@ -16,6 +16,9 @@ import ProductDetailPage from './components/ProductDetailPage';
 import LoadingScreen from './components/LoadingScreen';
 import ServiceQuoteModal from './components/ServiceQuoteModal';
 import CartPage from './components/CartPage';
+import StainBeforeAfter from './components/StainBeforeAfter';
+import BioEnzymeAnimation from './components/BioEnzymeAnimation';
+import FragranceScentLock from './components/FragranceScentLock';
 import { PRODUCTS } from './data/products';
 
 export default function App() {
@@ -239,6 +242,7 @@ export default function App() {
               onSelectProduct={handleOpenProductDetailPage}
             />
             <WhyWhiteMist />
+            <StainBeforeAfter />
             <ProductsShowcase 
               onAddToCart={handleAddToCart}
               onOpenModal={handleOpenProductDetailPage}
@@ -248,6 +252,8 @@ export default function App() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
             />
+            <BioEnzymeAnimation />
+            <FragranceScentLock />
             <StainCalculator onAddToCart={handleAddToCart} />
             <SuperSaverBanner onAddBundleToCart={handleAddBundleToCart} />
             <Testimonials />
