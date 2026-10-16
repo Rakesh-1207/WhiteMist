@@ -127,7 +127,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
         </div>
 
         {/* Cart Item List */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '1.25rem' }}>
+        <div data-lenis-prevent style={{ flex: 1, overflowY: 'auto', padding: '1.25rem' }}>
           {cartItems.length === 0 ? (
             <div style={{ textAlign: 'center', padding: '4rem 1rem' }}>
               <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: '#F1F5F9', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem auto', color: '#94A3B8' }}>

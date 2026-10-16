@@ -20,10 +20,20 @@ export default function Navbar({ cartCount, wishlistCount, onOpenCart, onOpenSer
     if (anchorId && view === 'home') {
       setTimeout(() => {
         const el = document.getElementById(anchorId);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
+        if (el) {
+          if (window.lenis) {
+            window.lenis.scrollTo(el, { offset: -70, duration: 1.2 });
+          } else {
+            el.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
       }, 100);
     } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (window.lenis) {
+        window.lenis.scrollTo(0, { duration: 1.2 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
   };
 

@@ -21,6 +21,8 @@ import StainBeforeAfter from './components/StainBeforeAfter';
 import BioEnzymeAnimation from './components/BioEnzymeAnimation';
 import ShirtScrollAnimation from './components/ShirtScrollAnimation';
 import { PRODUCTS } from './data/products';
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -28,26 +30,66 @@ export default function App() {
   const [activeView, setActiveView] = useState('home'); // 'home' | 'products' | 'wishlist' | 'product-detail' | 'checkout'
   const [previousView, setPreviousView] = useState('home');
 
-  // Ensure webpage always starts at the top (0,0) on refresh & track scroll for Back to Top button
+  // Initialize Lenis smooth scroll across the entire application
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
     window.scrollTo(0, 0);
 
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1.0,
+      touchMultiplier: 1.5,
+      infinite: false,
+      autoRaf: true,
+      anchors: true,
+    });
+
+    window.lenis = lenis;
+
     const handleScroll = () => {
       setShowBackToTop(window.scrollY > 350);
     };
 
+    const handleLenisScroll = (e) => {
+      setShowBackToTop(e.scroll > 350);
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const unbind = lenis.on('scroll', handleLenisScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      unbind();
+      lenis.destroy();
+      window.lenis = null;
+    };
   }, []);
 
+  // When active view changes, resize Lenis and smoothly reset to the top
+  useEffect(() => {
+    if (window.lenis) {
+      window.lenis.resize();
+      window.lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [activeView]);
+
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    if (window.lenis) {
+      window.lenis.scrollTo(0, { duration: 1.3 });
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
   };
 
   // Cart Items State

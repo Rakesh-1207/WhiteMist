@@ -388,7 +388,7 @@ export default function CheckoutPage({ cartSummary, onBackToCart, onOrderSuccess
                 </h3>
 
                 {/* Items Mini List */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.25rem', maxHeight: '200px', overflowY: 'auto' }}>
+                <div data-lenis-prevent style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.25rem', maxHeight: '200px', overflowY: 'auto' }}>
                   {cartItems.map((item) => (
                     <div key={item.cartKey} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.85rem' }}>
                       <img src={item.image} alt={item.name} style={{ width: '40px', height: '40px', objectFit: 'contain' }} />

@@ -42,7 +42,7 @@ export default function ProductDetailModal({ product, selectedFormat, onClose, o
     }} onClick={onClose}>
       
       {/* Modal Container */}
-      <div style={{
+      <div data-lenis-prevent style={{
         background: 'white',
         borderRadius: 'var(--radius-lg)',
         maxWidth: '900px',

@@ -119,7 +119,7 @@ export default function ServiceQuoteModal({ isOpen, onClose, activeTab = 'quote'
       padding: '1rem'
     }} onClick={onClose}>
       
-      <div style={{
+      <div data-lenis-prevent style={{
         background: 'white',
         borderRadius: 'var(--radius-lg)',
         width: '100%',

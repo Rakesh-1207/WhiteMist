@@ -14,7 +14,7 @@ export default function ShirtScrollAnimation() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Instant Synchronized Pinned Scroll Progress Calculation (Direct 1:1 Scroll Response)
+  // Instant Synchronized Pinned Scroll Progress Calculation (Direct 1:1 Scroll Response with Lenis Sync)
   useEffect(() => {
     const handleScroll = () => {
       if (!sectionRef.current) return;
@@ -30,7 +30,16 @@ export default function ShirtScrollAnimation() {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    let unbindLenis = null;
+    if (window.lenis && typeof window.lenis.on === 'function') {
+      unbindLenis = window.lenis.on('scroll', handleScroll);
+    }
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (unbindLenis) unbindLenis();
+    };
   }, []);
 
   // Soft, Pearlescent Micro-Foam (lightweight count on mobile for buttery 60fps)
