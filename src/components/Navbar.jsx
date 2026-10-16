@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ShoppingBag, Search, Heart, Menu, X, Layers, Home, Calculator, Award, Star } from 'lucide-react';
 
-export default function Navbar({ cartCount, wishlistCount, onOpenCart, activeView, setActiveView, searchQuery, setSearchQuery, cartBadgeRef }) {
+export default function Navbar({ cartCount, wishlistCount, onOpenCart, onOpenServiceModal, activeView, setActiveView, searchQuery, setSearchQuery, cartBadgeRef }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
@@ -45,7 +45,7 @@ export default function Navbar({ cartCount, wishlistCount, onOpenCart, activeVie
             <img 
               src="/assets/images/logo.png" 
               alt="Meridian White Mist Logo" 
-              style={{ height: '42px', objectFit: 'contain' }} 
+              style={{ height: '46px', objectFit: 'contain' }} 
             />
           </div>
 
@@ -53,14 +53,14 @@ export default function Navbar({ cartCount, wishlistCount, onOpenCart, activeVie
           <nav style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '1.75rem'
+            gap: '1.9rem'
           }} className="desktop-nav">
             <button 
               onClick={() => handleNavClick('home')}
               style={{
                 background: 'none',
                 border: 'none',
-                fontSize: '0.95rem',
+                fontSize: '1.02rem',
                 fontWeight: activeView === 'home' ? '700' : '600',
                 color: activeView === 'home' ? 'var(--color-purple-primary)' : 'var(--text-main)',
                 cursor: 'pointer',
@@ -75,17 +75,17 @@ export default function Navbar({ cartCount, wishlistCount, onOpenCart, activeVie
               style={{
                 background: 'none',
                 border: 'none',
-                fontSize: '0.95rem',
+                fontSize: '1.02rem',
                 fontWeight: activeView === 'products' ? '700' : '600',
                 color: activeView === 'products' ? 'var(--color-purple-primary)' : 'var(--text-main)',
                 cursor: 'pointer',
                 transition: 'var(--transition)',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.3rem'
+                gap: '0.35rem'
               }}
             >
-              <Layers size={16} /> Liquid Detergents
+              <Layers size={17} /> Liquid Detergents
             </button>
 
             <button 
@@ -93,7 +93,7 @@ export default function Navbar({ cartCount, wishlistCount, onOpenCart, activeVie
               style={{
                 background: 'none',
                 border: 'none',
-                fontSize: '0.95rem',
+                fontSize: '1.02rem',
                 fontWeight: '600',
                 color: 'var(--text-main)',
                 cursor: 'pointer'
@@ -107,7 +107,7 @@ export default function Navbar({ cartCount, wishlistCount, onOpenCart, activeVie
               style={{
                 background: 'none',
                 border: 'none',
-                fontSize: '0.95rem',
+                fontSize: '1.02rem',
                 fontWeight: '600',
                 color: 'var(--text-main)',
                 cursor: 'pointer'
@@ -121,7 +121,7 @@ export default function Navbar({ cartCount, wishlistCount, onOpenCart, activeVie
               style={{
                 background: 'none',
                 border: 'none',
-                fontSize: '0.95rem',
+                fontSize: '1.02rem',
                 fontWeight: '600',
                 color: 'var(--text-main)',
                 cursor: 'pointer'
@@ -132,13 +132,13 @@ export default function Navbar({ cartCount, wishlistCount, onOpenCart, activeVie
           </nav>
 
           {/* Right Action Icons & Buttons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.95rem' }}>
             
             {/* Search Input Toggle */}
             <div style={{ position: 'relative' }}>
               {showSearch ? (
-                <div style={{ display: 'flex', alignItems: 'center', background: '#F1F5F9', borderRadius: 'var(--radius-full)', padding: '0.3rem 0.8rem' }}>
-                  <Search size={16} style={{ color: '#64748B' }} />
+                <div style={{ display: 'flex', alignItems: 'center', background: '#F1F5F9', borderRadius: 'var(--radius-full)', padding: '0.35rem 0.85rem' }}>
+                  <Search size={17} style={{ color: '#64748B' }} />
                   <input 
                     type="text" 
                     placeholder="Search fragrance, pouch..." 
@@ -147,10 +147,10 @@ export default function Navbar({ cartCount, wishlistCount, onOpenCart, activeVie
                       setSearchQuery(e.target.value);
                       if (activeView !== 'products') setActiveView('products');
                     }}
-                    style={{ border: 'none', background: 'transparent', outline: 'none', paddingLeft: '0.5rem', fontSize: '0.85rem', width: '140px' }}
+                    style={{ border: 'none', background: 'transparent', outline: 'none', paddingLeft: '0.5rem', fontSize: '0.88rem', width: '150px' }}
                     autoFocus
                   />
-                  <X size={16} style={{ cursor: 'pointer', color: '#64748B' }} onClick={() => { setShowSearch(false); setSearchQuery(''); }} />
+                  <X size={17} style={{ cursor: 'pointer', color: '#64748B' }} onClick={() => { setShowSearch(false); setSearchQuery(''); }} />
                 </div>
               ) : (
                 <button 
@@ -161,7 +161,7 @@ export default function Navbar({ cartCount, wishlistCount, onOpenCart, activeVie
                   style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0.4rem', color: 'var(--text-main)' }}
                   title="Search Products"
                 >
-                  <Search size={22} />
+                  <Search size={23} />
                 </button>
               )}
             </div>
@@ -179,7 +179,7 @@ export default function Navbar({ cartCount, wishlistCount, onOpenCart, activeVie
               }}
               title="Wishlist"
             >
-              <Heart size={22} fill={wishlistCount > 0 ? "#F01262" : "none"} style={{ color: wishlistCount > 0 ? "#F01262" : "inherit" }} />
+              <Heart size={23} fill={wishlistCount > 0 ? "#F01262" : "none"} style={{ color: wishlistCount > 0 ? "#F01262" : "inherit" }} />
               {wishlistCount > 0 && (
                 <span 
                   style={{
@@ -189,9 +189,9 @@ export default function Navbar({ cartCount, wishlistCount, onOpenCart, activeVie
                     background: '#F01262',
                     color: 'white',
                     fontWeight: '800',
-                    fontSize: '0.7rem',
-                    width: '18px',
-                    height: '18px',
+                    fontSize: '0.75rem',
+                    width: '19px',
+                    height: '19px',
                     borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
@@ -209,13 +209,13 @@ export default function Navbar({ cartCount, wishlistCount, onOpenCart, activeVie
               onClick={onOpenCart}
               className="btn-primary"
               style={{
-                padding: '0.5rem 1.25rem',
+                padding: '0.55rem 1.35rem',
                 borderRadius: 'var(--radius-full)',
-                fontSize: '0.9rem',
+                fontSize: '0.95rem',
                 position: 'relative'
               }}
             >
-              <ShoppingBag size={18} />
+              <ShoppingBag size={19} />
               <span className="cart-text">Cart</span>
               <span 
                 className="cart-badge-count"
@@ -223,10 +223,10 @@ export default function Navbar({ cartCount, wishlistCount, onOpenCart, activeVie
                   background: '#FFB800',
                   color: '#1E1B4B',
                   fontWeight: '800',
-                  fontSize: '0.75rem',
-                  padding: '2px 8px',
+                  fontSize: '0.78rem',
+                  padding: '2px 9px',
                   borderRadius: '10px',
-                  marginLeft: '0.2rem'
+                  marginLeft: '0.25rem'
                 }}
               >
                 {cartCount}
@@ -388,6 +388,52 @@ export default function Navbar({ cartCount, wishlistCount, onOpenCart, activeVie
             >
               <Star size={20} style={{ color: '#FFB800' }} />
               <span>Customer Reviews</span>
+            </button>
+
+            <div style={{ height: '1px', background: '#E2E8F0', margin: '0.25rem 0' }} />
+
+            <button 
+              onClick={() => {
+                setMobileMenuOpen(false);
+                if (onOpenServiceModal) onOpenServiceModal('quote');
+              }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.85rem',
+                padding: '0.85rem 1rem',
+                borderRadius: 'var(--radius-md)',
+                border: '1.5px solid var(--color-purple-primary)',
+                background: '#F3EBFD',
+                color: 'var(--color-purple-dark)',
+                fontWeight: '800',
+                fontSize: '0.95rem',
+                textAlign: 'left'
+              }}
+            >
+              <span>📋 Bulk Order Quotation</span>
+            </button>
+
+            <button 
+              onClick={() => {
+                setMobileMenuOpen(false);
+                if (onOpenServiceModal) onOpenServiceModal('service');
+              }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.85rem',
+                padding: '0.85rem 1rem',
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid #CBD5E1',
+                background: 'white',
+                color: 'var(--text-main)',
+                fontWeight: '700',
+                fontSize: '0.95rem',
+                textAlign: 'left'
+              }}
+            >
+              <span>🎁 Request Free Sample</span>
             </button>
 
           </div>

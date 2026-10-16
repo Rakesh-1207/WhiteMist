@@ -1,0 +1,354 @@
+import React, { useState, useRef, useEffect } from 'react';
+
+export default function ShirtScrollAnimation() {
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Instant Synchronized Pinned Scroll Progress Calculation (Direct 1:1 Scroll Response)
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
+      const rect = sectionRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const totalScrollTrack = rect.height - windowHeight;
+      if (totalScrollTrack <= 0) return;
+
+      const scrolled = -rect.top;
+      const progress = Math.max(0, Math.min(100, (scrolled / totalScrollTrack) * 100));
+      setScrollProgress(progress);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Soft, Pearlescent Micro-Foam (lightweight count on mobile for buttery 60fps)
+  const bubbleCount = isMobile ? 32 : 75;
+  const flyingCount = isMobile ? 12 : 30;
+
+  const bubbles = Array.from({ length: bubbleCount }).map((_, i) => ({
+    id: i,
+    size: Math.floor(Math.random() * (isMobile ? 22 : 32)) + (isMobile ? 12 : 16),
+    left: `${(i * (100 / bubbleCount)) + (Math.sin(i * 1.5) * 1.5)}%`,
+    offsetY: (Math.sin(i * 1.2) * (isMobile ? 20 : 32)) - (isMobile ? 10 : 16),
+    opacity: 0.6 + (Math.random() * 0.4),
+    animDuration: (2.5 + (i % 4) * 0.7).toFixed(1),
+    animDelay: ((i % 7) * 0.2).toFixed(1)
+  }));
+
+  const flyingBubbles = Array.from({ length: flyingCount }).map((_, i) => ({
+    id: i,
+    size: Math.floor(Math.random() * (isMobile ? 16 : 24)) + (isMobile ? 10 : 12),
+    left: `${(i * (100 / flyingCount)) + (Math.sin(i * 2.3) * 4.5)}%`,
+    animDuration: (2.4 + (i % 6) * 0.4).toFixed(1),
+    animDelay: ((i % 9) * 0.3).toFixed(1),
+    animName: i % 3 === 0 ? 'bubbleFlyUpLeft' : i % 3 === 1 ? 'bubbleFlyUpRight' : 'bubbleFlyUp'
+  }));
+
+  const shirtFrameHeight = isMobile ? 420 : 780;
+
+  return (
+    <section 
+      ref={sectionRef}
+      className="shirt-scroll-section"
+      style={{ 
+        position: 'relative',
+        height: isMobile ? '200vh' : '220vh',
+        background: 'linear-gradient(180deg, #FAFCFF 0%, #F1F5F9 50%, #E2E8F0 100%)'
+      }}
+    >
+      {/* Inline Keyframes & Media Queries for Side Logos & Flying Bubbles */}
+      <style>{`
+        @keyframes gentleBubbleFloat {
+          0% { transform: translateY(0px) scale(1); }
+          50% { transform: translateY(-10px) scale(1.05); }
+          100% { transform: translateY(0px) scale(1); }
+        }
+
+        @keyframes bubbleFlyUp {
+          0% { transform: translateY(0px) translateX(0px) scale(0.6); opacity: 0; }
+          20% { opacity: 0.9; }
+          60% { transform: translateY(-55px) translateX(12px) scale(1.05); opacity: 0.85; }
+          100% { transform: translateY(-115px) translateX(-8px) scale(0.4); opacity: 0; }
+        }
+
+        @keyframes bubbleFlyUpLeft {
+          0% { transform: translateY(0px) translateX(0px) scale(0.7); opacity: 0; }
+          25% { opacity: 0.95; }
+          65% { transform: translateY(-65px) translateX(-20px) scale(1.1); opacity: 0.8; }
+          100% { transform: translateY(-130px) translateX(-35px) scale(0.35); opacity: 0; }
+        }
+
+        @keyframes bubbleFlyUpRight {
+          0% { transform: translateY(0px) translateX(0px) scale(0.65); opacity: 0; }
+          25% { opacity: 0.9; }
+          65% { transform: translateY(-60px) translateX(18px) scale(1.08); opacity: 0.85; }
+          100% { transform: translateY(-120px) translateX(30px) scale(0.4); opacity: 0; }
+        }
+
+        @media (max-width: 1500px) {
+          .side-logo-left {
+            left: -240px !important;
+            top: 82% !important;
+            transform: translateY(-50%) rotate(-40deg) scale(0.85) !important;
+          }
+          .side-logo-right {
+            right: -240px !important;
+            top: 18% !important;
+            transform: translateY(-50%) rotate(-40deg) scale(0.85) !important;
+          }
+        }
+        @media (max-width: 1100px) {
+          .side-logo-left, .side-logo-right {
+            display: none !important;
+          }
+        }
+      `}</style>
+
+      {/* INNER STICKY VIEWPORT (Pins on screen while scrolling animation plays) */}
+      <div 
+        className="shirt-scroll-sticky"
+        style={{
+          position: 'sticky',
+          top: 0,
+          height: isMobile ? '100dvh' : '100vh',
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden'
+        }}
+      >
+
+        {/* LEFT SIDE HUGE WHITE MIST BRAND LOGO (Tilted 40° Anti-Clockwise, moved downward more, ~50% hidden behind left edge) */}
+        <div 
+          className="side-logo-left"
+          style={{
+            position: 'absolute',
+            left: '-270px',
+            top: '82%',
+            transform: 'translateY(-50%) rotate(-40deg)',
+            zIndex: 3,
+            pointerEvents: 'none',
+            transition: 'all 0.3s ease',
+            opacity: 0.95
+          }}
+        >
+          <img 
+            src="/assets/images/logo.png" 
+            alt="White Mist Brand Logo Left" 
+            style={{
+              height: '540px',
+              maxWidth: '650px',
+              objectFit: 'contain',
+              filter: 'drop-shadow(0 30px 60px rgba(63, 27, 133, 0.25))'
+            }}
+          />
+        </div>
+
+        {/* RIGHT SIDE HUGE WHITE MIST BRAND LOGO (Tilted 40° Anti-Clockwise, moved further upward, ~50% hidden behind right edge) */}
+        <div 
+          className="side-logo-right"
+          style={{
+            position: 'absolute',
+            right: '-270px',
+            top: '18%',
+            transform: 'translateY(-50%) rotate(-40deg)',
+            zIndex: 3,
+            pointerEvents: 'none',
+            transition: 'all 0.3s ease',
+            opacity: 0.95
+          }}
+        >
+          <img 
+            src="/assets/images/logo.png" 
+            alt="White Mist Brand Logo Right" 
+            style={{
+              height: '540px',
+              maxWidth: '650px',
+              objectFit: 'contain',
+              filter: 'drop-shadow(0 30px 60px rgba(63, 27, 133, 0.25))'
+            }}
+          />
+        </div>
+
+        {/* CENTER SHIRT ANIMATION CONTAINER */}
+        <div 
+          className="shirt-scroll-frame"
+          style={{
+            position: 'relative',
+            width: '100%',
+            maxWidth: '850px',
+            height: `${shirtFrameHeight}px`,
+            margin: '0 auto',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+
+          {/* STAINED SHIRT LAYER (Clipped from top down instantly with scroll) */}
+          <div style={{
+            position: 'absolute',
+            top: 0, left: 0, right: 0,
+            height: `${100 - scrollProgress}%`,
+            overflow: 'hidden',
+            transition: 'none',
+            opacity: scrollProgress >= 98 ? 0 : 1
+          }}>
+            <div 
+              className="shirt-image-layer"
+              style={{
+                position: 'absolute',
+                top: 0, left: 0, right: 0,
+                width: '100%',
+                height: `${shirtFrameHeight}px`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <img 
+                src="/assets/images/shirt_stained_before.png" 
+                alt="Stained Shirt"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 25px 50px rgba(0,0,0,0.15))'
+                }}
+              />
+            </div>
+          </div>
+
+          {/* CLEAN SHIRT LAYER (Clipped from bottom up instantly with scroll) */}
+          <div style={{
+            position: 'absolute',
+            bottom: 0, left: 0, right: 0,
+            height: `${scrollProgress}%`,
+            overflow: 'hidden',
+            transition: 'none'
+          }}>
+            <div 
+              className="shirt-image-layer"
+              style={{
+                position: 'absolute',
+                bottom: 0, left: 0, right: 0,
+                width: '100%',
+                height: `${shirtFrameHeight}px`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <img 
+                src="/assets/images/shirt_clean_after.png" 
+                alt="Clean Shirt"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 25px 50px rgba(56, 189, 248, 0.2))'
+                }}
+              />
+            </div>
+          </div>
+
+          {/* HIGH-DENSITY SOFT REALISTIC SOAP BUBBLE WAVE (Appears strictly on shirt image, disappears as soon as it leaves shirt) */}
+          {(() => {
+            const startShirt = 12; // Bottom hem of shirt image
+            const endShirt = 86;   // Top collar of shirt image
+            const fadeZone = 5;    // Quick fade right at the edge of the shirt fabric
+
+            if (scrollProgress < startShirt || scrollProgress > endShirt) return null;
+
+            let opacity = 1;
+            if (scrollProgress < startShirt + fadeZone) {
+              opacity = (scrollProgress - startShirt) / fadeZone;
+            } else if (scrollProgress > endShirt - fadeZone) {
+              opacity = (endShirt - scrollProgress) / fadeZone;
+            }
+
+            return (
+              <div style={{
+                position: 'absolute',
+                left: '12%', right: '12%',
+                bottom: `calc(${scrollProgress}% - 28px)`,
+                height: '65px',
+                pointerEvents: 'none',
+                zIndex: 10,
+                opacity: Math.max(0, Math.min(1, opacity)),
+                transition: 'opacity 0.1s ease'
+              }}>
+                {/* Soft White Cloud Shade & Mist Mask Overlay */}
+                <div style={{
+                  position: 'absolute',
+                  left: '-5%', right: '-5%', top: '-25px',
+                  height: '75px',
+                  background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.98) 0%, rgba(240,249,255,0.85) 50%, rgba(255,255,255,0.3) 75%, transparent 100%)',
+                  boxShadow: '0 0 35px rgba(255, 255, 255, 0.98), 0 -12px 25px rgba(255, 255, 255, 0.8)',
+                  filter: 'blur(6px)',
+                  borderRadius: '50%'
+                }} />
+
+                {/* 75 Translucent Realistic Soap Bubbles */}
+                {bubbles.map((b) => (
+                  <div
+                    key={b.id}
+                    style={{
+                      position: 'absolute',
+                      left: b.left,
+                      top: `${b.offsetY}px`,
+                      width: `${b.size}px`,
+                      height: `${b.size}px`,
+                      borderRadius: '50%',
+                      background: 'radial-gradient(circle at 32% 28%, #FFFFFF 0%, rgba(255, 255, 255, 0.88) 35%, rgba(240, 249, 255, 0.4) 70%, rgba(255, 255, 255, 0.75) 100%)',
+                      boxShadow: '0 4px 15px rgba(255, 255, 255, 0.7), inset 0 0 8px rgba(255, 255, 255, 0.9), inset 0 -3px 6px rgba(186, 230, 253, 0.3)',
+                      border: '1px solid rgba(255, 255, 255, 0.45)',
+                      backdropFilter: 'blur(2px)',
+                      opacity: b.opacity,
+                      animation: `gentleBubbleFloat ${b.animDuration}s ease-in-out ${b.animDelay}s infinite`
+                    }}
+                  />
+                ))}
+
+                {/* 30 Airborne Soap Bubbles flying upwards off the top of the foam layer */}
+                {flyingBubbles.map((fb) => (
+                  <div
+                    key={`fly-${fb.id}`}
+                    style={{
+                      position: 'absolute',
+                      left: fb.left,
+                      top: '-15px',
+                      width: `${fb.size}px`,
+                      height: `${fb.size}px`,
+                      borderRadius: '50%',
+                      background: 'radial-gradient(circle at 35% 30%, #FFFFFF 0%, rgba(255, 255, 255, 0.92) 40%, rgba(224, 242, 254, 0.45) 75%, rgba(255, 255, 255, 0.8) 100%)',
+                      boxShadow: '0 4px 12px rgba(255, 255, 255, 0.8), inset 0 0 8px rgba(255, 255, 255, 0.95)',
+                      border: '1px solid rgba(255, 255, 255, 0.6)',
+                      backdropFilter: 'blur(1.5px)',
+                      animation: `${fb.animName} ${fb.animDuration}s ease-in-out ${fb.animDelay}s infinite`
+                    }}
+                  />
+                ))}
+              </div>
+            );
+          })()}
+
+        </div>
+
+      </div>
+    </section>
+  );
+}

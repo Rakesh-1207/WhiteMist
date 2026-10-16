@@ -78,7 +78,7 @@ export default function OrderSuccessModal({ orderDetails, onContinueShopping }) 
           marginBottom: '1.75rem',
           fontSize: '0.875rem'
         }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid #E2E8F0' }}>
+          <div className="order-success-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem', paddingBottom: '1rem', borderBottom: '1px solid #E2E8F0' }}>
             <div>
               <span style={{ color: 'var(--text-muted)', fontSize: '0.8rem', display: 'block' }}>Order Reference ID</span>
               <strong style={{ fontSize: '1.05rem', color: 'var(--color-purple-primary)' }}>{orderDetails.orderId}</strong>

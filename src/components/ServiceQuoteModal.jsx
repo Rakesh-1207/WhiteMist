@@ -210,7 +210,7 @@ export default function ServiceQuoteModal({ isOpen, onClose, activeTab = 'quote'
                   <input type="text" required placeholder="e.g. Oberoi Grand Cafe" value={quoteForm.customer_name} onChange={e => setQuoteForm({...quoteForm, customer_name: e.target.value})} style={inputStyle} />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="service-modal-fields-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div>
                     <label style={{ fontSize: '0.8rem', fontWeight: '700', color: '#475569' }}>Email *</label>
                     <input type="email" required placeholder="procurement@example.com" value={quoteForm.customer_email} onChange={e => setQuoteForm({...quoteForm, customer_email: e.target.value})} style={inputStyle} />
@@ -221,7 +221,7 @@ export default function ServiceQuoteModal({ isOpen, onClose, activeTab = 'quote'
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="service-modal-fields-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div>
                     <label style={{ fontSize: '0.8rem', fontWeight: '700', color: '#475569' }}>Location / City *</label>
                     <input type="text" required placeholder="Bangalore, Karnataka" value={quoteForm.location} onChange={e => setQuoteForm({...quoteForm, location: e.target.value})} style={inputStyle} />
@@ -267,7 +267,7 @@ export default function ServiceQuoteModal({ isOpen, onClose, activeTab = 'quote'
                   </div>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="service-modal-fields-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div>
                     <label style={{ fontSize: '0.8rem', fontWeight: '700', color: '#475569' }}>Email *</label>
                     <input type="email" required placeholder="customer@example.com" value={serviceForm.customer_email} onChange={e => setServiceForm({...serviceForm, customer_email: e.target.value})} style={inputStyle} />
@@ -283,7 +283,7 @@ export default function ServiceQuoteModal({ isOpen, onClose, activeTab = 'quote'
                   <input type="text" required placeholder="102 MG Road, Indiranagar" value={serviceForm.address_line} onChange={e => setServiceForm({...serviceForm, address_line: e.target.value})} style={inputStyle} />
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem' }}>
+                <div className="service-modal-fields-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.75rem' }}>
                   <div>
                     <label style={{ fontSize: '0.8rem', fontWeight: '700', color: '#475569' }}>City *</label>
                     <input type="text" required placeholder="Bangalore" value={serviceForm.city} onChange={e => setServiceForm({...serviceForm, city: e.target.value})} style={inputStyle} />

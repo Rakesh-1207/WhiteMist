@@ -207,7 +207,7 @@ export default function CartPage({
                     }} className="cart-item-row">
 
                       {/* Product details info */}
-                      <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
+                      <div className="cart-item-product" style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
                         <div style={{
                           width: '80px',
                           height: '80px',
@@ -244,7 +244,7 @@ export default function CartPage({
                       </div>
 
                       {/* Quantity Controller */}
-                      <div style={{ display: 'flex', justifyContent: 'center' }}>
+                      <div className="cart-item-qty" style={{ display: 'flex', justifyContent: 'center' }}>
                         <div style={{
                           display: 'inline-flex',
                           alignItems: 'center',
@@ -280,12 +280,12 @@ export default function CartPage({
                       </div>
 
                       {/* Total price for item */}
-                      <div style={{ textAlign: 'right', fontWeight: '800', fontSize: '1.05rem', color: 'var(--color-purple-dark)' }}>
+                      <div className="cart-item-total" style={{ textAlign: 'right', fontWeight: '800', fontSize: '1.05rem', color: 'var(--color-purple-dark)' }}>
                         ₹{(item.price * item.quantity).toLocaleString()}
                       </div>
 
                       {/* Delete button */}
-                      <div>
+                      <div className="cart-item-remove">
                         <button
                           onClick={() => onRemoveItem(item.cartKey)}
                           style={{

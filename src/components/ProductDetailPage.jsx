@@ -79,18 +79,21 @@ export default function ProductDetailPage({ product, selectedFormat, onBack, onA
 
           {/* Left: Gallery & Main Image View */}
           <div>
-            <div style={{
-              background: product.bgGradient,
-              borderRadius: 'var(--radius-md)',
-              height: '420px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative',
-              marginBottom: '1.25rem',
-              border: '1px solid #E2E8F0',
-              overflow: 'hidden'
-            }}>
+            <div 
+              className="pdp-gallery-main"
+              style={{
+                background: product.bgGradient,
+                borderRadius: 'var(--radius-md)',
+                height: '420px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'relative',
+                marginBottom: '1.25rem',
+                border: '1px solid #E2E8F0',
+                overflow: 'hidden'
+              }}
+            >
               <img 
                 src={galleryImages[activeImgIdx] || currentFmt.image} 
                 alt={product.name}
@@ -323,7 +326,7 @@ export default function ProductDetailPage({ product, selectedFormat, onBack, onA
         }}>
           
           {/* Tabs Navigation Header */}
-          <div style={{ display: 'flex', gap: '1.5rem', borderBottom: '2px solid #E2E8F0', marginBottom: '2rem' }}>
+          <div className="pdp-tabs-nav" style={{ display: 'flex', gap: '1.5rem', borderBottom: '2px solid #E2E8F0', marginBottom: '2rem' }}>
             {[
               { id: 'details', label: 'Details & Features' },
               { id: 'ingredients', label: 'Ingredients & Safety' },

@@ -116,7 +116,7 @@ export default function CheckoutPage({ cartSummary, onBackToCart, onOrderSuccess
                   </h3>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                <div className="checkout-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div>
                     <label style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-main)', display: 'block', marginBottom: '0.3rem' }}>
                       Full Name *
@@ -159,7 +159,7 @@ export default function CheckoutPage({ cartSummary, onBackToCart, onOrderSuccess
                     {errors.phone && <span style={{ color: '#DC2626', fontSize: '0.75rem' }}>{errors.phone}</span>}
                   </div>
 
-                  <div style={{ gridColumn: 'span 2' }}>
+                  <div className="checkout-full-span" style={{ gridColumn: 'span 2' }}>
                     <label style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-main)', display: 'block', marginBottom: '0.3rem' }}>
                       Flat / House No. / Street Address *
                     </label>
@@ -240,7 +240,7 @@ export default function CheckoutPage({ cartSummary, onBackToCart, onOrderSuccess
                   </h3>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1.5rem' }}>
+                <div className="checkout-payment-methods-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem', marginBottom: '1.5rem' }}>
                   
                   {/* UPI Option */}
                   <div 

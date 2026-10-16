@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { ArrowUp } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import WhyWhiteMist from './components/WhyWhiteMist';
@@ -18,13 +19,36 @@ import ServiceQuoteModal from './components/ServiceQuoteModal';
 import CartPage from './components/CartPage';
 import StainBeforeAfter from './components/StainBeforeAfter';
 import BioEnzymeAnimation from './components/BioEnzymeAnimation';
-import FragranceScentLock from './components/FragranceScentLock';
+import ShirtScrollAnimation from './components/ShirtScrollAnimation';
 import { PRODUCTS } from './data/products';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const [activeView, setActiveView] = useState('home'); // 'home' | 'products' | 'wishlist' | 'product-detail' | 'checkout'
   const [previousView, setPreviousView] = useState('home');
+
+  // Ensure webpage always starts at the top (0,0) on refresh & track scroll for Back to Top button
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 350);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   // Cart Items State
   const [cartItems, setCartItems] = useState([
@@ -211,7 +235,10 @@ export default function App() {
       
       {/* Brand Animated Loading Screen */}
       {isLoading && (
-        <LoadingScreen onFinishLoading={() => setIsLoading(false)} />
+        <LoadingScreen onFinishLoading={() => {
+          setIsLoading(false);
+          window.scrollTo(0, 0);
+        }} />
       )}
 
       {/* Navbar */}
@@ -243,6 +270,7 @@ export default function App() {
             />
             <WhyWhiteMist />
             <StainBeforeAfter />
+            <ShirtScrollAnimation />
             <ProductsShowcase 
               onAddToCart={handleAddToCart}
               onOpenModal={handleOpenProductDetailPage}
@@ -253,7 +281,6 @@ export default function App() {
               }}
             />
             <BioEnzymeAnimation />
-            <FragranceScentLock />
             <StainCalculator onAddToCart={handleAddToCart} />
             <SuperSaverBanner onAddBundleToCart={handleAddBundleToCart} />
             <Testimonials />
@@ -373,12 +400,43 @@ export default function App() {
         </div>
       )}
 
+      {/* Floating Back to Top Button */}
+      <button
+        onClick={scrollToTop}
+        aria-label="Back to top"
+        title="Back to Top"
+        className={`back-to-top-btn ${showBackToTop ? 'visible' : ''}`}
+        style={{
+          position: 'fixed',
+          bottom: '28px',
+          right: '28px',
+          width: '46px',
+          height: '46px',
+          borderRadius: '50%',
+          background: 'linear-gradient(135deg, var(--color-purple-primary) 0%, #3F1B85 100%)',
+          color: 'white',
+          border: '2px solid rgba(255, 255, 255, 0.4)',
+          boxShadow: '0 8px 25px rgba(63, 27, 133, 0.35)',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 900,
+          opacity: showBackToTop ? 1 : 0,
+          visibility: showBackToTop ? 'visible' : 'hidden',
+          transform: showBackToTop ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.8)',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+        }}
+      >
+        <ArrowUp size={22} strokeWidth={2.5} />
+      </button>
+
       {/* Toast Notification Banner */}
       {toastMessage && (
         <div style={{
           position: 'fixed',
-          bottom: '24px',
-          right: '24px',
+          bottom: showBackToTop ? '86px' : '28px',
+          right: '28px',
           background: 'var(--color-purple-dark)',
           color: 'white',
           padding: '0.85rem 1.5rem',
@@ -390,7 +448,8 @@ export default function App() {
           display: 'flex',
           alignItems: 'center',
           gap: '0.5rem',
-          animation: 'bounceIn 0.3s ease'
+          animation: 'bounceIn 0.3s ease',
+          transition: 'bottom 0.3s ease'
         }}>
           ✨ {toastMessage}
         </div>

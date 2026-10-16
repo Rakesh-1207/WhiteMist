@@ -104,8 +104,8 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
         bottom: 0,
         left: 0,
         right: 0,
-        height: '160px',
-        background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 40%, rgba(255, 255, 255, 0.85) 75%, #FFFFFF 100%)',
+        height: '80px',
+        background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 45%, rgba(255, 255, 255, 0.8) 80%, #FFFFFF 100%)',
         zIndex: 3,
         pointerEvents: 'none'
       }} />
@@ -127,7 +127,7 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
         !poppedBubbles[b.id] && (
           <div
             key={b.id}
-            className="pure-css-bubble"
+            className="pure-css-bubble hero-bubble"
             onClick={() => handlePopBubble(b.id)}
             title="Click to pop bubble!"
             style={{
@@ -156,10 +156,10 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
           <div>
             
             <h1 style={{
-              fontSize: '3.75rem',
+              fontSize: '4.2rem',
               fontWeight: '800',
               color: 'var(--color-purple-dark)',
-              marginBottom: '1.25rem',
+              marginBottom: '1.35rem',
               lineHeight: 1.08
             }}>
               Pure Cleanliness, <br />
@@ -169,11 +169,11 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
             </h1>
 
             <p style={{
-              fontSize: '1.125rem',
+              fontSize: '1.22rem',
               color: 'var(--text-muted)',
-              marginBottom: '1.75rem',
-              lineHeight: 1.6,
-              maxWidth: '540px',
+              marginBottom: '1.85rem',
+              lineHeight: 1.62,
+              maxWidth: '590px',
               fontStyle: 'italic'
             }} className="hero-description-text">
               Meridian <strong>White Mist Liquid Detergent</strong> dissolves 10x tough stains instantly while infusing garments with 48-hour micro-capsule fragrance. Perfect for both <strong>Front Load & Top Load</strong> machines.
@@ -183,48 +183,48 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
             <div style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr',
-              gap: '0.75rem',
-              marginBottom: '1.75rem',
-              maxWidth: '520px'
+              gap: '0.85rem',
+              marginBottom: '1.85rem',
+              maxWidth: '570px'
             }} className="hero-checkmarks-grid">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: '600' }}>
-                <CheckCircle2 size={16} style={{ color: '#16A34A', flexShrink: 0 }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.92rem', fontWeight: '600' }}>
+                <CheckCircle2 size={18} style={{ color: '#16A34A', flexShrink: 0 }} />
                 <span>Front & Top Load Safe</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: '600' }}>
-                <CheckCircle2 size={16} style={{ color: '#16A34A', flexShrink: 0 }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.92rem', fontWeight: '600' }}>
+                <CheckCircle2 size={18} style={{ color: '#16A34A', flexShrink: 0 }} />
                 <span>10x Bio-Stain Removal</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: '600' }}>
-                <CheckCircle2 size={16} style={{ color: '#16A34A', flexShrink: 0 }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.92rem', fontWeight: '600' }}>
+                <CheckCircle2 size={18} style={{ color: '#16A34A', flexShrink: 0 }} />
                 <span>48hr Scent Lock</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', fontWeight: '600' }}>
-                <CheckCircle2 size={16} style={{ color: '#16A34A', flexShrink: 0 }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.92rem', fontWeight: '600' }}>
+                <CheckCircle2 size={18} style={{ color: '#16A34A', flexShrink: 0 }} />
                 <span>Eco Spout Pouch Refills</span>
               </div>
             </div>
 
             {/* Interactive Hero Variant Selector Switches */}
-            <div style={{ marginBottom: '1.75rem' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'block', marginBottom: '0.5rem' }}>
+            <div style={{ marginBottom: '1.85rem' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'block', marginBottom: '0.55rem' }}>
                 Select Fragrance Variant:
               </span>
               <div style={{ display: 'flex', gap: '0.75rem' }} className="hero-variant-switcher">
                 <button
                   onClick={() => setSelectedVariant('blue')}
                   style={{
-                    padding: '0.5rem 0.85rem',
+                    padding: '0.55rem 0.95rem',
                     borderRadius: 'var(--radius-full)',
                     border: selectedVariant === 'blue' ? '2px solid #0084FF' : '1px solid #CBD5E1',
                     background: selectedVariant === 'blue' ? '#E6F3FF' : 'white',
                     color: selectedVariant === 'blue' ? '#0084FF' : '#475569',
                     fontWeight: '700',
-                    fontSize: '0.825rem',
+                    fontSize: '0.88rem',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.4rem',
+                    gap: '0.45rem',
                     transition: 'var(--transition)'
                   }}
                 >
@@ -236,17 +236,17 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
                 <button
                   onClick={() => setSelectedVariant('pink')}
                   style={{
-                    padding: '0.5rem 0.85rem',
+                    padding: '0.55rem 0.95rem',
                     borderRadius: 'var(--radius-full)',
                     border: selectedVariant === 'pink' ? '2px solid #F01262' : '1px solid #CBD5E1',
                     background: selectedVariant === 'pink' ? '#FFEBF2' : 'white',
                     color: selectedVariant === 'pink' ? '#F01262' : '#475569',
                     fontWeight: '700',
-                    fontSize: '0.825rem',
+                    fontSize: '0.88rem',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.4rem',
+                    gap: '0.45rem',
                     transition: 'var(--transition)'
                   }}
                 >
@@ -258,17 +258,17 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
                 <button
                   onClick={() => setSelectedVariant('yellow')}
                   style={{
-                    padding: '0.5rem 0.85rem',
+                    padding: '0.55rem 0.95rem',
                     borderRadius: 'var(--radius-full)',
                     border: selectedVariant === 'yellow' ? '2px solid #D97706' : '1px solid #CBD5E1',
                     background: selectedVariant === 'yellow' ? '#FFFDE6' : 'white',
                     color: selectedVariant === 'yellow' ? '#D97706' : '#475569',
                     fontWeight: '700',
-                    fontSize: '0.825rem',
+                    fontSize: '0.88rem',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.4rem',
+                    gap: '0.45rem',
                     transition: 'var(--transition)'
                   }}
                 >
@@ -280,20 +280,20 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
             </div>
 
             {/* CTAs */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }} className="hero-cta-group">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }} className="hero-cta-group">
               <a 
                 href="#products" 
                 className="btn-primary" 
-                style={{ fontSize: '0.95rem', padding: '0.75rem 1.5rem' }}
+                style={{ fontSize: '1.02rem', padding: '0.85rem 1.75rem' }}
               >
                 <span>Shop White Mist</span>
-                <ArrowRight size={18} />
+                <ArrowRight size={20} />
               </a>
 
               <a 
                 href="#stain-calculator" 
                 className="btn-secondary" 
-                style={{ fontSize: '0.9rem', padding: '0.75rem 1.25rem' }}
+                style={{ fontSize: '0.98rem', padding: '0.85rem 1.45rem' }}
               >
                 <span>Calculate Dose</span>
               </a>
@@ -310,8 +310,8 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
             {/* Glowing Backdrop Aura */}
             <div style={{
               position: 'absolute',
-              width: '320px',
-              height: '320px',
+              width: '360px',
+              height: '360px',
               borderRadius: '50%',
               background: current.glowColor,
               filter: 'blur(50px)',
@@ -323,8 +323,9 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
               <img 
                 src={current.bottleImg} 
                 alt={`White Mist ${current.title}`}
+                className="hero-bottle-img"
                 style={{
-                  maxHeight: '440px',
+                  maxHeight: '485px',
                   width: 'auto',
                   filter: 'drop-shadow(0 20px 30px rgba(39, 13, 91, 0.18))',
                   transition: 'all 0.5s ease'
@@ -333,46 +334,52 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
             </div>
 
             {/* Floating Pouch Overlay */}
-            <div style={{
-              position: 'absolute',
-              bottom: '10px',
-              right: '20px',
-              zIndex: 3,
-              animation: 'floatSlow 5s ease-in-out infinite'
-            }}>
+            <div 
+              className="hero-pouch-box"
+              style={{
+                position: 'absolute',
+                bottom: '10px',
+                right: '20px',
+                zIndex: 3,
+                animation: 'floatSlow 5s ease-in-out infinite'
+              }}
+            >
               <img 
                 src={current.pouchImg} 
                 alt="White Mist Refill Pouch"
+                className="hero-pouch-img"
                 style={{
-                  maxHeight: '220px',
+                  maxHeight: '240px',
                   filter: 'drop-shadow(0 15px 25px rgba(0, 0, 0, 0.15))'
                 }}
               />
             </div>
 
             {/* Floating Super Saver Badge */}
-            <div style={{
-              position: 'absolute',
-              top: '20px',
-              left: '20px',
-              zIndex: 4,
-              background: 'white',
-              borderRadius: 'var(--radius-md)',
-              padding: '0.6rem 1rem',
-              boxShadow: 'var(--shadow-md)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.6rem'
-            }}>
-              <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: current.badgeColor, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
-                <Zap size={20} />
+            <div 
+              className="hero-saver-badge"
+              style={{
+                position: 'absolute',
+                top: '20px',
+                left: '20px',
+                zIndex: 4,
+                background: 'white',
+                borderRadius: 'var(--radius-md)',
+                padding: '0.7rem 1.15rem',
+                boxShadow: 'var(--shadow-md)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.65rem'
+              }}
+            >
+              <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: current.badgeColor, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white' }}>
+                <Zap size={22} />
               </div>
               <div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: '600' }}>Super Saver</div>
-                <div style={{ fontSize: '0.9rem', fontWeight: '800', color: 'var(--text-main)' }}>Save up to 39%</div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: '600' }}>Super Saver</div>
+                <div style={{ fontSize: '0.98rem', fontWeight: '800', color: 'var(--text-main)' }}>Save up to 39%</div>
               </div>
             </div>
-
           </div>
 
         </div>

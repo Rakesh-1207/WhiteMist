@@ -114,7 +114,7 @@ export default function StainCalculator({ onAddToCart }) {
               <label style={{ fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'block', marginBottom: '0.5rem' }}>
                 1. Washing Machine Type:
               </label>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem' }}>
+              <div className="calc-step-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem' }}>
                 {[
                   { id: 'front', label: 'Front Load' },
                   { id: 'top', label: 'Top Load' },
@@ -145,7 +145,7 @@ export default function StainCalculator({ onAddToCart }) {
               <label style={{ fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'block', marginBottom: '0.5rem' }}>
                 2. Load Size (Cloth Weight):
               </label>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem' }}>
+              <div className="calc-step-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem' }}>
                 {[
                   { id: 'small', label: 'Small (4-5 kg)' },
                   { id: 'medium', label: 'Regular (6-8 kg)' },
@@ -176,7 +176,7 @@ export default function StainCalculator({ onAddToCart }) {
               <label style={{ fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'block', marginBottom: '0.5rem' }}>
                 3. Stain / Soil Condition:
               </label>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem' }}>
+              <div className="calc-step-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem' }}>
                 {[
                   { id: 'normal', label: 'Regular Daily' },
                   { id: 'tough', label: 'Tea / Oil Stains' },
