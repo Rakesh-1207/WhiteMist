@@ -38,13 +38,14 @@ export default function App() {
     window.scrollTo(0, 0);
 
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      touchMultiplier: 1.5,
+      touchMultiplier: 1.0,
+      syncTouch: false,
       infinite: false,
       autoRaf: true,
       anchors: true,

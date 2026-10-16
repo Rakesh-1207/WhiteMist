@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 
 export default function ShirtScrollAnimation() {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -14,9 +14,12 @@ export default function ShirtScrollAnimation() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Instant Synchronized Pinned Scroll Progress Calculation (Direct 1:1 Scroll Response with Lenis Sync)
+  // Butter-Smooth GPU-Synchronized Pinned Scroll Progress with RAF Throttling
   useEffect(() => {
-    const handleScroll = () => {
+    let rafId = null;
+    let lastProgress = -1;
+
+    const computeProgress = () => {
       if (!sectionRef.current) return;
       const rect = sectionRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
@@ -24,12 +27,24 @@ export default function ShirtScrollAnimation() {
       if (totalScrollTrack <= 0) return;
 
       const scrolled = -rect.top;
-      const progress = Math.max(0, Math.min(100, (scrolled / totalScrollTrack) * 100));
-      setScrollProgress(progress);
+      const rawProgress = Math.max(0, Math.min(100, (scrolled / totalScrollTrack) * 100));
+
+      // Skip microscopic changes to eliminate unnecessary React re-renders on mobile
+      if (Math.abs(rawProgress - lastProgress) >= 0.15) {
+        lastProgress = rawProgress;
+        setScrollProgress(Math.round(rawProgress * 10) / 10);
+      }
+      rafId = null;
+    };
+
+    const handleScroll = () => {
+      if (rafId === null) {
+        rafId = window.requestAnimationFrame(computeProgress);
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    computeProgress();
 
     let unbindLenis = null;
     if (window.lenis && typeof window.lenis.on === 'function') {
@@ -39,31 +54,35 @@ export default function ShirtScrollAnimation() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
       if (unbindLenis) unbindLenis();
+      if (rafId !== null) window.cancelAnimationFrame(rafId);
     };
   }, []);
 
-  // Soft, Pearlescent Micro-Foam (lightweight count on mobile for buttery 60fps)
-  const bubbleCount = isMobile ? 32 : 75;
-  const flyingCount = isMobile ? 12 : 30;
+  // Memoized Soft Pearlescent Micro-Foam (Zero re-calculations during scroll)
+  const bubbles = useMemo(() => {
+    const bubbleCount = isMobile ? 18 : 75;
+    return Array.from({ length: bubbleCount }).map((_, i) => ({
+      id: i,
+      size: Math.floor((i % 5) * (isMobile ? 2.5 : 4)) + (isMobile ? 12 : 16),
+      left: `${(i * (100 / bubbleCount)) + (Math.sin(i * 1.5) * 1.5)}%`,
+      offsetY: (Math.sin(i * 1.2) * (isMobile ? 14 : 32)) - (isMobile ? 7 : 16),
+      opacity: 0.65 + ((i % 4) * 0.08),
+      animDuration: (2.5 + (i % 4) * 0.7).toFixed(1),
+      animDelay: ((i % 7) * 0.2).toFixed(1)
+    }));
+  }, [isMobile]);
 
-  const bubbles = Array.from({ length: bubbleCount }).map((_, i) => ({
-    id: i,
-    size: Math.floor(Math.random() * (isMobile ? 22 : 32)) + (isMobile ? 12 : 16),
-    left: `${(i * (100 / bubbleCount)) + (Math.sin(i * 1.5) * 1.5)}%`,
-    offsetY: (Math.sin(i * 1.2) * (isMobile ? 20 : 32)) - (isMobile ? 10 : 16),
-    opacity: 0.6 + (Math.random() * 0.4),
-    animDuration: (2.5 + (i % 4) * 0.7).toFixed(1),
-    animDelay: ((i % 7) * 0.2).toFixed(1)
-  }));
-
-  const flyingBubbles = Array.from({ length: flyingCount }).map((_, i) => ({
-    id: i,
-    size: Math.floor(Math.random() * (isMobile ? 16 : 24)) + (isMobile ? 10 : 12),
-    left: `${(i * (100 / flyingCount)) + (Math.sin(i * 2.3) * 4.5)}%`,
-    animDuration: (2.4 + (i % 6) * 0.4).toFixed(1),
-    animDelay: ((i % 9) * 0.3).toFixed(1),
-    animName: i % 3 === 0 ? 'bubbleFlyUpLeft' : i % 3 === 1 ? 'bubbleFlyUpRight' : 'bubbleFlyUp'
-  }));
+  const flyingBubbles = useMemo(() => {
+    const flyingCount = isMobile ? 6 : 30;
+    return Array.from({ length: flyingCount }).map((_, i) => ({
+      id: i,
+      size: Math.floor((i % 4) * (isMobile ? 2 : 3)) + (isMobile ? 10 : 12),
+      left: `${(i * (100 / flyingCount)) + (Math.sin(i * 2.3) * 4.5)}%`,
+      animDuration: (2.4 + (i % 6) * 0.4).toFixed(1),
+      animDelay: ((i % 9) * 0.3).toFixed(1),
+      animName: i % 3 === 0 ? 'bubbleFlyUpLeft' : i % 3 === 1 ? 'bubbleFlyUpRight' : 'bubbleFlyUp'
+    }));
+  }, [isMobile]);
 
   const shirtFrameHeight = isMobile ? 420 : 780;
 
@@ -207,71 +226,63 @@ export default function ShirtScrollAnimation() {
           }}
         >
 
-          {/* STAINED SHIRT LAYER (Clipped from top down instantly with scroll) */}
-          <div style={{
-            position: 'absolute',
-            top: 0, left: 0, right: 0,
-            height: `${100 - scrollProgress}%`,
-            overflow: 'hidden',
-            transition: 'none',
-            opacity: scrollProgress >= 98 ? 0 : 1
-          }}>
-            <div 
-              className="shirt-image-layer"
+          {/* STAINED SHIRT LAYER (GPU Accelerated Inset Clipping) */}
+          <div 
+            style={{
+              position: 'absolute',
+              inset: 0,
+              clipPath: `inset(0 0 ${scrollProgress}% 0)`,
+              WebkitClipPath: `inset(0 0 ${scrollProgress}% 0)`,
+              willChange: 'clip-path',
+              transform: 'translateZ(0)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              opacity: scrollProgress >= 98 ? 0 : 1,
+              pointerEvents: 'none'
+            }}
+          >
+            <img 
+              src="/assets/images/shirt_stained_before.png" 
+              alt="Stained Shirt"
+              loading="eager"
               style={{
-                position: 'absolute',
-                top: 0, left: 0, right: 0,
                 width: '100%',
                 height: `${shirtFrameHeight}px`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
+                objectFit: 'contain',
+                filter: isMobile ? 'drop-shadow(0 10px 20px rgba(0,0,0,0.1))' : 'drop-shadow(0 25px 50px rgba(0,0,0,0.15))',
+                willChange: 'transform'
               }}
-            >
-              <img 
-                src="/assets/images/shirt_stained_before.png" 
-                alt="Stained Shirt"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  filter: 'drop-shadow(0 25px 50px rgba(0,0,0,0.15))'
-                }}
-              />
-            </div>
+            />
           </div>
 
-          {/* CLEAN SHIRT LAYER (Clipped from bottom up instantly with scroll) */}
-          <div style={{
-            position: 'absolute',
-            bottom: 0, left: 0, right: 0,
-            height: `${scrollProgress}%`,
-            overflow: 'hidden',
-            transition: 'none'
-          }}>
-            <div 
-              className="shirt-image-layer"
+          {/* CLEAN SHIRT LAYER (GPU Accelerated Inset Clipping) */}
+          <div 
+            style={{
+              position: 'absolute',
+              inset: 0,
+              clipPath: `inset(${100 - scrollProgress}% 0 0 0)`,
+              WebkitClipPath: `inset(${100 - scrollProgress}% 0 0 0)`,
+              willChange: 'clip-path',
+              transform: 'translateZ(0)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              pointerEvents: 'none'
+            }}
+          >
+            <img 
+              src="/assets/images/shirt_clean_after.png" 
+              alt="Clean Shirt"
+              loading="eager"
               style={{
-                position: 'absolute',
-                bottom: 0, left: 0, right: 0,
                 width: '100%',
                 height: `${shirtFrameHeight}px`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
+                objectFit: 'contain',
+                filter: isMobile ? 'drop-shadow(0 10px 20px rgba(56, 189, 248, 0.15))' : 'drop-shadow(0 25px 50px rgba(56, 189, 248, 0.2))',
+                willChange: 'transform'
               }}
-            >
-              <img 
-                src="/assets/images/shirt_clean_after.png" 
-                alt="Clean Shirt"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  filter: 'drop-shadow(0 25px 50px rgba(56, 189, 248, 0.2))'
-                }}
-              />
-            </div>
+            />
           </div>
 
           {/* HIGH-DENSITY SOFT REALISTIC SOAP BUBBLE WAVE (Appears strictly on shirt image, disappears as soon as it leaves shirt) */}
@@ -292,26 +303,31 @@ export default function ShirtScrollAnimation() {
             return (
               <div style={{
                 position: 'absolute',
-                left: '12%', right: '12%',
-                bottom: `calc(${scrollProgress}% - 28px)`,
-                height: '65px',
+                left: isMobile ? '6%' : '12%',
+                right: isMobile ? '6%' : '12%',
+                bottom: `calc(${scrollProgress}% - ${isMobile ? 20 : 28}px)`,
+                height: isMobile ? '45px' : '65px',
                 pointerEvents: 'none',
                 zIndex: 10,
                 opacity: Math.max(0, Math.min(1, opacity)),
-                transition: 'opacity 0.1s ease'
+                transition: 'opacity 0.1s ease',
+                willChange: 'bottom, opacity',
+                transform: 'translateZ(0)'
               }}>
                 {/* Soft White Cloud Shade & Mist Mask Overlay */}
                 <div style={{
                   position: 'absolute',
-                  left: '-5%', right: '-5%', top: '-25px',
-                  height: '75px',
+                  left: '-5%', right: '-5%', top: isMobile ? '-14px' : '-25px',
+                  height: isMobile ? '50px' : '75px',
                   background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.98) 0%, rgba(240,249,255,0.85) 50%, rgba(255,255,255,0.3) 75%, transparent 100%)',
-                  boxShadow: '0 0 35px rgba(255, 255, 255, 0.98), 0 -12px 25px rgba(255, 255, 255, 0.8)',
-                  filter: 'blur(6px)',
+                  boxShadow: isMobile
+                    ? '0 0 18px rgba(255, 255, 255, 0.95)'
+                    : '0 0 35px rgba(255, 255, 255, 0.98), 0 -12px 25px rgba(255, 255, 255, 0.8)',
+                  filter: isMobile ? 'blur(3px)' : 'blur(6px)',
                   borderRadius: '50%'
                 }} />
 
-                {/* 75 Translucent Realistic Soap Bubbles */}
+                {/* Translucent Realistic Soap Bubbles */}
                 {bubbles.map((b) => (
                   <div
                     key={b.id}
@@ -322,32 +338,40 @@ export default function ShirtScrollAnimation() {
                       width: `${b.size}px`,
                       height: `${b.size}px`,
                       borderRadius: '50%',
-                      background: 'radial-gradient(circle at 32% 28%, #FFFFFF 0%, rgba(255, 255, 255, 0.88) 35%, rgba(240, 249, 255, 0.4) 70%, rgba(255, 255, 255, 0.75) 100%)',
-                      boxShadow: '0 4px 15px rgba(255, 255, 255, 0.7), inset 0 0 8px rgba(255, 255, 255, 0.9), inset 0 -3px 6px rgba(186, 230, 253, 0.3)',
-                      border: '1px solid rgba(255, 255, 255, 0.45)',
-                      backdropFilter: 'blur(2px)',
+                      background: 'radial-gradient(circle at 32% 28%, #FFFFFF 0%, rgba(255, 255, 255, 0.9) 35%, rgba(240, 249, 255, 0.45) 70%, rgba(255, 255, 255, 0.75) 100%)',
+                      boxShadow: isMobile
+                        ? '0 2px 6px rgba(255, 255, 255, 0.6), inset 0 0 4px rgba(255, 255, 255, 0.9)'
+                        : '0 4px 15px rgba(255, 255, 255, 0.7), inset 0 0 8px rgba(255, 255, 255, 0.9), inset 0 -3px 6px rgba(186, 230, 253, 0.3)',
+                      border: '1px solid rgba(255, 255, 255, 0.5)',
+                      backdropFilter: isMobile ? 'none' : 'blur(2px)',
+                      WebkitBackdropFilter: isMobile ? 'none' : 'blur(2px)',
                       opacity: b.opacity,
-                      animation: `gentleBubbleFloat ${b.animDuration}s ease-in-out ${b.animDelay}s infinite`
+                      animation: `gentleBubbleFloat ${b.animDuration}s ease-in-out ${b.animDelay}s infinite`,
+                      willChange: 'transform'
                     }}
                   />
                 ))}
 
-                {/* 30 Airborne Soap Bubbles flying upwards off the top of the foam layer */}
+                {/* Airborne Soap Bubbles flying upwards off the top of the foam layer */}
                 {flyingBubbles.map((fb) => (
                   <div
                     key={`fly-${fb.id}`}
                     style={{
                       position: 'absolute',
                       left: fb.left,
-                      top: '-15px',
+                      top: isMobile ? '-8px' : '-15px',
                       width: `${fb.size}px`,
                       height: `${fb.size}px`,
                       borderRadius: '50%',
                       background: 'radial-gradient(circle at 35% 30%, #FFFFFF 0%, rgba(255, 255, 255, 0.92) 40%, rgba(224, 242, 254, 0.45) 75%, rgba(255, 255, 255, 0.8) 100%)',
-                      boxShadow: '0 4px 12px rgba(255, 255, 255, 0.8), inset 0 0 8px rgba(255, 255, 255, 0.95)',
+                      boxShadow: isMobile
+                        ? '0 2px 5px rgba(255, 255, 255, 0.7)'
+                        : '0 4px 12px rgba(255, 255, 255, 0.8), inset 0 0 8px rgba(255, 255, 255, 0.95)',
                       border: '1px solid rgba(255, 255, 255, 0.6)',
-                      backdropFilter: 'blur(1.5px)',
-                      animation: `${fb.animName} ${fb.animDuration}s ease-in-out ${fb.animDelay}s infinite`
+                      backdropFilter: isMobile ? 'none' : 'blur(1.5px)',
+                      WebkitBackdropFilter: isMobile ? 'none' : 'blur(1.5px)',
+                      animation: `${fb.animName} ${fb.animDuration}s ease-in-out ${fb.animDelay}s infinite`,
+                      willChange: 'transform'
                     }}
                   />
                 ))}
