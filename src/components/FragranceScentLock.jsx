@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, Sparkles, Wind, Droplets } from 'lucide-react';
+import { Heart, Wind, Droplets } from 'lucide-react';
 
 export default function FragranceScentLock() {
   const [activeFragrance, setActiveFragrance] = useState('blue');
@@ -136,7 +136,7 @@ export default function FragranceScentLock() {
           )}
 
           <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: current.bgGradient, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem auto', boxShadow: `0 15px 30px ${current.color}60` }}>
-            <Sparkles size={40} color="white" />
+            <Wind size={40} color="white" />
           </div>
 
           <h3 style={{ fontSize: '1.75rem', fontWeight: '800', marginBottom: '0.75rem', color: 'white' }}>

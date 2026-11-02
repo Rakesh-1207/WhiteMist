@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Trash2, ShoppingBag, ArrowRight, Tag, CheckCircle2, ShieldCheck, Truck } from 'lucide-react';
-import { PROMO_CODES } from '../data/products';
+import { api } from '../services/api';
 
 export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantity, onRemoveItem, onProceedToCheckout, onViewFullCart }) {
   if (!isOpen) return null;
@@ -20,32 +20,19 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
   const shippingCost = subtotal >= freeShippingThreshold || cartItems.length === 0 ? 0 : 49;
 
   // Promo Code Calculation
-  let promoDiscount = 0;
-  if (appliedPromo) {
-    const promo = PROMO_CODES[appliedPromo];
-    if (promo) {
-      if (promo.discountPercent) {
-        promoDiscount = Math.round((subtotal * promo.discountPercent) / 100);
-      } else if (promo.discountAmount) {
-        promoDiscount = promo.discountAmount;
-      }
-    }
-  }
+  const promoDiscount = appliedPromo ? appliedPromo.discount : 0;
 
   const finalTotal = Math.max(0, subtotal - promoDiscount + shippingCost);
 
-  const handleApplyPromo = () => {
+  const handleApplyPromo = async () => {
     const code = promoInput.trim().toUpperCase();
-    if (PROMO_CODES[code]) {
-      const p = PROMO_CODES[code];
-      if (subtotal < p.minSpend) {
-        setPromoError(`Minimum spend of ₹${p.minSpend} required for code ${code}`);
-      } else {
-        setAppliedPromo(code);
-        setPromoError('');
-      }
-    } else {
-      setPromoError('Invalid Coupon Code. Try: MISTFRESH');
+    if (!code) return;
+    try {
+      const result = await api.validatePromoCode(code, subtotal);
+      setAppliedPromo(result);
+      setPromoError('');
+    } catch (err) {
+      setPromoError(err.message || 'Invalid Coupon Code. Try: MISTWELCOME10');
     }
   };
 
@@ -274,7 +261,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
 
             {appliedPromo && (
               <div style={{ fontSize: '0.8rem', color: '#166534', fontWeight: '700', marginTop: '0.4rem' }}>
-                ✅ Coupon <strong>{appliedPromo}</strong> applied (-₹{promoDiscount})
+                ✅ Coupon <strong>{appliedPromo.code || appliedPromo}</strong> applied (-₹{promoDiscount})
               </div>
             )}
             {promoError && (
@@ -317,7 +304,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQuantit
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
               <button
-                onClick={() => onProceedToCheckout({ cartItems, subtotal, promoDiscount, shippingCost, finalTotal, appliedPromo })}
+                onClick={() => onProceedToCheckout({ cartItems, subtotal, promoDiscount, shippingCost, finalTotal, appliedPromo: appliedPromo?.code || appliedPromo })}
                 className="btn-primary"
                 style={{
                   width: '100%',

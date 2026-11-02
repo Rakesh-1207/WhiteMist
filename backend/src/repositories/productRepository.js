@@ -1,6 +1,53 @@
 import { query } from '../database/db.js';
 
 export class ProductRepository {
+  static formatProduct(p) {
+    if (!p) return null;
+    return {
+      id: p.slug, // Frontend uses slug as primary identifier
+      dbId: p.id,
+      sku: p.sku,
+      modelNumber: p.model_number,
+      name: p.name,
+      slug: p.slug,
+      category: p.category_slug || 'bottles',
+      categoryName: p.category_name,
+      tagline: p.tagline,
+      color: p.color || 'blue',
+      accentColor: p.accent_color || '#0084FF',
+      bgGradient: p.bg_gradient || 'linear-gradient(135deg, #E6F3FF 0%, #FFFFFF 100%)',
+      badge: p.badge,
+      rating: parseFloat(p.rating || 4.90),
+      reviewsCount: parseInt(p.reviews_count || 100, 10),
+      price: p.discount_price ? parseFloat(p.discount_price) : parseFloat(p.price),
+      mrp: parseFloat(p.price),
+      capacity: p.dimensions || `${p.capacity}L / ${p.capacity}kg`,
+      energyRating: p.energy_rating || 'Front & Top Load',
+      waterConsumption: p.water_consumption || 'Low Foam Tech',
+      noiseLevel: p.noise_level || 'Color Safe',
+      washPrograms: p.wash_programs_count || 40,
+      warrantyYears: p.warranty_years || 2,
+      description: p.description || p.short_description,
+      stockStatus: p.stock_status,
+      availableQuantity: p.available_quantity,
+      formats: (p.formats || []).map(f => ({
+        id: f.id || f.format_code,
+        name: f.name,
+        price: parseFloat(f.price),
+        mrp: parseFloat(f.mrp),
+        discount: f.discount,
+        image: f.image,
+        doses: f.doses || 40,
+      })),
+      features: p.features || [],
+      specs: (p.specs || []).map(s => ({
+        name: s.spec_key || s.name,
+        value: s.spec_value || s.value,
+      })),
+      images: (p.images || []).map(img => typeof img === 'string' ? img : img.image_url),
+    };
+  }
+
   static async findAll({
     search,
     category,
@@ -13,7 +60,7 @@ export class ProductRepository {
     sortBy = 'created_at',
     sortOrder = 'DESC',
     page = 1,
-    limit = 12,
+    limit = 20,
   }) {
     const offset = (page - 1) * limit;
     let sql = `
@@ -74,14 +121,15 @@ export class ProductRepository {
 
     const products = await query(sql, params);
 
-    // Attach primary images, specs & features
+    // Attach formats, images, specs & features from DB
     for (const prod of products) {
       prod.images = await this.getProductImages(prod.id);
       prod.specs = await this.getProductSpecs(prod.id);
       prod.features = await this.getProductFeatures(prod.id);
+      prod.formats = await this.getProductFormats(prod.id);
     }
 
-    return products;
+    return products.map(p => this.formatProduct(p));
   }
 
   static async countAll({ search, category, minPrice, maxPrice, capacity, energyRating, noiseLevel, availability }) {
@@ -152,7 +200,8 @@ export class ProductRepository {
     product.images = await this.getProductImages(product.id);
     product.specs = await this.getProductSpecs(product.id);
     product.features = await this.getProductFeatures(product.id);
-    return product;
+    product.formats = await this.getProductFormats(product.id);
+    return this.formatProduct(product);
   }
 
   static async findBySlug(slug) {
@@ -169,7 +218,32 @@ export class ProductRepository {
     product.images = await this.getProductImages(product.id);
     product.specs = await this.getProductSpecs(product.id);
     product.features = await this.getProductFeatures(product.id);
-    return product;
+    product.formats = await this.getProductFormats(product.id);
+    return this.formatProduct(product);
+  }
+
+  static async findByIdOrSlug(idOrSlug) {
+    if (!isNaN(idOrSlug)) {
+      const byId = await this.findById(idOrSlug);
+      if (byId) return byId;
+    }
+    return this.findBySlug(idOrSlug);
+  }
+
+  static async getSuperSaverBundle() {
+    const sql = `SELECT bundle_code as id, title, subtitle, price, mrp, savings, image FROM bundles WHERE is_active = TRUE LIMIT 1`;
+    const rows = await query(sql);
+    if (!rows[0]) return null;
+    const b = rows[0];
+    return {
+      id: b.id,
+      title: b.title,
+      subtitle: b.subtitle,
+      price: parseFloat(b.price),
+      mrp: parseFloat(b.mrp),
+      savings: b.savings,
+      image: b.image,
+    };
   }
 
   static async create(productData) {
@@ -178,8 +252,9 @@ export class ProductRepository {
         sku, model_number, name, slug, category_id, tagline, short_description,
         description, price, discount_price, badge, capacity, dimensions,
         energy_rating, water_consumption, noise_level, wash_programs_count,
-        warranty_years, stock_status, available_quantity, status, video_url
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        warranty_years, stock_status, available_quantity, status, video_url,
+        color, accent_color, bg_gradient
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const params = [
       productData.sku,
@@ -193,17 +268,20 @@ export class ProductRepository {
       productData.price,
       productData.discount_price || null,
       productData.badge || null,
-      productData.capacity || 12,
+      productData.capacity || 2,
       productData.dimensions || null,
-      productData.energy_rating || '5 Star',
-      productData.water_consumption || 9.5,
-      productData.noise_level || 44,
-      productData.wash_programs_count || 6,
+      productData.energy_rating || 'Front & Top Load',
+      productData.water_consumption || 0,
+      productData.noise_level || 0,
+      productData.wash_programs_count || 40,
       productData.warranty_years || 2,
       productData.stock_status || 'IN_STOCK',
       productData.available_quantity || 50,
       productData.status || 'ACTIVE',
       productData.video_url || null,
+      productData.color || 'blue',
+      productData.accent_color || '#0084FF',
+      productData.bg_gradient || 'linear-gradient(135deg, #E6F3FF 0%, #FFFFFF 100%)',
     ];
 
     const result = await query(sql, params);
@@ -216,6 +294,17 @@ export class ProductRepository {
         await query(
           `INSERT INTO product_images (product_id, image_url, is_primary, display_order) VALUES (?, ?, ?, ?)`,
           [productId, imgUrl, i === 0, i + 1]
+        );
+      }
+    }
+
+    if (productData.formats && productData.formats.length > 0) {
+      for (let i = 0; i < productData.formats.length; i++) {
+        const fmt = productData.formats[i];
+        await query(
+          `INSERT INTO product_formats (product_id, format_code, name, price, mrp, discount, image, doses, display_order)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [productId, fmt.id || fmt.format_code, fmt.name, fmt.price, fmt.mrp, fmt.discount || '0% OFF', fmt.image, fmt.doses || 40, i + 1]
         );
       }
     }
@@ -237,10 +326,10 @@ export class ProductRepository {
       productData.discount_price || null,
       productData.tagline || null,
       productData.description || null,
-      productData.capacity || 12,
-      productData.energy_rating || '5 Star',
-      productData.water_consumption || 9.5,
-      productData.noise_level || 44,
+      productData.capacity || 2,
+      productData.energy_rating || 'Front & Top Load',
+      productData.water_consumption || 0,
+      productData.noise_level || 0,
       productData.stock_status || 'IN_STOCK',
       productData.available_quantity || 50,
       productData.status || 'ACTIVE',
@@ -269,5 +358,10 @@ export class ProductRepository {
     const sql = `SELECT * FROM product_features WHERE product_id = ? ORDER BY display_order ASC`;
     const rows = await query(sql, [productId]);
     return rows.map(r => r.feature_text);
+  }
+
+  static async getProductFormats(productId) {
+    const sql = `SELECT format_code as id, name, price, mrp, discount, image, doses FROM product_formats WHERE product_id = ? ORDER BY display_order ASC`;
+    return query(sql, [productId]);
   }
 }

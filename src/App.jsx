@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, User } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import WhyWhiteMist from './components/WhyWhiteMist';
@@ -12,7 +12,6 @@ import CartDrawer from './components/CartDrawer';
 import CheckoutPage from './components/CheckoutPage';
 import OrderSuccessModal from './components/OrderSuccessModal';
 import ProductsPage from './components/ProductsPage';
-import WishlistPage from './components/WishlistPage';
 import ProductDetailPage from './components/ProductDetailPage';
 import LoadingScreen from './components/LoadingScreen';
 import ServiceQuoteModal from './components/ServiceQuoteModal';
@@ -20,15 +19,95 @@ import CartPage from './components/CartPage';
 import StainBeforeAfter from './components/StainBeforeAfter';
 import BioEnzymeAnimation from './components/BioEnzymeAnimation';
 import ShirtScrollAnimation from './components/ShirtScrollAnimation';
-import { PRODUCTS } from './data/products';
+import ProfilePage from './components/ProfilePage';
+import AuthModal from './components/AuthModal';
+import AuthPage from './components/AuthPage';
+import { PRODUCTS, CATEGORIES } from './data/products';
+import { api } from './services/api';
 import Lenis from 'lenis';
 import 'lenis/dist/lenis.css';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [showBackToTop, setShowBackToTop] = useState(false);
-  const [activeView, setActiveView] = useState('home'); // 'home' | 'products' | 'wishlist' | 'product-detail' | 'checkout'
+  const [activeView, setActiveView] = useState('home'); // 'home' | 'products' | 'wishlist' | 'product-detail' | 'checkout' | 'profile'
   const [previousView, setPreviousView] = useState('home');
+
+  // User Authentication State
+  const [user, setUser] = useState(() => {
+    try {
+      const stored = localStorage.getItem('wm_user');
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const [token, setToken] = useState(() => {
+    return localStorage.getItem('wm_token') || null;
+  });
+
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState('login');
+  const [authNotice, setAuthNotice] = useState('');
+  const [pendingCheckoutAfterAuth, setPendingCheckoutAfterAuth] = useState(false);
+  const [pendingCartSummary, setPendingCartSummary] = useState(null);
+  const [profileInitialTab, setProfileInitialTab] = useState('orders');
+
+  const handleLoginSuccess = (userData, tokenStr) => {
+    setUser(userData);
+    setToken(tokenStr);
+    localStorage.setItem('wm_user', JSON.stringify(userData));
+    localStorage.setItem('wm_token', tokenStr);
+    showToast(`Welcome back, ${userData.full_name || 'Member'}!`);
+  };
+
+  const handleRegisterSuccess = (userData, tokenStr) => {
+    setUser(userData);
+    setToken(tokenStr);
+    localStorage.setItem('wm_user', JSON.stringify(userData));
+    localStorage.setItem('wm_token', tokenStr);
+    showToast(`Welcome to White Mist, ${userData.full_name || 'Member'}!`);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setToken(null);
+    setPendingCheckoutAfterAuth(false);
+    setPendingCartSummary(null);
+    setAuthNotice('');
+    localStorage.removeItem('wm_user');
+    localStorage.removeItem('wm_token');
+    if (activeView === 'profile' || activeView === 'checkout') {
+      setActiveView('home');
+    }
+    showToast('You have been signed out.');
+  };
+
+  const handleOpenAuth = (mode = 'login', notice = '') => {
+    setAuthNotice(notice || '');
+    setPendingCheckoutAfterAuth(false);
+    setPendingCartSummary(null);
+    setAuthModalMode(mode);
+    setPreviousView(activeView !== 'auth' ? activeView : 'home');
+    setActiveView('auth');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleOpenProfile = (tab = 'orders') => {
+    if (!user) {
+      handleOpenAuth('login');
+      return;
+    }
+    setProfileInitialTab(tab);
+    setActiveView('profile');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleUpdateUser = (updatedUser) => {
+    setUser(updatedUser);
+    localStorage.setItem('wm_user', JSON.stringify(updatedUser));
+  };
 
   // Initialize Lenis smooth scroll across the entire application
   useEffect(() => {
@@ -92,6 +171,27 @@ export default function App() {
       });
     }
   };
+
+  // Live Database Products & Categories State
+  const [productsList, setProductsList] = useState(PRODUCTS);
+  const [categoriesList, setCategoriesList] = useState(CATEGORIES);
+
+  useEffect(() => {
+    // Fetch live products & categories from MySQL database
+    api.getProducts()
+      .then(prods => {
+        if (prods && prods.length > 0) setProductsList(prods);
+      })
+      .catch(err => console.warn('Could not load products from API:', err));
+
+    api.getCategories()
+      .then(cats => {
+        if (cats && cats.length > 0) {
+          setCategoriesList(cats.map(c => ({ id: c.slug, name: c.name, icon: c.icon || 'Layers' })));
+        }
+      })
+      .catch(err => console.warn('Could not load categories from API:', err));
+  }, []);
 
   // Cart Items State
   const [cartItems, setCartItems] = useState([
@@ -255,9 +355,76 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleBuyNow = (product, format, qty) => {
-    handleAddToCart(product, format);
-    setIsCartOpen(true);
+  // Compute structured cart summary for checkout
+  const computeCartSummary = (items, promo = null) => {
+    const currentItems = items || [];
+    const subtotal = currentItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+    const freeShippingThreshold = 499;
+    const shippingCost = subtotal >= freeShippingThreshold || currentItems.length === 0 ? 0 : 49;
+    const promoDiscount = promo ? promo.discount : 0;
+    const finalTotal = Math.max(0, subtotal - promoDiscount + shippingCost);
+    return {
+      cartItems: currentItems,
+      subtotal,
+      promoDiscount,
+      shippingCost,
+      finalTotal,
+      appliedPromo: promo?.code || promo || null
+    };
+  };
+
+  const handleBuyNow = (product, format, qty = 1) => {
+    const quantityToAdd = qty && qty > 0 ? Number(qty) : 1;
+    const selectedFmt = format || (product.formats && product.formats[0]) || {
+      id: 'standard',
+      name: product.name,
+      price: product.price,
+      mrp: product.mrp,
+      image: product.image
+    };
+    const cartKey = `${product.id}-${selectedFmt.id}`;
+
+    // Add or update this item in the cart with the selected quantity
+    let updatedCart;
+    const existing = cartItems.find(i => i.cartKey === cartKey);
+    if (existing) {
+      updatedCart = cartItems.map(i => i.cartKey === cartKey ? { ...i, quantity: i.quantity + quantityToAdd } : i);
+    } else {
+      updatedCart = [...cartItems, {
+        cartKey,
+        productId: product.id,
+        name: product.name,
+        formatName: selectedFmt.name,
+        price: selectedFmt.price,
+        mrp: selectedFmt.mrp,
+        image: selectedFmt.image,
+        quantity: quantityToAdd
+      }];
+    }
+    setCartItems(updatedCart);
+
+    const summary = computeCartSummary(updatedCart);
+
+    // CHECK: whether the user is signed in or not
+    if (!user) {
+      // User is not signed in: direct to signin page to get signed in
+      setPendingCartSummary(summary);
+      setPendingCheckoutAfterAuth(true);
+      setAuthNotice(`Please sign in or create an account to proceed with purchasing ${product.name} (${selectedFmt.name}).`);
+      showToast('Please sign in to proceed with your purchase');
+      setPreviousView(activeView !== 'auth' ? activeView : 'product-detail');
+      setAuthModalMode('login');
+      setActiveView('auth');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    // User is signed in: direct instant checkout
+    setCartSummary(summary);
+    setIsCartOpen(false);
+    setActiveView('checkout');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    showToast(`Proceeding to checkout with ${product.name}!`);
   };
 
   const handleProceedToCheckout = (summary) => {
@@ -284,24 +451,30 @@ export default function App() {
         }} />
       )}
 
-      {/* Navbar */}
-      <Navbar 
-        cartCount={cartCount}
-        wishlistCount={wishlistCount}
-        onOpenCart={() => {
-          setActiveView('cart');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-        onOpenServiceModal={handleOpenServiceModal}
-        activeView={activeView}
-        setActiveView={(view) => {
-          setActiveView(view);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        cartBadgeRef={cartBadgeRef}
-      />
+      {/* Navbar (Hidden on Profile and Sign In / Sign Up pages) */}
+      {activeView !== 'profile' && activeView !== 'auth' && (
+        <Navbar 
+          cartCount={cartCount}
+          wishlistCount={wishlistCount}
+          onOpenCart={() => {
+            setActiveView('cart');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onOpenServiceModal={handleOpenServiceModal}
+          activeView={activeView}
+          setActiveView={(view) => {
+            setActiveView(view);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          cartBadgeRef={cartBadgeRef}
+          user={user}
+          onOpenAuth={handleOpenAuth}
+          onLogout={handleLogout}
+          onOpenProfile={handleOpenProfile}
+        />
+      )}
 
       {/* Main Content Area */}
       <main style={{ flex: 1 }}>
@@ -315,6 +488,7 @@ export default function App() {
             <StainBeforeAfter />
             <ShirtScrollAnimation />
             <ProductsShowcase 
+              products={productsList}
               onAddToCart={handleAddToCart}
               onOpenModal={handleOpenProductDetailPage}
               searchQuery={searchQuery}
@@ -332,6 +506,8 @@ export default function App() {
 
         {activeView === 'products' && (
           <ProductsPage 
+            products={productsList}
+            categories={categoriesList}
             onAddToCart={handleAddToCart}
             onOpenModal={handleOpenProductDetailPage}
             wishlistItems={wishlistItems}
@@ -342,11 +518,19 @@ export default function App() {
         )}
 
         {activeView === 'wishlist' && (
-          <WishlistPage 
+          <ProfilePage 
+            user={user || { full_name: 'Guest Member', email: 'Sign in to save items across devices' }}
+            token={token}
+            onLogout={handleLogout}
+            onNavigateToProducts={() => {
+              setActiveView('products');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            onUpdateUser={handleUpdateUser}
+            initialTab="wishlist"
             wishlistItems={wishlistItems}
             onToggleWishlist={handleToggleWishlist}
             onAddToCart={handleAddToCart}
-            onNavigateToProducts={() => setActiveView('products')}
           />
         )}
 
@@ -386,12 +570,136 @@ export default function App() {
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             onOrderSuccess={handleOrderSuccess}
+            user={user}
+            token={token}
+            onOpenAuth={handleOpenAuth}
+          />
+        )}
+
+        {activeView === 'profile' && (
+          user ? (
+            <ProfilePage
+              user={user}
+              token={token}
+              onLogout={handleLogout}
+              onNavigateToProducts={() => {
+                setActiveView('products');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              onNavigateHome={() => {
+                setActiveView('home');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              onUpdateUser={handleUpdateUser}
+              initialTab={profileInitialTab}
+              wishlistItems={wishlistItems}
+              onToggleWishlist={handleToggleWishlist}
+              onAddToCart={handleAddToCart}
+            />
+          ) : (
+            profileInitialTab === 'wishlist' ? (
+              <ProfilePage
+                user={{ full_name: 'Guest Member', email: 'Sign in to sync your wishlist' }}
+                token={null}
+                onLogout={() => {}}
+                onNavigateToProducts={() => {
+                  setActiveView('products');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                onNavigateHome={() => {
+                  setActiveView('home');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                onUpdateUser={() => {}}
+                initialTab="wishlist"
+                wishlistItems={wishlistItems}
+                onToggleWishlist={handleToggleWishlist}
+                onAddToCart={handleAddToCart}
+              />
+            ) : (
+              <div style={{ padding: '4rem 1rem 5rem', textAlign: 'center', background: '#FAFCFF', minHeight: '75vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div className="container" style={{ maxWidth: '480px', background: 'white', padding: '3rem 2rem', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-md)', border: '1px solid #E2E8F0' }}>
+                  <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: '#F3EBFD', color: 'var(--color-purple-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem auto' }}>
+                    <User size={30} />
+                  </div>
+                  <h2 style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--color-purple-dark)', marginBottom: '0.5rem' }}>
+                    Account Profile
+                  </h2>
+                  <p style={{ color: '#64748B', fontSize: '0.9rem', marginBottom: '1.75rem', lineHeight: 1.5 }}>
+                    Please log in or create an account to view your order history, delivery addresses, and personal details.
+                  </p>
+                  <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
+                    <button
+                      onClick={() => handleOpenAuth('login')}
+                      className="btn-primary"
+                      style={{ padding: '0.75rem 1.75rem', borderRadius: 'var(--radius-full)' }}
+                    >
+                      Sign In
+                    </button>
+                    <button
+                      onClick={() => setActiveView('home')}
+                      style={{ background: '#F1F5F9', border: 'none', padding: '0.75rem 1.5rem', borderRadius: 'var(--radius-full)', fontWeight: '600', cursor: 'pointer' }}
+                    >
+                      Return Home
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )
+          )
+        )}
+
+        {activeView === 'auth' && (
+          <AuthPage
+            initialMode={authModalMode}
+            authNotice={authNotice}
+            onLoginSuccess={(userData, tokenStr) => {
+              handleLoginSuccess(userData, tokenStr);
+              if (pendingCheckoutAfterAuth) {
+                const summaryToUse = pendingCartSummary || computeCartSummary(cartItems);
+                setPendingCheckoutAfterAuth(false);
+                setPendingCartSummary(null);
+                setAuthNotice('');
+                setCartSummary(summaryToUse);
+                setActiveView('checkout');
+                showToast(`Welcome back, ${userData.full_name || 'Member'}! Continuing to checkout...`);
+              } else if (previousView && previousView !== 'auth') {
+                setActiveView(previousView);
+              } else {
+                setActiveView('profile');
+              }
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            onRegisterSuccess={(userData, tokenStr) => {
+              handleRegisterSuccess(userData, tokenStr);
+              if (pendingCheckoutAfterAuth) {
+                const summaryToUse = pendingCartSummary || computeCartSummary(cartItems);
+                setPendingCheckoutAfterAuth(false);
+                setPendingCartSummary(null);
+                setAuthNotice('');
+                setCartSummary(summaryToUse);
+                setActiveView('checkout');
+                showToast(`Welcome to White Mist, ${userData.full_name || 'Member'}! Continuing to checkout...`);
+              } else if (previousView && previousView !== 'auth') {
+                setActiveView(previousView);
+              } else {
+                setActiveView('profile');
+              }
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            onBack={() => {
+              setPendingCheckoutAfterAuth(false);
+              setPendingCartSummary(null);
+              setAuthNotice('');
+              setActiveView(previousView && previousView !== 'auth' ? previousView : 'home');
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
           />
         )}
       </main>
 
       {/* Footer */}
-      <Footer />
+      {activeView !== 'auth' && <Footer />}
 
       {/* Cart Drawer */}
       <CartDrawer 
@@ -412,6 +720,15 @@ export default function App() {
         isOpen={isServiceModalOpen}
         onClose={() => setIsServiceModalOpen(false)}
         activeTab={serviceModalTab}
+      />
+
+      {/* Authentication Modal */}
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        initialMode={authModalMode}
+        onLoginSuccess={handleLoginSuccess}
+        onRegisterSuccess={handleRegisterSuccess}
       />
 
       {/* Order Success Celebration Modal */}

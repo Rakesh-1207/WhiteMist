@@ -67,19 +67,72 @@ export class AuthService {
     return { user, tokens };
   }
 
+  static async googleAuth({ email, full_name, phone, ip_address }) {
+    if (!email) {
+      throw ApiError.badRequest('Email is required for Google authentication');
+    }
+
+    const normalizedEmail = email.trim().toLowerCase();
+    let user = await UserRepository.findByEmail(normalizedEmail);
+
+    if (!user) {
+      const role_id = await UserRepository.getRoleIdByName('CUSTOMER');
+      const randomPassword = 'GoogleAuth_' + Math.random().toString(36).substring(2, 12) + '!' + Date.now();
+      const password_hash = await bcrypt.hash(randomPassword, 10);
+
+      user = await UserRepository.create({
+        role_id,
+        email: normalizedEmail,
+        password_hash,
+        full_name: (full_name || normalizedEmail.split('@')[0]).trim(),
+        phone: phone ? phone.trim() : null,
+        is_verified: true,
+        status: 'ACTIVE',
+      });
+
+      await AuditLogRepository.log({
+        user_id: user.id,
+        user_email: user.email,
+        user_role: user.role_name || 'CUSTOMER',
+        action: 'USER_REGISTERED_GOOGLE',
+        entity: 'USER',
+        entity_id: user.id,
+        ip_address,
+      });
+    } else {
+      if (user.status !== 'ACTIVE') {
+        throw ApiError.forbidden('Your account is inactive or suspended. Please contact support.');
+      }
+
+      await AuditLogRepository.log({
+        user_id: user.id,
+        user_email: user.email,
+        user_role: user.role_name,
+        action: 'USER_LOGIN_GOOGLE',
+        entity: 'USER',
+        entity_id: user.id,
+        ip_address,
+      });
+    }
+
+    const tokens = generateTokens(user);
+    const safeUser = { ...user, auth_provider: 'google' };
+    delete safeUser.password_hash;
+    return { user: safeUser, tokens };
+  }
+
   static async refreshTokens(refreshToken) {
     try {
       const decoded = verifyRefreshToken(refreshToken);
       const user = await UserRepository.findById(decoded.id);
       if (!user) throw ApiError.unauthorized('User not found');
       return generateTokens(user);
-    } catch (err) {
+    } catch {
       throw ApiError.unauthorized('Invalid or expired refresh token');
     }
   }
 
   static async changePassword(userId, { currentPassword, newPassword }) {
-    const sql = `SELECT password_hash FROM users WHERE id = ?`;
     const user = await UserRepository.findById(userId);
     if (!user) throw ApiError.notFound('User not found');
 

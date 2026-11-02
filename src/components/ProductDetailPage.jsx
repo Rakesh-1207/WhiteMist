@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Star, ShoppingBag, Zap, ShieldCheck, MapPin, CheckCircle2, Truck, Heart, ThumbsUp, MessageSquare, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowLeft, Star, ShoppingBag, Zap, ShieldCheck, MapPin, CheckCircle2, Truck, Heart, ThumbsUp, MessageSquare } from 'lucide-react';
+import { api } from '../services/api';
 import { PRODUCTS, REVIEWS } from '../data/products';
 
 export default function ProductDetailPage({ product, selectedFormat, onBack, onAddToCart, onBuyNow, wishlistItems, onToggleWishlist }) {
-  if (!product) return null;
-
   const [activeFormatIdx, setActiveFormatIdx] = useState(
-    product.formats.findIndex(f => f.id === selectedFormat?.id) >= 0 
+    product?.formats && product.formats.findIndex(f => f.id === selectedFormat?.id) >= 0 
       ? product.formats.findIndex(f => f.id === selectedFormat?.id) 
       : 0
   );
@@ -15,15 +14,34 @@ export default function ProductDetailPage({ product, selectedFormat, onBack, onA
   const [pincode, setPincode] = useState('');
   const [pincodeStatus, setPincodeStatus] = useState(null);
   const [activeImgIdx, setActiveImgIdx] = useState(0);
+  const [productReviews, setProductReviews] = useState(REVIEWS);
 
-  const currentFmt = product.formats[activeFormatIdx];
+  useEffect(() => {
+    if (!product) return;
+    api.getReviews(product.dbId || product.id)
+      .then(revs => {
+        if (revs && revs.length > 0) setProductReviews(revs);
+      })
+      .catch(() => {});
+  }, [product]);
+
+  if (!product) return null;
+
+  const currentFmt = (product.formats && product.formats[activeFormatIdx]) || {
+    id: 'standard',
+    name: product.name,
+    price: product.price,
+    mrp: product.mrp,
+    image: product.images?.[0] || '/assets/images/bottle_blue.png',
+    doses: 40
+  };
   const isWishlisted = wishlistItems.some(item => item.id === product.id);
 
   // Gallery images array
   const galleryImages = [
     currentFmt.image,
-    product.formats[1]?.image || currentFmt.image,
-    product.formats[2]?.image || currentFmt.image
+    product.formats?.[1]?.image || currentFmt.image,
+    product.formats?.[2]?.image || currentFmt.image
   ];
 
   const handlePincodeCheck = () => {
@@ -454,17 +472,19 @@ export default function ProductDetailPage({ product, selectedFormat, onBack, onA
 
               {/* Review Comments List */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                {REVIEWS.map(rev => (
-                  <div key={rev.id} style={{ background: '#F8FAFC', padding: '1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid #E2E8F0' }}>
+                {productReviews.map(rev => (
+                  <div key={rev.id || rev.review_id || Math.random()} style={{ background: '#F8FAFC', padding: '1.25rem', borderRadius: 'var(--radius-md)', border: '1px solid #E2E8F0' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                      <div style={{ fontWeight: '800', color: 'var(--text-main)', fontSize: '0.95rem' }}>{rev.name} ({rev.city})</div>
-                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{rev.date}</div>
+                      <div style={{ fontWeight: '800', color: 'var(--text-main)', fontSize: '0.95rem' }}>
+                        {rev.author || rev.name} {rev.city ? `(${rev.city})` : ''}
+                      </div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{rev.date || (rev.created_at ? new Date(rev.created_at).toLocaleDateString() : 'Recent')}</div>
                     </div>
                     <div style={{ display: 'flex', color: '#FFB800', marginBottom: '0.5rem' }}>
-                      {[...Array(rev.rating)].map((_, i) => <Star key={i} size={14} fill="#FFB800" stroke="none" />)}
+                      {[...Array(Number(rev.rating) || 5)].map((_, i) => <Star key={i} size={14} fill="#FFB800" stroke="none" />)}
                     </div>
                     <p style={{ fontSize: '0.9rem', color: 'var(--text-main)', lineHeight: 1.55, fontStyle: 'italic' }}>
-                      "{rev.comment}"
+                      "{rev.comment || rev.content}"
                     </p>
                   </div>
                 ))}

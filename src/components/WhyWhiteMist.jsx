@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparkles, ShieldCheck, Zap, Thermometer, Volume2, Droplets } from 'lucide-react';
+import { ShieldCheck, Zap, Thermometer, Volume2, Droplets } from 'lucide-react';
 
 export default function WhyWhiteMist() {
   const features = [

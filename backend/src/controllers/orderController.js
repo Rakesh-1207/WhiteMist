@@ -37,7 +37,7 @@ export class OrderController {
 
   static async getMyOrders(req, res, next) {
     try {
-      const orders = await OrderService.getCustomerOrders(req.user.id);
+      const orders = await OrderService.getCustomerOrders(req.user.id, req.user.email);
       return ApiResponse.success(res, 'Customer order history retrieved', { orders });
     } catch (error) {
       next(error);

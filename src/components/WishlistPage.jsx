@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, ShoppingBag, Trash2, ArrowRight, Star, Sparkles } from 'lucide-react';
+import { Heart, ShoppingBag, Trash2, ArrowRight, Star } from 'lucide-react';
 
 export default function WishlistPage({ wishlistItems, onToggleWishlist, onAddToCart, onNavigateToProducts }) {
   return (
@@ -77,7 +77,7 @@ export default function WishlistPage({ wishlistItems, onToggleWishlist, onAddToC
               className="btn-primary"
               style={{ padding: '0.85rem 2rem', fontSize: '1rem' }}
             >
-              <Sparkles size={18} />
+              <ShoppingBag size={18} />
               <span>Explore Products Catalogue</span>
             </button>
           </div>

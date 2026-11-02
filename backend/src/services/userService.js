@@ -13,6 +13,18 @@ export class UserService {
     return updated;
   }
 
+  static async getAddresses(userId) {
+    return UserRepository.getAddresses(userId);
+  }
+
+  static async addAddress(userId, data) {
+    return UserRepository.addAddress(userId, data);
+  }
+
+  static async deleteAddress(userId, addressId) {
+    return UserRepository.deleteAddress(userId, addressId);
+  }
+
   static async getAllUsers(filters) {
     const users = await UserRepository.getAllUsers(filters);
     const total = await UserRepository.countUsers(filters);

@@ -1,82 +1,10 @@
-import React, { useState } from 'react';
-import { Mail, ArrowRight, ShieldCheck, Heart, Sparkles, CheckCircle2 } from 'lucide-react';
+import React from 'react';
+import { ShieldCheck } from 'lucide-react';
 
 export default function Footer() {
-  const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (e) => {
-    e.preventDefault();
-    if (email.trim()) {
-      setSubscribed(true);
-    }
-  };
-
   return (
     <footer style={{ background: '#1E1B4B', color: 'white', paddingTop: '4rem', paddingBottom: '2rem' }}>
       <div className="container">
-        
-        {/* Top Newsletter Card */}
-        <div style={{
-          background: 'linear-gradient(135deg, #3F1B85 0%, #270D5B 100%)',
-          borderRadius: 'var(--radius-lg)',
-          padding: '2.5rem',
-          border: '1px solid rgba(255,255,255,0.1)',
-          boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
-          marginBottom: '4rem',
-          display: 'grid',
-          gridTemplateColumns: '1.1fr 0.9fr',
-          gap: '2rem',
-          alignItems: 'center'
-        }} className="footer-newsletter-grid">
-          
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#FFB800', fontWeight: '700', fontSize: '0.85rem', marginBottom: '0.5rem' }}>
-              <Sparkles size={16} /> UNLOCK 10% EXTRA SAVINGS
-            </div>
-            <h3 style={{ fontSize: '1.75rem', fontWeight: '800', color: 'white', marginBottom: '0.5rem' }}>
-              Subscribe to Laundry Care Tips & Exclusive Discounts
-            </h3>
-            <p style={{ color: '#CBD5E1', fontSize: '0.925rem' }}>
-              Get secret promotional codes, stain removal guides, and early access to new White Mist fragrances!
-            </p>
-          </div>
-
-          <div>
-            {subscribed ? (
-              <div style={{ background: 'rgba(22, 163, 74, 0.2)', border: '1px solid #16A34A', padding: '1rem', borderRadius: 'var(--radius-sm)', color: '#BBF7D0', fontWeight: '700', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <CheckCircle2 size={20} /> Success! Use code <strong>MISTWELCOME10</strong> for 10% Off!
-              </div>
-            ) : (
-              <form onSubmit={handleSubscribe} style={{ display: 'flex', gap: '0.5rem' }}>
-                <input 
-                  type="email" 
-                  placeholder="Enter your email address" 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  style={{
-                    flex: 1,
-                    padding: '0.8rem 1rem',
-                    borderRadius: 'var(--radius-full)',
-                    border: 'none',
-                    fontSize: '0.9rem',
-                    outline: 'none'
-                  }}
-                  required
-                />
-                <button 
-                  type="submit"
-                  className="btn-accent-blue" 
-                  style={{ padding: '0.8rem 1.5rem', whiteSpace: 'nowrap' }}
-                >
-                  Join Club
-                </button>
-              </form>
-            )}
-          </div>
-
-        </div>
-
         {/* Footer Links Columns */}
         <div style={{
           display: 'grid',

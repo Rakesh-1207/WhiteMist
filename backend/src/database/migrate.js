@@ -29,6 +29,26 @@ export const runMigrations = async () => {
       await query(statement);
     }
 
+    // Ensure columns exist on products table for rich UI presentation
+    try {
+      const colCheck = await query(`
+        SELECT COLUMN_NAME 
+        FROM INFORMATION_SCHEMA.COLUMNS 
+        WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'products' AND COLUMN_NAME = 'color'
+      `);
+      if (!colCheck || colCheck.length === 0) {
+        await query(`
+          ALTER TABLE products 
+          ADD COLUMN color VARCHAR(50) DEFAULT 'blue',
+          ADD COLUMN accent_color VARCHAR(50) DEFAULT '#0084FF',
+          ADD COLUMN bg_gradient VARCHAR(255) DEFAULT 'linear-gradient(135deg, #E6F3FF 0%, #FFFFFF 100%)'
+        `);
+        logger.info('Added UI styling columns (color, accent_color, bg_gradient) to products table.');
+      }
+    } catch (colErr) {
+      logger.warn(`Column check notice: ${colErr.message}`);
+    }
+
     logger.info(`Successfully executed ${statements.length} migration statements. Database schema is up to date.`);
     return true;
   } catch (error) {

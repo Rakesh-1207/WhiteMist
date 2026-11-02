@@ -38,13 +38,15 @@ export class WarrantyRepository {
   }
 
   static async findBySerialNumber(serialNumber) {
+    if (!serialNumber) return null;
+    const cleanSerial = serialNumber.trim();
     const sql = `
       SELECT w.*, p.name as product_name, p.sku, p.warranty_years
       FROM warranties w
       JOIN products p ON w.product_id = p.id
-      WHERE w.serial_number = ?
+      WHERE UPPER(TRIM(w.serial_number)) = UPPER(?)
     `;
-    const rows = await query(sql, [serialNumber]);
+    const rows = await query(sql, [cleanSerial]);
     if (!rows[0]) return null;
 
     const warranty = rows[0];
@@ -54,6 +56,8 @@ export class WarrantyRepository {
     const now = new Date();
     const endDate = new Date(warranty.warranty_end_date);
     warranty.is_valid = now <= endDate && warranty.status === 'ACTIVE';
+    warranty.warranty_start_date = new Date(warranty.warranty_start_date).toISOString().split('T')[0];
+    warranty.warranty_end_date = new Date(warranty.warranty_end_date).toISOString().split('T')[0];
 
     return warranty;
   }

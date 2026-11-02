@@ -21,6 +21,16 @@ export class AuthController {
     }
   }
 
+  static async googleAuth(req, res, next) {
+    try {
+      const ip_address = req.ip || req.connection.remoteAddress;
+      const result = await AuthService.googleAuth({ ...req.body, ip_address });
+      return ApiResponse.success(res, 'Google authentication successful', result);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async refreshToken(req, res, next) {
     try {
       const { refreshToken } = req.body;

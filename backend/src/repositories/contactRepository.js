@@ -10,7 +10,7 @@ export class ContactRepository {
       data.name,
       data.email,
       data.phone || null,
-      data.subject,
+      data.subject || 'General Inquiry',
       data.message,
     ]);
     return this.findById(result.insertId);

@@ -5,9 +5,21 @@ import { PRODUCTS } from '../data/products';
 export default function ProductDetailModal({ product, selectedFormat, onClose, onAddToCart, onBuyNow }) {
   if (!product) return null;
 
+  const formats = (product.formats && product.formats.length > 0)
+    ? product.formats
+    : [{
+        id: 'standard',
+        name: product.name,
+        price: product.price || 99,
+        mrp: product.mrp || 120,
+        discount: 'Save 15%',
+        image: product.image || (product.images && product.images[0]) || '/assets/images/bottle_blue.png',
+        doses: 40
+      }];
+
   const [activeFormatIdx, setActiveFormatIdx] = useState(
-    product.formats.findIndex(f => f.id === selectedFormat?.id) >= 0 
-      ? product.formats.findIndex(f => f.id === selectedFormat?.id) 
+    formats.findIndex(f => f.id === selectedFormat?.id) >= 0 
+      ? formats.findIndex(f => f.id === selectedFormat?.id) 
       : 0
   );
   const [quantity, setQuantity] = useState(1);
@@ -15,7 +27,7 @@ export default function ProductDetailModal({ product, selectedFormat, onClose, o
   const [pincode, setPincode] = useState('');
   const [pincodeStatus, setPincodeStatus] = useState(null);
 
-  const currentFmt = product.formats[activeFormatIdx];
+  const currentFmt = formats[activeFormatIdx] || formats[0];
 
   const handlePincodeCheck = () => {
     if (pincode.trim().length >= 6) {
@@ -113,7 +125,7 @@ export default function ProductDetailModal({ product, selectedFormat, onClose, o
 
             {/* Micro Thumbnail Selector */}
             <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
-              {product.formats.map((fmt, idx) => (
+              {formats.map((fmt, idx) => (
                 <div 
                   key={fmt.id}
                   onClick={() => setActiveFormatIdx(idx)}
@@ -174,7 +186,7 @@ export default function ProductDetailModal({ product, selectedFormat, onClose, o
                 Select Packaging & Size:
               </label>
               <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                {product.formats.map((fmt, idx) => (
+                {formats.map((fmt, idx) => (
                   <button
                     key={fmt.id}
                     onClick={() => setActiveFormatIdx(idx)}

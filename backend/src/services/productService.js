@@ -21,6 +21,10 @@ export class ProductService {
     };
   }
 
+  static async getSuperSaverBundle() {
+    return ProductRepository.getSuperSaverBundle();
+  }
+
   static async getProductBySlugOrId(identifier) {
     let product = null;
     if (!isNaN(identifier)) {

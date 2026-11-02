@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sparkles, ShieldCheck, Droplet, Zap, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Droplet, Zap, ArrowRight } from 'lucide-react';
 
 export default function Hero({ onAddToCart, onSelectProduct }) {
   const [selectedVariant, setSelectedVariant] = useState('blue');
@@ -168,67 +168,68 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
               </span>
             </h1>
 
-            <p style={{
-              fontSize: '1.22rem',
-              color: 'var(--text-muted)',
-              marginBottom: '1.85rem',
-              lineHeight: 1.62,
-              maxWidth: '590px',
-              fontStyle: 'italic'
-            }} className="hero-description-text">
-              Meridian <strong>White Mist Liquid Detergent</strong> dissolves 10x tough stains instantly while infusing garments with 48-hour micro-capsule fragrance. Perfect for both <strong>Front Load & Top Load</strong> machines.
-            </p>
-
-            {/* Feature Checkmarks */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '0.85rem',
-              marginBottom: '1.85rem',
-              maxWidth: '570px'
-            }} className="hero-checkmarks-grid">
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.92rem', fontWeight: '600' }}>
-                <CheckCircle2 size={18} style={{ color: '#16A34A', flexShrink: 0 }} />
-                <span>Front & Top Load Safe</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.92rem', fontWeight: '600' }}>
-                <CheckCircle2 size={18} style={{ color: '#16A34A', flexShrink: 0 }} />
-                <span>10x Bio-Stain Removal</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.92rem', fontWeight: '600' }}>
-                <CheckCircle2 size={18} style={{ color: '#16A34A', flexShrink: 0 }} />
-                <span>48hr Scent Lock</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', fontSize: '0.92rem', fontWeight: '600' }}>
-                <CheckCircle2 size={18} style={{ color: '#16A34A', flexShrink: 0 }} />
-                <span>Eco Spout Pouch Refills</span>
-              </div>
+            {/* Seamless feathered transparent backdrop blur: extends gently beyond text with multi-stop Gaussian falloff to eliminate any borders, sides, or cuts */}
+            <div 
+              className="hero-description-wrapper"
+              style={{
+                position: 'relative',
+                maxWidth: '590px',
+                marginBottom: '1.5rem',
+                width: 'fit-content'
+              }}
+            >
+              <div
+                aria-hidden="true"
+                style={{
+                  position: 'absolute',
+                  top: '-35px',
+                  bottom: '-35px',
+                  left: '-55px',
+                  right: '-55px',
+                  backdropFilter: 'blur(5px)',
+                  WebkitBackdropFilter: 'blur(5px)',
+                  background: 'transparent',
+                  WebkitMaskImage: 'radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.75) 25%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.12) 75%, rgba(0, 0, 0, 0) 100%)',
+                  maskImage: 'radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.75) 25%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.12) 75%, rgba(0, 0, 0, 0) 100%)',
+                  pointerEvents: 'none',
+                  zIndex: 0
+                }}
+              />
+              <p style={{
+                position: 'relative',
+                zIndex: 1,
+                fontSize: '1.22rem',
+                color: '#334155',
+                lineHeight: 1.62,
+                maxWidth: '590px',
+                fontStyle: 'italic',
+                margin: 0
+              }} className="hero-description-text">
+                Meridian <strong>White Mist Liquid Detergent</strong> dissolves 10x tough stains instantly while infusing garments with 48-hour micro-capsule fragrance. Perfect for both <strong>Front Load & Top Load</strong> machines.
+              </p>
             </div>
 
             {/* Interactive Hero Variant Selector Switches */}
-            <div style={{ marginBottom: '1.85rem' }}>
-              <span style={{ fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'block', marginBottom: '0.55rem' }}>
-                Select Fragrance Variant:
-              </span>
-              <div style={{ display: 'flex', gap: '0.75rem' }} className="hero-variant-switcher">
+            <div style={{ marginBottom: '1.35rem' }}>
+              <div style={{ display: 'flex', gap: '0.6rem' }} className="hero-variant-switcher">
                 <button
                   onClick={() => setSelectedVariant('blue')}
                   style={{
-                    padding: '0.55rem 0.95rem',
+                    padding: '0.36rem 0.75rem',
                     borderRadius: 'var(--radius-full)',
-                    border: selectedVariant === 'blue' ? '2px solid #0084FF' : '1px solid #CBD5E1',
+                    border: selectedVariant === 'blue' ? '1.5px solid #0084FF' : '1px solid #CBD5E1',
                     background: selectedVariant === 'blue' ? '#E6F3FF' : 'white',
                     color: selectedVariant === 'blue' ? '#0084FF' : '#475569',
-                    fontWeight: '700',
-                    fontSize: '0.88rem',
+                    fontWeight: '600',
+                    fontSize: '0.78rem',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.45rem',
+                    gap: '0.4rem',
                     transition: 'var(--transition)'
                   }}
                 >
-                  <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#0084FF', display: 'inline-block', flexShrink: 0 }}></span>
+                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#0084FF', display: 'inline-block', flexShrink: 0 }}></span>
                   <span className="full-text">Blue Ocean Fresh</span>
                   <span className="short-text">Ocean Blue</span>
                 </button>
@@ -236,21 +237,21 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
                 <button
                   onClick={() => setSelectedVariant('pink')}
                   style={{
-                    padding: '0.55rem 0.95rem',
+                    padding: '0.36rem 0.75rem',
                     borderRadius: 'var(--radius-full)',
-                    border: selectedVariant === 'pink' ? '2px solid #F01262' : '1px solid #CBD5E1',
+                    border: selectedVariant === 'pink' ? '1.5px solid #F01262' : '1px solid #CBD5E1',
                     background: selectedVariant === 'pink' ? '#FFEBF2' : 'white',
                     color: selectedVariant === 'pink' ? '#F01262' : '#475569',
-                    fontWeight: '700',
-                    fontSize: '0.88rem',
+                    fontWeight: '600',
+                    fontSize: '0.78rem',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.45rem',
+                    gap: '0.4rem',
                     transition: 'var(--transition)'
                   }}
                 >
-                  <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#F01262', display: 'inline-block', flexShrink: 0 }}></span>
+                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#F01262', display: 'inline-block', flexShrink: 0 }}></span>
                   <span className="full-text">Pink Floral Bloom</span>
                   <span className="short-text">Floral Pink</span>
                 </button>
@@ -258,21 +259,21 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
                 <button
                   onClick={() => setSelectedVariant('yellow')}
                   style={{
-                    padding: '0.55rem 0.95rem',
+                    padding: '0.36rem 0.75rem',
                     borderRadius: 'var(--radius-full)',
-                    border: selectedVariant === 'yellow' ? '2px solid #D97706' : '1px solid #CBD5E1',
+                    border: selectedVariant === 'yellow' ? '1.5px solid #D97706' : '1px solid #CBD5E1',
                     background: selectedVariant === 'yellow' ? '#FFFDE6' : 'white',
                     color: selectedVariant === 'yellow' ? '#D97706' : '#475569',
-                    fontWeight: '700',
-                    fontSize: '0.88rem',
+                    fontWeight: '600',
+                    fontSize: '0.78rem',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '0.45rem',
+                    gap: '0.4rem',
                     transition: 'var(--transition)'
                   }}
                 >
-                  <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#FFB800', display: 'inline-block', flexShrink: 0 }}></span>
+                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#FFB800', display: 'inline-block', flexShrink: 0 }}></span>
                   <span className="full-text">Yellow Citrus</span>
                   <span className="short-text">Citrus Yellow</span>
                 </button>
@@ -280,20 +281,20 @@ export default function Hero({ onAddToCart, onSelectProduct }) {
             </div>
 
             {/* CTAs */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', flexWrap: 'wrap' }} className="hero-cta-group">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }} className="hero-cta-group">
               <a 
                 href="#products" 
                 className="btn-primary" 
-                style={{ fontSize: '1.02rem', padding: '0.85rem 1.75rem' }}
+                style={{ fontSize: '0.86rem', padding: '0.58rem 1.35rem', textDecoration: 'none' }}
               >
                 <span>Shop White Mist</span>
-                <ArrowRight size={20} />
+                <ArrowRight size={16} />
               </a>
 
               <a 
                 href="#stain-calculator" 
                 className="btn-secondary" 
-                style={{ fontSize: '0.98rem', padding: '0.85rem 1.45rem' }}
+                style={{ fontSize: '0.86rem', padding: '0.58rem 1.25rem', textDecoration: 'none' }}
               >
                 <span>Calculate Dose</span>
               </a>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Star, ShoppingBag, Eye, Heart, Sparkles, ArrowRight } from 'lucide-react';
+import { Star, ShoppingBag, Eye, Heart, ArrowRight } from 'lucide-react';
 import { PRODUCTS } from '../data/products';
 
-export default function ProductsShowcase({ onAddToCart, onOpenModal, searchQuery, onNavigateToAllProducts }) {
+export default function ProductsShowcase({ products, onAddToCart, onOpenModal, searchQuery, onNavigateToAllProducts }) {
+  const currentProducts = products || PRODUCTS;
   const [activeFilter, setActiveFilter] = useState('all');
   const [selectedFormatMap, setSelectedFormatMap] = useState({
     'wm-blue-ocean': 0,
@@ -15,7 +16,7 @@ export default function ProductsShowcase({ onAddToCart, onOpenModal, searchQuery
   };
 
   // Get flagship featured products for Home Showcase
-  const featuredFour = PRODUCTS.filter(p => ['wm-blue-ocean', 'wm-pink-floral', 'wm-yellow-citrus', 'funwash-liquid-2kg'].includes(p.id));
+  const featuredFour = currentProducts.filter(p => ['wm-blue-ocean', 'wm-pink-floral', 'wm-yellow-citrus', 'funwash-liquid-2kg'].includes(p.id));
 
   const filteredProducts = featuredFour.filter(prod => {
     if (activeFilter === 'blue' && prod.color !== 'blue') return false;

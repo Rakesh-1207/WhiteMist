@@ -1,5 +1,5 @@
 export const CATEGORIES = [
-  { id: 'all', name: 'All Products & Refills', icon: 'Sparkles' },
+  { id: 'all', name: 'All Products & Refills', icon: 'Layers' },
   { id: 'bottles', name: 'Ergonomic Bottles (2L)', icon: 'Droplets' },
   { id: 'pouches', name: 'Eco Spout Refill Pouches', icon: 'Package' },
   { id: 'funwash', name: 'Fun Wash™ Value Packs', icon: 'Zap' },
@@ -274,7 +274,7 @@ export const REVIEWS = [
     id: 3,
     author: "Ananya Iyer",
     role: "Verified Buyer",
-    city: "Bangalore",
+    city: "Bangalore", 
     rating: 5,
     comment: "Love the Pink Floral Bloom bottle. Leaves clothes so soft and smelling like fresh roses even 2 days after washing.",
     date: "2 weeks ago"

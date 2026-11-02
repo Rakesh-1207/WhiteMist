@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ShoppingBag, Trash2, ArrowRight, ShieldCheck, Truck, Plus, Minus, Tag, CheckCircle2, ArrowLeft, Layers } from 'lucide-react';
-import { PROMO_CODES } from '../data/products';
+import { api } from '../services/api';
 
 export default function CartPage({
   cartItems,
@@ -27,30 +27,23 @@ export default function CartPage({
   const shippingCost = subtotal >= freeShippingThreshold || cartItems.length === 0 ? 0 : 49;
 
   // Coupon Discount calculation
-  let promoDiscount = 0;
-  if (appliedPromo && PROMO_CODES[appliedPromo]) {
-    const promo = PROMO_CODES[appliedPromo];
-    if (promo.type === 'percent') {
-      promoDiscount = Math.round((subtotal * promo.discount) / 100);
-    } else if (promo.type === 'flat') {
-      promoDiscount = promo.discount;
-    }
-  }
+  const promoDiscount = appliedPromo ? appliedPromo.discount : 0;
 
   const finalTotal = Math.max(0, subtotal - promoDiscount + shippingCost);
 
-  const handleApplyPromo = () => {
+  const handleApplyPromo = async () => {
     setPromoError('');
     setPromoSuccess('');
     const code = promoInput.trim().toUpperCase();
 
     if (!code) return;
 
-    if (PROMO_CODES[code]) {
-      setAppliedPromo(code);
-      setPromoSuccess(`Coupon '${code}' applied! You saved ₹${PROMO_CODES[code].discount}${PROMO_CODES[code].type === 'percent' ? '%' : ''}`);
-    } else {
-      setPromoError("Invalid promo code. Try 'MISTWELCOME10' or 'WHITEMIST2026'");
+    try {
+      const result = await api.validatePromoCode(code, subtotal);
+      setAppliedPromo(result);
+      setPromoSuccess(`Coupon '${result.code}' applied! You saved ₹${result.discount}`);
+    } catch (err) {
+      setPromoError(err.message || "Invalid promo code. Try 'MISTWELCOME10' or 'WHITEMIST2026'");
     }
   };
 
@@ -416,7 +409,7 @@ export default function CartPage({
 
               {/* Checkout CTA Button */}
               <button
-                onClick={() => onProceedToCheckout({ subtotal, mrpTotal, productDiscount, promoDiscount, shippingCost, finalTotal, items: cartItems })}
+                onClick={() => onProceedToCheckout({ cartItems, subtotal, mrpTotal, productDiscount, promoDiscount, shippingCost, finalTotal, appliedPromo: appliedPromo?.code || appliedPromo })}
                 className="btn-primary"
                 style={{ width: '100%', padding: '0.95rem', fontSize: '1rem', borderRadius: 'var(--radius-md)' }}
               >

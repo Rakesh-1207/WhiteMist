@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Zap, Play, Pause } from 'lucide-react';
+import { Play, Pause } from 'lucide-react';
 
 export default function BioEnzymeAnimation() {
   const [isPlaying, setIsPlaying] = useState(true);
@@ -29,10 +29,6 @@ export default function BioEnzymeAnimation() {
 
           {/* Left Text */}
           <div>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: '#FFEBF2', color: '#F01262', fontWeight: '800', fontSize: '0.8rem', padding: '0.35rem 0.85rem', borderRadius: 'var(--radius-full)', marginBottom: '1rem' }}>
-              <Zap size={16} /> 3D BIO-ENZYME MOLECULAR TECH
-            </div>
-
             <h2 style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--color-purple-dark)', marginBottom: '1.25rem', lineHeight: '1.15' }}>
               Watch Bio-Enzymes Break Down Grease In Real Time
             </h2>

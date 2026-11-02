@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Sparkles, Sliders, Droplets, CheckCircle2, RefreshCw, Zap } from 'lucide-react';
+import { Sliders, Droplets, RefreshCw, Zap } from 'lucide-react';
 
 export default function StainBeforeAfter() {
   const [sliderPosition, setSliderPosition] = useState(50);
@@ -80,9 +80,6 @@ export default function StainBeforeAfter() {
         
         {/* Section Header */}
         <div className="stain-header" style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 3rem auto' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', background: '#E6F3FF', padding: '0.35rem 0.9rem', borderRadius: 'var(--radius-full)', color: '#0084FF', fontWeight: '800', fontSize: '0.8rem', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
-            <Sparkles size={16} /> INTERACTIVE STAIN REMOVAL DEMO
-          </div>
           <h2 style={{ fontSize: '2.5rem', fontWeight: '800', color: 'var(--color-purple-dark)', marginBottom: '0.75rem' }}>
             Drag to Reveal 10x Bio-Clean Magic
           </h2>
@@ -265,24 +262,43 @@ export default function StainBeforeAfter() {
         {/* Bottom CTA Controls & Metrics */}
         <div 
           className="stain-bottom-controls"
-          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '2rem', marginTop: '2rem', flexWrap: 'wrap' }}
+          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '1.5rem', marginTop: '1.75rem', flexWrap: 'wrap' }}
         >
           <button 
             onClick={handleAutoClean}
             disabled={isAnimating}
-            className="btn-primary"
-            style={{ padding: '0.75rem 1.75rem', fontSize: '0.95rem' }}
+            style={{ 
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              padding: '0.42rem 1.05rem', 
+              fontSize: '0.8rem',
+              fontWeight: '600',
+              color: '#FFFFFF',
+              background: '#64748B',
+              border: 'none',
+              borderRadius: 'var(--radius-full)',
+              cursor: isAnimating ? 'not-allowed' : 'pointer',
+              opacity: isAnimating ? 0.7 : 1,
+              transition: 'var(--transition)',
+              boxShadow: '0 2px 6px rgba(100, 116, 139, 0.25)'
+            }}
+            onMouseEnter={(e) => { if (!isAnimating) e.currentTarget.style.background = '#475569'; }}
+            onMouseLeave={(e) => { if (!isAnimating) e.currentTarget.style.background = '#64748B'; }}
           >
-            <RefreshCw size={18} className={isAnimating ? 'spin-icon' : ''} />
+            <RefreshCw size={14} className={isAnimating ? 'spin-icon' : ''} />
             <span>Auto Wash Animation</span>
           </button>
 
-          <div style={{ display: 'flex', gap: '1.5rem', color: 'var(--text-main)', fontSize: '0.9rem', fontWeight: '700' }}>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#16A34A' }}>
-              <Zap size={18} /> 10x Fast Stain Dissolve
+          <div 
+            className="stain-metrics-badges"
+            style={{ display: 'flex', gap: '1.25rem', color: '#64748B', fontSize: '0.8rem', fontWeight: '600', alignItems: 'center' }}
+          >
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#64748B' }}>
+              <Zap size={14} style={{ color: '#64748B' }} /> 10x Fast Stain Dissolve
             </span>
-            <span style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#0084FF' }}>
-              <Droplets size={18} /> Color Guard Shield
+            <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', color: '#64748B' }}>
+              <Droplets size={14} style={{ color: '#64748B' }} /> Color Guard Shield
             </span>
           </div>
         </div>

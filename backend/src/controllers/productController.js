@@ -11,6 +11,15 @@ export class ProductController {
     }
   }
 
+  static async getSuperSaverBundle(req, res, next) {
+    try {
+      const bundle = await ProductService.getSuperSaverBundle();
+      return ApiResponse.success(res, 'Super saver bundle retrieved', { bundle });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async getProductBySlugOrId(req, res, next) {
     try {
       const product = await ProductService.getProductBySlugOrId(req.params.idOrSlug);

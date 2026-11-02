@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Clock, ShoppingBag, Sparkles, Tag, ShieldCheck } from 'lucide-react';
+import { Clock, ShoppingBag, Tag } from 'lucide-react';
+import { api } from '../services/api';
 import { SUPER_SAVER_BUNDLE } from '../data/products';
 
 export default function SuperSaverBanner({ onAddBundleToCart }) {
+  const [bundleData, setBundleData] = useState(SUPER_SAVER_BUNDLE);
   const [timeLeft, setTimeLeft] = useState({ hours: 5, minutes: 42, seconds: 18 });
+
+  useEffect(() => {
+    api.getSuperSaverBundle()
+      .then(dbBundle => {
+        if (dbBundle) setBundleData(dbBundle);
+      })
+      .catch(err => console.warn('Could not load bundle from API, using fallback:', err));
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -21,31 +31,37 @@ export default function SuperSaverBanner({ onAddBundleToCart }) {
     <section style={{ padding: '2.5rem 0', background: '#FAFCFF' }}>
       <div className="container" style={{ maxWidth: '1060px' }}>
         
-        <div style={{
-          background: 'linear-gradient(135deg, #FFFDE6 0%, #FFF5F8 50%, #E6F3FF 100%)',
-          borderRadius: 'var(--radius-lg)',
-          padding: '1.75rem 2rem',
-          border: '1.5px solid #FFB800',
-          boxShadow: 'var(--shadow-md)',
-          position: 'relative',
-          overflow: 'hidden'
-        }}>
+        <div 
+          className="saver-banner-card"
+          style={{
+            background: 'linear-gradient(135deg, #FFFDE6 0%, #FFF5F8 50%, #E6F3FF 100%)',
+            borderRadius: 'var(--radius-lg)',
+            padding: '1.75rem 2rem',
+            border: '1.5px solid #FFB800',
+            boxShadow: 'var(--shadow-md)',
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+        >
           
           {/* Top Ribbons */}
-          <div style={{
-            position: 'absolute',
-            top: '16px',
-            right: '-38px',
-            background: '#DC2626',
-            color: 'white',
-            fontWeight: '800',
-            fontSize: '0.75rem',
-            padding: '5px 38px',
-            transform: 'rotate(45deg)',
-            boxShadow: '0 4px 10px rgba(0,0,0,0.12)',
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em'
-          }}>
+          <div 
+            className="saver-ribbon"
+            style={{
+              position: 'absolute',
+              top: '16px',
+              right: '-38px',
+              background: '#DC2626',
+              color: 'white',
+              fontWeight: '800',
+              fontSize: '0.75rem',
+              padding: '5px 38px',
+              transform: 'rotate(45deg)',
+              boxShadow: '0 4px 10px rgba(0,0,0,0.12)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em'
+            }}
+          >
             SUPER SAVER
           </div>
 
@@ -57,59 +73,59 @@ export default function SuperSaverBanner({ onAddBundleToCart }) {
           }} className="saver-grid">
 
             {/* Left Content */}
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-                <span className="badge-primary" style={{ background: '#DC2626', fontSize: '0.7rem' }}>LIMITED TIME DEAL</span>
-                <span style={{ fontSize: '0.8rem', fontWeight: '700', color: '#D97706', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+            <div className="saver-content">
+              <div className="saver-tags" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                <span className="badge-primary saver-deal-badge" style={{ background: '#DC2626', fontSize: '0.7rem' }}>LIMITED TIME DEAL</span>
+                <span className="saver-discount-tag" style={{ fontSize: '0.8rem', fontWeight: '700', color: '#D97706', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                   <Tag size={14} /> Save ₹350 (39% OFF)
                 </span>
               </div>
 
-              <h2 style={{ fontSize: '1.7rem', fontWeight: '800', color: 'var(--color-purple-dark)', marginBottom: '0.35rem', lineHeight: 1.2 }}>
-                {SUPER_SAVER_BUNDLE.title}
+              <h2 className="saver-title" style={{ fontSize: '1.7rem', fontWeight: '800', color: 'var(--color-purple-dark)', marginBottom: '0.35rem', lineHeight: 1.2 }}>
+                {bundleData.title}
               </h2>
 
-              <p style={{ fontSize: '0.92rem', color: 'var(--text-muted)', marginBottom: '1rem', lineHeight: 1.4 }}>
-                {SUPER_SAVER_BUNDLE.subtitle}
+              <p className="saver-subtitle" style={{ fontSize: '0.92rem', color: 'var(--text-muted)', marginBottom: '1rem', lineHeight: 1.4 }}>
+                {bundleData.subtitle}
               </p>
 
               {/* Countdown Timer */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.25rem' }}>
-                <span style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
+              <div className="saver-timer" style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1.25rem' }}>
+                <span className="saver-timer-label" style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
                   <Clock size={16} style={{ color: '#DC2626' }} /> Offer Ends In:
                 </span>
-                <div style={{ display: 'flex', gap: '0.4rem' }}>
-                  <div style={{ background: '#1E1B4B', color: 'white', padding: '0.3rem 0.6rem', borderRadius: 'var(--radius-sm)', fontWeight: '800', fontSize: '0.95rem' }}>
+                <div style={{ display: 'flex', gap: '0.4rem' }} className="saver-timer-boxes">
+                  <div className="saver-timer-digit" style={{ background: '#1E1B4B', color: 'white', padding: '0.3rem 0.6rem', borderRadius: 'var(--radius-sm)', fontWeight: '800', fontSize: '0.95rem' }}>
                     {String(timeLeft.hours).padStart(2, '0')}h
                   </div>
-                  <div style={{ background: '#1E1B4B', color: 'white', padding: '0.3rem 0.6rem', borderRadius: 'var(--radius-sm)', fontWeight: '800', fontSize: '0.95rem' }}>
+                  <div className="saver-timer-digit" style={{ background: '#1E1B4B', color: 'white', padding: '0.3rem 0.6rem', borderRadius: 'var(--radius-sm)', fontWeight: '800', fontSize: '0.95rem' }}>
                     {String(timeLeft.minutes).padStart(2, '0')}m
                   </div>
-                  <div style={{ background: '#1E1B4B', color: 'white', padding: '0.3rem 0.6rem', borderRadius: 'var(--radius-sm)', fontWeight: '800', fontSize: '0.95rem' }}>
+                  <div className="saver-timer-digit" style={{ background: '#1E1B4B', color: 'white', padding: '0.3rem 0.6rem', borderRadius: 'var(--radius-sm)', fontWeight: '800', fontSize: '0.95rem' }}>
                     {String(timeLeft.seconds).padStart(2, '0')}s
                   </div>
                 </div>
               </div>
 
               {/* Pricing & CTA */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
-                <div>
+              <div className="saver-price-cta" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
+                <div className="saver-price-block">
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.4rem' }}>
-                    <span style={{ fontSize: '1.85rem', fontWeight: '800', color: 'var(--color-purple-dark)' }}>
-                      ₹{SUPER_SAVER_BUNDLE.price}
+                    <span className="saver-price-num" style={{ fontSize: '1.85rem', fontWeight: '800', color: 'var(--color-purple-dark)' }}>
+                      ₹{bundleData.price}
                     </span>
-                    <span style={{ fontSize: '0.95rem', color: 'var(--text-light)', textDecoration: 'line-through' }}>
-                      ₹{SUPER_SAVER_BUNDLE.mrp}
+                    <span className="saver-mrp-num" style={{ fontSize: '0.95rem', color: 'var(--text-light)', textDecoration: 'line-through' }}>
+                      ₹{bundleData.mrp}
                     </span>
                   </div>
-                  <div style={{ fontSize: '0.75rem', color: '#166534', fontWeight: '700' }}>
+                  <div className="saver-price-sub" style={{ fontSize: '0.75rem', color: '#166534', fontWeight: '700' }}>
                     Includes FREE Measuring Cap + Delivery
                   </div>
                 </div>
 
                 <button
-                  onClick={(e) => onAddBundleToCart(SUPER_SAVER_BUNDLE, e)}
-                  className="btn-primary"
+                  onClick={(e) => onAddBundleToCart(bundleData, e)}
+                  className="btn-primary saver-cta-btn"
                   style={{
                     padding: '0.65rem 1.4rem',
                     fontSize: '0.9rem',
@@ -125,10 +141,11 @@ export default function SuperSaverBanner({ onAddBundleToCart }) {
             </div>
 
             {/* Right Image Composite */}
-            <div style={{ textAlign: 'center', position: 'relative' }}>
+            <div className="saver-image-wrapper" style={{ textAlign: 'center', position: 'relative' }}>
               <img 
-                src={SUPER_SAVER_BUNDLE.image} 
+                src={bundleData.image} 
                 alt="Super Saver Pack Pair"
+                className="saver-bottle-img"
                 style={{
                   maxHeight: '210px',
                   width: 'auto',

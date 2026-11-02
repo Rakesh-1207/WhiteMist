@@ -1,19 +1,58 @@
-import React, { useState } from 'react';
-import { ShieldCheck, Lock, CreditCard, QrCode, Building, Banknote, ArrowLeft, CheckCircle2, Truck, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ShieldCheck, Lock, CreditCard, QrCode, Building, Banknote, ArrowLeft, CheckCircle2, Truck, AlertCircle } from 'lucide-react';
+import { api } from '../services/api';
 
-export default function CheckoutPage({ cartSummary, onBackToCart, onOrderSuccess }) {
-  const { cartItems, subtotal, promoDiscount, shippingCost, finalTotal, appliedPromo } = cartSummary;
+export default function CheckoutPage({ cartSummary, onBackToCart, onOrderSuccess, user, token, onOpenAuth }) {
+  const {
+    cartItems = [],
+    subtotal = 0,
+    promoDiscount = 0,
+    shippingCost = 0,
+    finalTotal = 0,
+    appliedPromo = null
+  } = cartSummary || {};
 
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
+    fullName: user?.full_name || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
     pincode: '',
     city: 'Bangalore',
     address: '',
     landmark: '',
     addressType: 'home'
   });
+
+  const [savedAddresses, setSavedAddresses] = useState([]);
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        fullName: prev.fullName || user.full_name || '',
+        email: prev.email || user.email || '',
+        phone: prev.phone || user.phone || ''
+      }));
+
+      // Fetch user's saved addresses
+      api.getAddresses(token).then(addrs => {
+        if (addrs && addrs.length > 0) {
+          setSavedAddresses(addrs);
+          const defaultAddr = addrs.find(a => a.is_default) || addrs[0];
+          if (defaultAddr) {
+            setSelectedAddressId(defaultAddr.id);
+            setFormData(prev => ({
+              ...prev,
+              address: defaultAddr.address_line1 + (defaultAddr.address_line2 ? `, ${defaultAddr.address_line2}` : ''),
+              city: defaultAddr.city || 'Bangalore',
+              pincode: defaultAddr.postal_code || ''
+            }));
+          }
+        }
+      }).catch(err => console.warn(err));
+    }
+  }, [user, token]);
 
   const [paymentMethod, setPaymentMethod] = useState('upi'); // upi, card, netbanking, cod
   const [upiId, setUpiId] = useState('');
@@ -38,26 +77,52 @@ export default function CheckoutPage({ cartSummary, onBackToCart, onOrderSuccess
     return Object.keys(newErrors).length === 0;
   };
 
-  const handlePlaceOrder = (e) => {
+  const handlePlaceOrder = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     setIsProcessing(true);
+    setErrors({});
 
-    // Simulate payment processing latency
-    setTimeout(() => {
+    try {
+      const orderPayload = {
+        customer_name: formData.fullName,
+        customer_phone: formData.phone,
+        customer_email: formData.email || `${formData.phone}@whitemist.in`,
+        shipping_address: {
+          address_line1: formData.address,
+          city: formData.city,
+          state: 'Karnataka',
+          postal_code: formData.pincode
+        },
+        items: cartItems.map(item => ({
+          product_id: item.productId,
+          quantity: item.quantity,
+          unit_price: item.price,
+          format_name: item.formatName
+        })),
+        payment_method: paymentMethod.toUpperCase(),
+        discount_amount: promoDiscount || 0,
+        shipping_amount: shippingCost || 0
+      };
+
+      const created = await api.createOrder(orderPayload, token);
+
       setIsProcessing(false);
       onOrderSuccess({
-        orderId: `WM-${Math.floor(100000 + Math.random() * 900000)}`,
-        customerName: formData.fullName,
+        orderId: created.order_number,
+        customerName: created.customer_name,
         address: `${formData.address}, ${formData.city} - ${formData.pincode}`,
-        phone: formData.phone,
+        phone: created.customer_phone,
         items: cartItems,
-        total: finalTotal,
-        paymentMethod: paymentMethod.toUpperCase(),
-        date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+        total: parseFloat(created.total_amount),
+        paymentMethod: created.payment_method,
+        date: new Date(created.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
       });
-    }, 1800);
+    } catch (err) {
+      setIsProcessing(false);
+      setErrors(prev => ({ ...prev, general: err.message || 'Failed to place order in database' }));
+    }
   };
 
   return (
@@ -98,6 +163,55 @@ export default function CheckoutPage({ cartSummary, onBackToCart, onOrderSuccess
             {/* Left Column: Shipping & Payment Options */}
             <div>
               
+              {/* Guest / Account Banner */}
+              {!user ? (
+                <div style={{
+                  background: 'linear-gradient(135deg, #F3EBFD 0%, #EDE9FE 100%)',
+                  border: '1px solid #D8B4FE',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '1rem 1.25rem',
+                  marginBottom: '1.5rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  gap: '0.75rem'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.88rem', color: 'var(--color-purple-dark)' }}>
+                    <ShieldCheck size={17} style={{ color: 'var(--color-purple-primary)' }} />
+                    <span>Have a White Mist account? <strong>Sign in</strong> for 1-click checkout and saved orders.</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => onOpenAuth && onOpenAuth('login')}
+                    className="btn-primary"
+                    style={{ padding: '0.45rem 1rem', fontSize: '0.82rem', borderRadius: 'var(--radius-full)' }}
+                  >
+                    Sign In
+                  </button>
+                </div>
+              ) : (
+                <div style={{
+                  background: '#F0FDF4',
+                  border: '1px solid #BBF7D0',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '0.75rem 1.25rem',
+                  marginBottom: '1.5rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: '0.5rem'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.88rem', color: '#166534' }}>
+                    <CheckCircle2 size={16} />
+                    <span>Logged in as <strong>{user.full_name}</strong> ({user.email})</span>
+                  </div>
+                  <span style={{ fontSize: '0.75rem', background: '#DCFCE7', color: '#15803D', padding: '2px 8px', borderRadius: 'var(--radius-full)', fontWeight: '700' }}>
+                    Orders auto-saved to profile
+                  </span>
+                </div>
+              )}
+
               {/* Step 1: Shipping Address */}
               <div style={{
                 background: 'white',
@@ -115,6 +229,44 @@ export default function CheckoutPage({ cartSummary, onBackToCart, onOrderSuccess
                     Shipping & Delivery Details
                   </h3>
                 </div>
+
+                {/* Saved Address Quick Selector if Available */}
+                {savedAddresses.length > 0 && (
+                  <div style={{ marginBottom: '1.25rem', paddingBottom: '1rem', borderBottom: '1px solid #F1F5F9' }}>
+                    <div style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--color-purple-dark)', marginBottom: '0.5rem' }}>
+                      Choose Saved Delivery Address:
+                    </div>
+                    <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                      {savedAddresses.map(addr => (
+                        <button
+                          type="button"
+                          key={addr.id}
+                          onClick={() => {
+                            setSelectedAddressId(addr.id);
+                            setFormData(prev => ({
+                              ...prev,
+                              address: addr.address_line1 + (addr.address_line2 ? `, ${addr.address_line2}` : ''),
+                              city: addr.city || 'Bangalore',
+                              pincode: addr.postal_code || ''
+                            }));
+                          }}
+                          style={{
+                            padding: '0.5rem 0.85rem',
+                            borderRadius: 'var(--radius-sm)',
+                            border: selectedAddressId === addr.id ? '2px solid var(--color-purple-primary)' : '1px solid #CBD5E1',
+                            background: selectedAddressId === addr.id ? '#F3EBFD' : 'white',
+                            textAlign: 'left',
+                            cursor: 'pointer',
+                            fontSize: '0.8rem'
+                          }}
+                        >
+                          <div style={{ fontWeight: '700', color: 'var(--text-main)' }}>{addr.address_label || 'Address'}</div>
+                          <div style={{ color: '#64748B', fontSize: '0.75rem' }}>{addr.address_line1}, {addr.postal_code}</div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div className="checkout-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                   <div>

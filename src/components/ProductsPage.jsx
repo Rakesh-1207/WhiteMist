@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Star, ShoppingBag, Eye, Heart, Filter, Sparkles, SlidersHorizontal, ArrowUpDown, Layers, Droplets, Leaf, HeartHandshake, Zap, Package } from 'lucide-react';
+import { Star, ShoppingBag, Eye, Heart, Filter, SlidersHorizontal, ArrowUpDown, Layers, Droplets, Leaf, HeartHandshake, Zap, Package } from 'lucide-react';
 import { PRODUCTS, CATEGORIES } from '../data/products';
 
-export default function ProductsPage({ onAddToCart, onOpenModal, wishlistItems, onToggleWishlist, searchQuery, setSearchQuery }) {
+export default function ProductsPage({ products, categories, onAddToCart, onOpenModal, wishlistItems, onToggleWishlist, searchQuery, setSearchQuery }) {
+  const allProducts = products || PRODUCTS;
+  const allCategories = categories || CATEGORIES;
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedColor, setSelectedColor] = useState('all');
   const [sortBy, setSortBy] = useState('featured');
@@ -20,12 +22,12 @@ export default function ProductsPage({ onAddToCart, onOpenModal, wishlistItems, 
       case 'HeartHandshake': return <HeartHandshake size={18} />;
       case 'Zap': return <Zap size={18} />;
       case 'Package': return <Package size={18} />;
-      default: return <Sparkles size={18} />;
+      default: return <Layers size={18} />;
     }
   };
 
   // Filter & Sort Logic
-  const filteredProducts = PRODUCTS.filter(product => {
+  const filteredProducts = allProducts.filter(product => {
     if (selectedCategory !== 'all' && product.category !== selectedCategory) return false;
     if (selectedColor !== 'all' && product.color !== selectedColor) return false;
 
@@ -109,7 +111,7 @@ export default function ProductsPage({ onAddToCart, onOpenModal, wishlistItems, 
 
             {/* Vertical Category Button List */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-              {CATEGORIES.map(cat => {
+              {allCategories.map(cat => {
                 const isSelected = selectedCategory === cat.id;
                 return (
                   <button

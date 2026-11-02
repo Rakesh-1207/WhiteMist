@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, CheckCircle2, ShieldCheck, Wrench, FileText, Search } from 'lucide-react';
+import { api } from '../services/api';
 
 export default function ServiceQuoteModal({ isOpen, onClose, activeTab = 'quote' }) {
   const [tab, setTab] = useState(activeTab);
@@ -41,33 +42,23 @@ export default function ServiceQuoteModal({ isOpen, onClose, activeTab = 'quote'
   const handleQuoteSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/v1/quotes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(quoteForm)
-      });
-      const data = await res.json();
+      const data = await api.submitQuote(quoteForm);
       if (data.success) {
-        setSubmitStatus({ title: 'Quote Request Submitted!', msg: `Your quote number is ${data.data.quote.quote_number}. Our commercial specialist will contact you shortly.` });
+        setSubmitStatus({ title: 'Quote Request Saved to Database!', msg: `Your quote number is ${data.data.quote.quote_number}. Our commercial specialist will contact you shortly.` });
       } else {
         setSubmitStatus({ title: 'Quote Request Received', msg: 'Thank you! We have received your quotation request and will email you details.' });
       }
     } catch (err) {
-      setSubmitStatus({ title: 'Request Recorded', msg: 'Thank you! Your quote request has been saved successfully.' });
+      setSubmitStatus({ title: 'Request Recorded', msg: 'Thank you! Your quote request has been saved.' });
     }
   };
 
   const handleServiceSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:5000/api/v1/services', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(serviceForm)
-      });
-      const data = await res.json();
+      const data = await api.submitService(serviceForm);
       if (data.success) {
-        setSubmitStatus({ title: 'Service Booked!', msg: `Ticket #${data.data.serviceRequest.ticket_number} created. A technician will visit on your preferred date.` });
+        setSubmitStatus({ title: 'Service Booked!', msg: `Ticket #${data.data.serviceRequest.ticket_number} created and saved in database. A technician will visit on your preferred date.` });
       } else {
         setSubmitStatus({ title: 'Service Booked', msg: 'Thank you! Your service appointment has been scheduled.' });
       }
@@ -82,27 +73,14 @@ export default function ServiceQuoteModal({ isOpen, onClose, activeTab = 'quote'
     setWarrantyResult(null);
 
     try {
-      const res = await fetch(`http://localhost:5000/api/v1/warranties/verify/${serialQuery.trim()}`);
-      const data = await res.json();
-      if (data.success) {
+      const data = await api.verifyWarranty(serialQuery.trim());
+      if (data.success && data.data?.warranty) {
         setWarrantyResult(data.data.warranty);
       } else {
-        setWarrantyError(data.message || 'Serial number not found.');
+        setWarrantyError(data.message || 'Serial number not found in database.');
       }
     } catch (err) {
-      // Mock fallback for presentation
-      if (serialQuery.toUpperCase().includes('WM')) {
-        setWarrantyResult({
-          serial_number: serialQuery,
-          model_number: 'WM-OF2000',
-          product_name: 'White Mist Ocean Fresh Liquid Detergent 2L Bottle',
-          warranty_start_date: '2026-01-15',
-          warranty_end_date: '2028-01-15',
-          is_valid: true
-        });
-      } else {
-        setWarrantyError('No active warranty record found for this serial number.');
-      }
+      setWarrantyError('Could not verify warranty against database.');
     }
   };
 

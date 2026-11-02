@@ -9,6 +9,7 @@ const router = Router();
 
 // Public routes
 router.get('/', ProductController.getProducts);
+router.get('/bundle/super-saver', ProductController.getSuperSaverBundle);
 router.get('/:idOrSlug', ProductController.getProductBySlugOrId);
 
 // Admin routes

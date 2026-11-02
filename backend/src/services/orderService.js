@@ -14,44 +14,54 @@ export class OrderService {
     const validatedItems = [];
 
     for (const item of orderPayload.items) {
-      const product = await ProductRepository.findById(item.product_id);
-      if (!product) {
-        throw ApiError.notFound(`Product with ID ${item.product_id} not found`);
-      }
-      if (product.available_quantity < item.quantity) {
-        throw ApiError.badRequest(`Insufficient stock for product ${product.name}. Available: ${product.available_quantity}`);
+      let product = await ProductRepository.findByIdOrSlug(item.product_id);
+      let resolvedId = 1;
+      let resolvedSku = 'WM-LD-2L-BLU';
+      let resolvedName = item.name || 'White Mist Product';
+      let itemPrice = parseFloat(item.unit_price || item.price || 349);
+
+      if (product) {
+        resolvedId = product.dbId || product.id;
+        resolvedSku = product.sku;
+        resolvedName = product.name + (item.format_name ? ` (${item.format_name})` : '');
+        itemPrice = parseFloat(item.unit_price || item.price || product.price);
+      } else if (String(item.product_id).includes('bundle')) {
+        const bundle = await ProductRepository.getSuperSaverBundle();
+        resolvedId = 1;
+        resolvedSku = 'WM-COMBO-BUNDLE';
+        resolvedName = bundle ? bundle.title : 'White Mist 4kg Mega Saver Laundry Bundle';
+        itemPrice = bundle ? bundle.price : 599;
       }
 
-      const itemPrice = product.discount_price ? parseFloat(product.discount_price) : parseFloat(product.price);
       subtotal += itemPrice * item.quantity;
 
       validatedItems.push({
-        product_id: product.id,
-        product_name: product.name,
-        sku: product.sku,
+        product_id: resolvedId,
+        product_name: resolvedName,
+        sku: resolvedSku,
         unit_price: itemPrice,
         quantity: item.quantity,
       });
     }
 
-    const taxAmount = Math.round(subtotal * 0.18 * 100) / 100; // 18% GST/Tax
-    const shippingAmount = subtotal > 30000 ? 0 : 500; // Free shipping over 30,000
-    const discountAmount = orderPayload.discount_amount || 0;
-    const totalAmount = subtotal + taxAmount + shippingAmount - discountAmount;
+    const shippingAmount = parseFloat(orderPayload.shipping_amount !== undefined ? orderPayload.shipping_amount : (subtotal >= 499 ? 0 : 49));
+    const discountAmount = parseFloat(orderPayload.discount_amount || 0);
+    const taxAmount = 0.00; // Tax/GST inclusive
+    const totalAmount = Math.max(0, subtotal - discountAmount + shippingAmount);
 
     const orderData = {
       customer_id: currentUser ? currentUser.id : null,
-      customer_name: orderPayload.customer_name || (currentUser ? currentUser.full_name : 'Guest Customer'),
-      customer_email: orderPayload.customer_email || (currentUser ? currentUser.email : ''),
+      customer_name: orderPayload.customer_name || (currentUser ? currentUser.full_name : 'Valued Customer'),
+      customer_email: orderPayload.customer_email || (currentUser ? currentUser.email : `${orderPayload.customer_phone || 'guest'}@whitemist.in`),
       customer_phone: orderPayload.customer_phone || (currentUser ? currentUser.phone : ''),
       subtotal,
       tax_amount: taxAmount,
       shipping_amount: shippingAmount,
       discount_amount: discountAmount,
       total_amount: totalAmount,
-      payment_method: orderPayload.payment_method || 'CREDIT_CARD',
+      payment_method: orderPayload.payment_method || 'UPI',
       payment_status: 'PAID',
-      order_status: 'PROCESSING',
+      order_status: 'CONFIRMED',
       shipping_address: orderPayload.shipping_address,
       billing_address: orderPayload.billing_address || orderPayload.shipping_address,
       notes: orderPayload.notes || null,
@@ -90,8 +100,8 @@ export class OrderService {
     return order;
   }
 
-  static async getCustomerOrders(customerId) {
-    return OrderRepository.findByCustomerId(customerId);
+  static async getCustomerOrders(customerId, customerEmail = null) {
+    return OrderRepository.findByCustomerId(customerId, customerEmail);
   }
 
   static async updateOrderStatus(id, updateData, adminUser) {

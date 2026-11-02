@@ -337,3 +337,60 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   INDEX idx_refresh_tokens_user (user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS product_formats (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  product_id INT NOT NULL,
+  format_code VARCHAR(50) NOT NULL,
+  name VARCHAR(150) NOT NULL,
+  price DECIMAL(10,2) NOT NULL,
+  mrp DECIMAL(10,2) NOT NULL,
+  discount VARCHAR(50) DEFAULT '0% OFF',
+  image VARCHAR(255) NOT NULL,
+  doses INT DEFAULT 40,
+  display_order INT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+  INDEX idx_formats_product (product_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS reviews (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  product_id INT NULL,
+  author VARCHAR(150) NOT NULL,
+  role VARCHAR(100) DEFAULT 'Verified Buyer',
+  city VARCHAR(100) NOT NULL,
+  rating INT NOT NULL DEFAULT 5,
+  comment TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  is_approved BOOLEAN DEFAULT TRUE,
+  FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL,
+  INDEX idx_reviews_rating (rating)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS promo_codes (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  code VARCHAR(50) NOT NULL UNIQUE,
+  discount DECIMAL(10,2) NOT NULL,
+  discount_type ENUM('percent', 'flat') NOT NULL DEFAULT 'flat',
+  description VARCHAR(255) NOT NULL,
+  min_order_amount DECIMAL(10,2) DEFAULT 0.00,
+  is_active BOOLEAN DEFAULT TRUE,
+  expires_at TIMESTAMP NULL DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_promo_code (code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS bundles (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  bundle_code VARCHAR(50) NOT NULL UNIQUE,
+  title VARCHAR(200) NOT NULL,
+  subtitle VARCHAR(255),
+  price DECIMAL(10,2) NOT NULL,
+  mrp DECIMAL(10,2) NOT NULL,
+  savings VARCHAR(100),
+  image VARCHAR(255) NOT NULL,
+  is_active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+

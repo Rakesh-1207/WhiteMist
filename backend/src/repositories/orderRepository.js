@@ -98,9 +98,16 @@ export class OrderRepository {
     return query(sql, [orderId]);
   }
 
-  static async findByCustomerId(customerId) {
-    const sql = `SELECT * FROM orders WHERE customer_id = ? ORDER BY id DESC`;
-    const orders = await query(sql, [customerId]);
+  static async findByCustomerId(customerId, customerEmail = null) {
+    let sql = `SELECT * FROM orders WHERE customer_id = ?`;
+    let params = [customerId];
+    if (customerEmail) {
+      sql = `SELECT * FROM orders WHERE customer_id = ? OR customer_email = ? ORDER BY id DESC`;
+      params = [customerId, customerEmail];
+    } else {
+      sql += ` ORDER BY id DESC`;
+    }
+    const orders = await query(sql, params);
     for (const order of orders) {
       order.items = await this.getOrderItems(order.id);
     }

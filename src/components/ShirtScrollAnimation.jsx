@@ -84,7 +84,7 @@ export default function ShirtScrollAnimation() {
     }));
   }, [isMobile]);
 
-  const shirtFrameHeight = isMobile ? 420 : 780;
+  const shirtFrameHeight = isMobile ? 540 : 780;
 
   return (
     <section 
@@ -92,7 +92,7 @@ export default function ShirtScrollAnimation() {
       className="shirt-scroll-section"
       style={{ 
         position: 'relative',
-        height: isMobile ? '200vh' : '220vh',
+        height: isMobile ? '160vh' : '220vh',
         background: 'linear-gradient(180deg, #FAFCFF 0%, #F1F5F9 50%, #E2E8F0 100%)'
       }}
     >

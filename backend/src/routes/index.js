@@ -14,6 +14,8 @@ import newsletterRoutes from './newsletterRoutes.js';
 import adminRoutes from './adminRoutes.js';
 import auditLogRoutes from './auditLogRoutes.js';
 import healthRoutes from './healthRoutes.js';
+import reviewRoutes from './reviewRoutes.js';
+import promoRoutes from './promoRoutes.js';
 import docsRoutes from './docsRoutes.js';
 
 const router = Router();
@@ -23,6 +25,8 @@ router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
 router.use('/products', productRoutes);
 router.use('/categories', categoryRoutes);
+router.use('/reviews', reviewRoutes);
+router.use('/promo', promoRoutes);
 router.use('/enquiries', enquiryRoutes);
 router.use('/quotes', quoteRoutes);
 router.use('/services', serviceRoutes);

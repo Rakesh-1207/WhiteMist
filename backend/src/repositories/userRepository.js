@@ -44,6 +44,29 @@ export class UserRepository {
     return true;
   }
 
+  static async getAddresses(userId) {
+    const sql = `SELECT * FROM user_addresses WHERE user_id = ? ORDER BY is_default DESC, id DESC`;
+    return query(sql, [userId]);
+  }
+
+  static async addAddress(userId, { address_label = 'Home', address_line1, address_line2 = '', city, state = 'Karnataka', postal_code, country = 'India', is_default = false }) {
+    if (is_default) {
+      await query(`UPDATE user_addresses SET is_default = FALSE WHERE user_id = ?`, [userId]);
+    }
+    const sql = `
+      INSERT INTO user_addresses (user_id, address_label, address_line1, address_line2, city, state, postal_code, country, is_default)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    const res = await query(sql, [userId, address_label, address_line1, address_line2, city, state, postal_code, country, is_default ? 1 : 0]);
+    return this.getAddresses(userId);
+  }
+
+  static async deleteAddress(userId, addressId) {
+    const sql = `DELETE FROM user_addresses WHERE id = ? AND user_id = ?`;
+    await query(sql, [addressId, userId]);
+    return this.getAddresses(userId);
+  }
+
   static async getRoleIdByName(roleName) {
     const sql = `SELECT id FROM roles WHERE name = ?`;
     const rows = await query(sql, [roleName]);

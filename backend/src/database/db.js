@@ -30,8 +30,71 @@ const mockDb = {
   autoIncrements: {},
 };
 
+import { spawn } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import net from 'net';
+
+const checkPortOpen = (port, host) => {
+  return new Promise((resolve) => {
+    const socket = new net.Socket();
+    socket.setTimeout(1000);
+    socket.on('connect', () => {
+      socket.destroy();
+      resolve(true);
+    });
+    socket.on('timeout', () => {
+      socket.destroy();
+      resolve(false);
+    });
+    socket.on('error', () => {
+      socket.destroy();
+      resolve(false);
+    });
+    socket.connect(port, host);
+  });
+};
+
+const autoStartMysqlIfAvailable = async () => {
+  const isUp = await checkPortOpen(env.DB_PORT, env.DB_HOST);
+  if (isUp) return true;
+
+  const mysqldPath = 'C:\\Program Files\\MySQL\\MySQL Server 8.4\\bin\\mysqld.exe';
+  const userHome = process.env.USERPROFILE || 'C:\\Users\\rakes';
+  const dataDir1 = path.join(userHome, 'whitemist-mysql-data');
+  const dataDir2 = path.join(userHome, 'mysql-data');
+  const dataDir = fs.existsSync(dataDir1) ? dataDir1 : dataDir2;
+
+  if (fs.existsSync(mysqldPath) && fs.existsSync(dataDir)) {
+    logger.info(`MySQL is offline. Automatically launching background MySQL daemon from ${mysqldPath}...`);
+    try {
+      const proc = spawn(mysqldPath, [`--datadir=${dataDir}`, `--port=${env.DB_PORT}`, '--console'], {
+        detached: true,
+        stdio: 'ignore'
+      });
+      proc.unref();
+
+      // Wait up to 10 seconds for MySQL to be ready
+      for (let i = 0; i < 20; i++) {
+        await new Promise(r => setTimeout(r, 500));
+        const ready = await checkPortOpen(env.DB_PORT, env.DB_HOST);
+        if (ready) {
+          logger.info('MySQL Server daemon is now active and accepting connections.');
+          return true;
+        }
+      }
+    } catch (e) {
+      logger.warn(`Could not auto-start mysqld: ${e.message}`);
+    }
+  }
+  return false;
+};
+
 export const getPool = async () => {
   if (pool) return pool;
+
+  // Make sure MySQL daemon is running
+  await autoStartMysqlIfAvailable();
 
   try {
     const connectionPool = mysql.createPool({
